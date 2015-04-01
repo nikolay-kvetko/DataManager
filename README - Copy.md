@@ -1,5 +1,0 @@
-# DataManager
-
-# Frameworks
-
--Hibernate
