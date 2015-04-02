@@ -29,13 +29,6 @@
           <scope>compile</scope>
       </dependency>
 
-      <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-entitymanager</artifactId>
-          <version>4.3.7.Final</version>
-          <scope>compile</scope>
-      </dependency>
-
   </dependencies>
   <build>
     <finalName>datamanager</finalName>
