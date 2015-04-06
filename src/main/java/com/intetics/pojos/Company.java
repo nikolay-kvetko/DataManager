@@ -5,9 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * created: 01.04.2015 10:21
- *
- * @author a.chervyakovsky
+ * Created by Кузнец on 05.04.2015.
  */
 
 @Entity
@@ -33,7 +31,7 @@ public class Company {
     private Byte[] logo;
 
     @OneToMany(mappedBy = "company", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<User> users = new HashSet<User>();
+    private Set<Users> users = new HashSet<Users>();
 
     @OneToMany(mappedBy = "company", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
     private Set<EntityName> entityNames = new HashSet<EntityName>();
@@ -78,11 +76,19 @@ public class Company {
         this.theme = theme;
     }
 
-    public Set<User> getUsers() {
+    public Byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(Byte[] logo) {
+        this.logo = logo;
+    }
+
+    public Set<Users> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(Set<Users> users) {
         this.users = users;
     }
 
@@ -93,13 +99,4 @@ public class Company {
     public void setEntityNames(Set<EntityName> entityNames) {
         this.entityNames = entityNames;
     }
-
-    public Byte[] getLogo() {
-        return logo;
-    }
-
-    public void setLogo(Byte[] logo) {
-        this.logo = logo;
-    }
-
 }

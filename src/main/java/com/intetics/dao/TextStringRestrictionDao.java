@@ -1,19 +1,18 @@
 package com.intetics.dao;
 
-import com.intetics.pojos.EntityName;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by Кузнец on 01.04.2015.
+ * Created by Кузнец on 05.04.2015.
  */
 
 @Repository
-public class EntityNameDao extends BaseDao<EntityName> {
+public class TextStringRestrictionDao extends BaseDao<TextStringRestrictionDao> {
 
     @Autowired
-    public EntityNameDao(SessionFactory sessionFactory) {
+    public TextStringRestrictionDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 }

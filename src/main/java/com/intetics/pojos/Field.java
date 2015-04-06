@@ -1,19 +1,11 @@
 package com.intetics.pojos;
 
-import com.intetics.pojos.restrictions.DateTimeRestriction;
-import com.intetics.pojos.restrictions.NumberRestriction;
-import com.intetics.pojos.restrictions.TextAreaRestriction;
-import com.intetics.pojos.restrictions.TextStringRestriction;
-import com.intetics.pojos.values.DateValues;
-import com.intetics.pojos.values.NumberValues;
-import com.intetics.pojos.values.StringValues;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Кузнец on 31.03.2015.
+ * Created by Кузнец on 05.04.2015.
  */
 
 @Entity
@@ -36,28 +28,18 @@ public class Field {
     @JoinColumn(name = "entityNameId")
     private EntityName entityName;
 
-    //Restrictions of fields
+
+    //restrictions of fields
     @OneToOne(mappedBy = "field", cascade = CascadeType.ALL)
     private TextStringRestriction textStringRestriction;
 
-    @OneToOne(mappedBy = "field", cascade = CascadeType.ALL)
-    private TextAreaRestriction textAreaRestriction;
+    @OneToMany(mappedBy = "field", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
+    private Set<ChoiceRestriction> choiceRestrictions = new HashSet<ChoiceRestriction>();
 
-    @OneToOne(mappedBy = "field", cascade = CascadeType.ALL)
-    private NumberRestriction numberRestriction;
-
-    @OneToOne(mappedBy = "field", cascade = CascadeType.ALL)
-    private DateTimeRestriction dateTimeRestriction;
 
     //Values of fields
     @OneToMany(mappedBy = "field", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<StringValues> stringValues = new HashSet<StringValues>();
-
-    @OneToMany(mappedBy = "field", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<NumberValues> numberValues = new HashSet<NumberValues>();
-
-    @OneToMany(mappedBy = "field", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<DateValues> dateValues = new HashSet<DateValues>();
+    private Set<FieldValue> values = new HashSet<FieldValue>();
 
     public Long getFieldId() {
         return fieldId;
@@ -107,51 +89,19 @@ public class Field {
         this.textStringRestriction = textStringRestriction;
     }
 
-    public TextAreaRestriction getTextAreaRestriction() {
-        return textAreaRestriction;
+    public Set<FieldValue> getValues() {
+        return values;
     }
 
-    public void setTextAreaRestriction(TextAreaRestriction textAreaRestriction) {
-        this.textAreaRestriction = textAreaRestriction;
+    public void setValues(Set<FieldValue> values) {
+        this.values = values;
     }
 
-    public NumberRestriction getNumberRestriction() {
-        return numberRestriction;
+    public Set<ChoiceRestriction> getChoiceRestrictions() {
+        return choiceRestrictions;
     }
 
-    public void setNumberRestriction(NumberRestriction numberRestriction) {
-        this.numberRestriction = numberRestriction;
-    }
-
-    public DateTimeRestriction getDateTimeRestriction() {
-        return dateTimeRestriction;
-    }
-
-    public void setDateTimeRestriction(DateTimeRestriction dateTimeRestriction) {
-        this.dateTimeRestriction = dateTimeRestriction;
-    }
-
-    public Set<StringValues> getStringValues() {
-        return stringValues;
-    }
-
-    public void setStringValues(Set<StringValues> stringValues) {
-        this.stringValues = stringValues;
-    }
-
-    public Set<NumberValues> getNumberValues() {
-        return numberValues;
-    }
-
-    public void setNumberValues(Set<NumberValues> numberValues) {
-        this.numberValues = numberValues;
-    }
-
-    public Set<DateValues> getDateValues() {
-        return dateValues;
-    }
-
-    public void setDateValues(Set<DateValues> dateValues) {
-        this.dateValues = dateValues;
+    public void setChoiceRestrictions(Set<ChoiceRestriction> choiceRestrictions) {
+        this.choiceRestrictions = choiceRestrictions;
     }
 }

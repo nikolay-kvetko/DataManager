@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Кузнец on 31.03.2015.
+ * Created by Кузнец on 05.04.2015.
  */
 
 @Entity
@@ -37,7 +37,7 @@ public class EntityName {
     private Set<Field> fields = new HashSet<Field>();
 
     @OneToMany(mappedBy = "entityName", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<EntityValue> entityValue = new HashSet<EntityValue>();
+    private Set<EntityInstance> entityInstance = new HashSet<EntityInstance>();
 
     public Long getEntityNameId() {
         return entityNameId;
@@ -87,11 +87,11 @@ public class EntityName {
         this.fields = fields;
     }
 
-    public Set<EntityValue> getEntityValue() {
-        return entityValue;
+    public Set<EntityInstance> getEntityInstance() {
+        return entityInstance;
     }
 
-    public void setEntityValue(Set<EntityValue> entityValue) {
-        this.entityValue = entityValue;
+    public void setEntityInstance(Set<EntityInstance> entityInstance) {
+        this.entityInstance = entityInstance;
     }
 }

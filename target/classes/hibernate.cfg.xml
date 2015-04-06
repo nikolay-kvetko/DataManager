@@ -4,7 +4,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/TestDB</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Manager</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">eden</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
@@ -13,17 +13,13 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
         <mapping class="com.intetics.pojos.EntityName"/>
         <mapping class="com.intetics.pojos.Field"/>
-        <mapping class="com.intetics.pojos.EntityValue"/>
+        <mapping class="com.intetics.pojos.EntityInstance"/>
         <mapping class="com.intetics.pojos.Company"/>
-        <mapping class="com.intetics.pojos.User"/>
-        <mapping class="com.intetics.pojos.Roles"/>
-        <mapping class="com.intetics.pojos.restrictions.TextStringRestriction"/>
-        <mapping class="com.intetics.pojos.restrictions.TextAreaRestriction"/>
-        <mapping class="com.intetics.pojos.restrictions.NumberRestriction"/>
-        <mapping class="com.intetics.pojos.restrictions.DateTimeRestriction"/>
-        <mapping class="com.intetics.pojos.values.StringValues"/>
-        <mapping class="com.intetics.pojos.values.NumberValues"/>
-        <mapping class="com.intetics.pojos.values.DateValues"/>
+        <mapping class="com.intetics.pojos.Users"/>
+        <mapping class="com.intetics.pojos.Role"/>
+        <mapping class="com.intetics.pojos.TextStringRestriction"/>
+        <mapping class="com.intetics.pojos.FieldValue"/>
+        <mapping class="com.intetics.pojos.ChoiceRestriction"/>
     </session-factory>
 </hibernate-configuration>
 

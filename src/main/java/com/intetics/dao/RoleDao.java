@@ -1,6 +1,6 @@
 package com.intetics.dao;
 
-import com.intetics.pojos.EntityName;
+import com.intetics.pojos.Role;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public class EntityNameDao extends BaseDao<EntityName> {
+public class RoleDao extends BaseDao<Role> {
 
     @Autowired
-    public EntityNameDao(SessionFactory sessionFactory) {
+    public RoleDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 }
