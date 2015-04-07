@@ -8,7 +8,7 @@ import java.util.Set;
  * Created by Кузнец on 05.04.2015.
  */
 
-@Entity
+//@Entity
 public class Field {
 
     @Id

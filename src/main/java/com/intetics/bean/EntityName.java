@@ -1,15 +1,6 @@
 package com.intetics.bean;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-/**
- * Created by Кузнец on 05.04.2015.
- */
 
 @Entity
 public class EntityName {
@@ -21,7 +12,7 @@ public class EntityName {
     @Column
     private String name;
 
-    @Column
+   /* @Column
     @Type(type = "date")
     private Date createDate;
 
@@ -93,5 +84,21 @@ public class EntityName {
 
     public void setEntityInstance(Set<EntityInstance> entityInstance) {
         this.entityInstance = entityInstance;
+    }*/
+
+    public Long getEntityNameId() {
+        return entityNameId;
+    }
+
+    public void setEntityNameId(Long entityNameId) {
+        this.entityNameId = entityNameId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
