@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- http://wiki.apache.org/logging-log4j/Log4jXmlFormat -->
+
+    <!-- Appenders -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="%d{HH:mm:ss} [%t] %c{1} - %m%n" />-->
+            <param name="ConversionPattern" value="%d{ISO8601} %p [%t] %c{1} - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="logfile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${catalina.home}/logs/datamanager.log"/>
+
+        <!--Rollover at midnight each day.-->
+        <!--<param name="DatePattern" value="'.'yyyy-MM-dd"/>-->
+
+        <!--Rollover at the beginning of each month-->
+        <param name="DatePattern" value="'.'yyyy-MM"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %p [%t] %c{1} - %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="com.intetics">
+        <level value="trace" />
+        <!--<level value="debug" />-->
+    </logger>
+
+      <logger name="org.springframework.core">
+        <level value="info" />
+    </logger>
+
+    <logger name="org.springframework.beans">
+        <level value="info" />
+    </logger>
+
+    <logger name="org.springframework.context">
+        <level value="info" />
+    </logger>
+
+    <root>
+        <!--temporary for development purpose-->
+        <priority value="info" />
+        <!--<priority value="warn" />-->
+        <appender-ref ref="console" />
+        <appender-ref ref="logfile" />
+    </root>
+
+</log4j:configuration>
