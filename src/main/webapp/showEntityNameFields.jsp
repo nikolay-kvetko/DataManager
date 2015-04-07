@@ -2,19 +2,22 @@
   Created by IntelliJ IDEA.
   User: a.chervyakovsky
   Date: 06.04.2015
-  Time: 10:52
+  Time: 13:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<head>
+    <title>List of EntityName's Fields</title>
+</head>
 <body>
-<c:set var="entityNames" scope="session" value="${entityNamesList}"/>
-<h2>Hello World!</h2>
+<a href="/addFieldToEntityName?entityNameId=<c:out value="${entityName.entityNameId}"/>">
+    Add Field
+</a>
 <br>
 <ul>
-    <c:forEach var="field" items="${entityNames}">
+    <c:forEach var="field" items="${entityName.fields}">
         <li><c:out value="${field.name}"/></li>
     </c:forEach>
 </ul>

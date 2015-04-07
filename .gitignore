@@ -2,6 +2,13 @@
 
 *.iml
 
+# https://github.com/github/gitignore/blob/master/Maven.gitignore
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+
 ## Directory-based project format:
 .idea/
 # if you remove the above rule, at least ignore the following:

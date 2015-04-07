@@ -1,8 +1,7 @@
 package com.intetics.dao;
 
-import com.intetics.pojos.EntityName;
-import com.intetics.pojos.Field;
-import com.intetics.util.HibernateUtil;
+import com.intetics.bean.EntityName;
+import com.intetics.bean.Field;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,8 +10,6 @@ import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * Created by Кузнец on 01.04.2015.

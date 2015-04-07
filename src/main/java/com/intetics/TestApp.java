@@ -1,7 +1,9 @@
 package com.intetics;
 
-import com.intetics.pojos.*;
-import org.hibernate.*;
+import com.intetics.bean.EntityName;
+import org.hibernate.FlushMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class TestApp {
 
-    static ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-configuration.xml");
+    static ApplicationContext ctx = new ClassPathXmlApplicationContext("root-context.xml");
 
     private static SessionFactory sessionFactory = (SessionFactory) ctx.getBean("sessionFactory");
 

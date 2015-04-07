@@ -1,4 +1,4 @@
-package com.intetics.pojos;
+package com.intetics.bean;
 
 import javax.persistence.*;
 

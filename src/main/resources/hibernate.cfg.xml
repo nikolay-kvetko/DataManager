@@ -11,15 +11,15 @@
         <property name="hibernate.connection.pool_size">10</property>
         <property name="show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
-        <mapping class="com.intetics.pojos.EntityName"/>
-        <mapping class="com.intetics.pojos.Field"/>
-        <mapping class="com.intetics.pojos.EntityInstance"/>
-        <mapping class="com.intetics.pojos.Company"/>
-        <mapping class="com.intetics.pojos.Users"/>
-        <mapping class="com.intetics.pojos.Role"/>
-        <mapping class="com.intetics.pojos.TextStringRestriction"/>
-        <mapping class="com.intetics.pojos.FieldValue"/>
-        <mapping class="com.intetics.pojos.ChoiceRestriction"/>
+        <mapping class="com.intetics.bean.EntityName"/>
+        <mapping class="com.intetics.bean.Field"/>
+        <mapping class="com.intetics.bean.EntityInstance"/>
+        <mapping class="com.intetics.bean.Company"/>
+        <mapping class="com.intetics.bean.Users"/>
+        <mapping class="com.intetics.bean.Role"/>
+        <mapping class="com.intetics.bean.TextStringRestriction"/>
+        <mapping class="com.intetics.bean.FieldValue"/>
+        <mapping class="com.intetics.bean.ChoiceRestriction"/>
     </session-factory>
 </hibernate-configuration>
 

@@ -1,8 +1,8 @@
-package com.intetics.pojos.fieldFactory;
+package com.intetics.bean.fieldFactory;
 
-import com.intetics.pojos.EntityInstance;
-import com.intetics.pojos.Field;
-import com.intetics.pojos.FieldValue;
+import com.intetics.bean.EntityInstance;
+import com.intetics.bean.Field;
+import com.intetics.bean.FieldValue;
 
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package com.intetics.dao;
 
-import com.intetics.pojos.FieldValue;
+import com.intetics.bean.FieldValue;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

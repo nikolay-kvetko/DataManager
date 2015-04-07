@@ -1,6 +1,6 @@
 package com.intetics.dao;
 
-import com.intetics.pojos.Users;
+import com.intetics.bean.Users;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
