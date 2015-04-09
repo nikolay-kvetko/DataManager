@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by Кузнец on 05.04.2015.
  */
 
-@Entity
+//@Entity
 public class TextStringRestriction {
 
     @Id
