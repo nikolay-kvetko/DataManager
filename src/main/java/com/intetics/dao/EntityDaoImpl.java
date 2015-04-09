@@ -46,5 +46,12 @@ public class EntityDaoImpl implements EntityDao {
 
         // Retrieve all
         return entityName;
-    };
+    }
+
+    @Override
+    public void saveOrUpdate(EntityName entityName) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(entityName);
+    }
+
 }

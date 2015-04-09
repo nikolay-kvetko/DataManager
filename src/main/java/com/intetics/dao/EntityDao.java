@@ -10,4 +10,5 @@ import java.util.List;
 public interface EntityDao {
     List<EntityName> getEntityList();
     EntityName getEntity(Long id);
+    void saveOrUpdate(EntityName entityName);
 }

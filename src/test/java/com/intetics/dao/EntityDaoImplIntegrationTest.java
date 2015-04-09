@@ -4,6 +4,8 @@ import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.intetics.bean.EntityName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,5 +46,16 @@ public class EntityDaoImplIntegrationTest {
         EntityName entityName = entityDao.getEntity(1L);
         //List<EntityName> actual = entityDao.getEntityList();
         assertNotNull(entityName);
+    }
+
+    @Test
+    @ExpectedDatabase(value = "/EntityDaoImplIntegrationTest.testSaveOrUpdateEntity.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testSaveOrUpdateEntity() throws Exception {
+        EntityName entityName = new EntityName();
+        entityName.setName("New Entity");
+        entityDao.saveOrUpdate(entityName);
+        //List<EntityName> actual = entityDao.getEntityList();
+
     }
 }
