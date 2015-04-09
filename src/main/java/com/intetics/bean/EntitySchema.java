@@ -3,97 +3,23 @@ package com.intetics.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "EntityScheme")
+@Table(name = "EntitySchema")
 public class EntitySchema {
 
     @Id
-    @Column(name = "EntityScheme_Id")
+    @Column(name = "EntitySchema_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long entitySchemeId;
+    private Long entitySchemaId;
 
     @Column(name = "Name")
     private String name;
 
-   /* @Column
-    @Type(type = "date")
-    private Date createDate;
-
-    @Column
-    @Type(type = "date")
-    private Date lastModificationDate;
-
-    @ManyToOne
-    @JoinColumn(name = "companyId")
-    private Company company;
-
-    @OneToMany(mappedBy = "entityName", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<Field> fields = new HashSet<Field>();
-
-    @OneToMany(mappedBy = "entityName", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
-    private Set<EntityInstance> entityInstance = new HashSet<EntityInstance>();
-
-    public Long getEntitySchemeId() {
-        return entitySchemeId;
+    public Long getEntitySchemaId() {
+        return entitySchemaId;
     }
 
-    public void setEntitySchemeId(Long entitySchemeId) {
-        this.entitySchemeId = entitySchemeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public Set<Field> getFields() {
-        return fields;
-    }
-
-    public void setFields(Set<Field> fields) {
-        this.fields = fields;
-    }
-
-    public Set<EntityInstance> getEntityInstance() {
-        return entityInstance;
-    }
-
-    public void setEntityInstance(Set<EntityInstance> entityInstance) {
-        this.entityInstance = entityInstance;
-    }*/
-
-    public Long getEntitySchemeId() {
-        return entitySchemeId;
-    }
-
-    public void setEntitySchemeId(Long entitySchemeId) {
-        this.entitySchemeId = entitySchemeId;
+    public void setEntitySchemaId(Long entitySchemaId) {
+        this.entitySchemaId = entitySchemaId;
     }
 
     public String getName() {

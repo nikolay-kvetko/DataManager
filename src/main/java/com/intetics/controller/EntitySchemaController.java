@@ -25,10 +25,10 @@ public class EntitySchemaController {
     private EntitySchemaDao entitySchemaDao;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String getEntitySchemeList(ModelMap model) {
+    public String getEntitySchemaList(ModelMap model) {
 
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
-        model.addAttribute("entitySchemesList", entitySchemas);
+        model.addAttribute("entitySchemasList", entitySchemas);
         LOGGER.trace("The list of entities has been requested");
         return "entity-list";
 

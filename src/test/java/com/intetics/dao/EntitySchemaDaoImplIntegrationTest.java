@@ -39,16 +39,16 @@ public class EntitySchemaDaoImplIntegrationTest {
     private SessionFactory sessionFactory;
 
     @Test
-    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntityList.setup.xml")
-    public void testGetEntitySchemeList() throws Exception {
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntitySchemaList.setup.xml")
+    public void testGetEntitySchemaList() throws Exception {
 
         List<EntitySchema> actual = entitySchemaDao.getEntitySchemaList();
         assertTrue(actual.size() == 4);
     }
 
     @Test
-    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntity.setup.xml")
-    public void testGetEntityScheme() throws Exception {
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntitySchema.setup.xml")
+    public void testGetEntitySchema() throws Exception {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
         assertNotNull(entitySchema);
@@ -56,7 +56,7 @@ public class EntitySchemaDaoImplIntegrationTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testSaveOrUpdateEntity.setup.xml",
+    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testSaveOrUpdateEntitySchema.setup.xml",
             assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testSaveOrUpdateEntity() throws Exception {
 
@@ -66,9 +66,9 @@ public class EntitySchemaDaoImplIntegrationTest {
     }
 
     @Test
-    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testDeleteEntity.setup.xml")
-    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testDeleteEntityScheme.expected.xml")
-    public void testDeleteEntityScheme() throws Exception {
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testDeleteEntitySchema.setup.xml")
+    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testDeleteEntitySchema.expected.xml")
+    public void testDeleteEntitySchema() throws Exception {
         Session currentSession = sessionFactory.getCurrentSession();
         EntitySchema entitySchema = (EntitySchema) currentSession.load(EntitySchema.class, 1L);
         entitySchemaDao.delete(entitySchema);
