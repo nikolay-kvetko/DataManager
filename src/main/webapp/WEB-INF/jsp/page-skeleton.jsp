@@ -15,5 +15,6 @@
 <div style="padding-top: 70px">
     <tiles:insertAttribute name="content"/>
 </div>
+<tiles:insertAttribute name="modal"/>
 </body>
 </html>
