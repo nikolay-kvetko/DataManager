@@ -16,7 +16,7 @@
 
     <mvc:resources mapping="/css/*" location="WEB-INF/css/"/>
     <mvc:resources mapping="/js/*" location="WEB-INF/js/"/>
-    <mvc:resources mapping="/font/*" location="WEB-INF/font/"/>
+    <mvc:resources mapping="/Page/fonts/*" location="WEB-INF/fonts/"/>
 
     <context:component-scan base-package="com.intetics.controller"/>
 
