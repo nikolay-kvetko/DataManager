@@ -4,10 +4,13 @@
 <tiles-definitions>
     <definition name="pageSkeleton" template="/WEB-INF/jsp/page-skeleton.jsp">
         <put-attribute name="header" value="/WEB-INF/jsp/header.jsp"/>
+        <put-attribute name="content" value=""/>
+        <put-attribute name="modal" value=""/>
     </definition>
 
     <definition name="entity-list" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/entity-modal.jsp"/>
     </definition>
 
 </tiles-definitions>
