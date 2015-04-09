@@ -1,6 +1,6 @@
 package com.intetics.dao;
 
-import com.intetics.bean.EntityName;
+import com.intetics.bean.EntitySchema;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,49 +9,61 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * @see EntitySchemaDao
  */
 @Repository
 @Transactional
-public class EntityDaoImpl implements EntityDao {
-    protected static Logger LOGGER = LoggerFactory.getLogger(EntityDaoImpl.class);
+public class EntitySchemaDaoImpl implements EntitySchemaDao {
+
+    protected static Logger LOGGER = LoggerFactory.getLogger(EntitySchemaDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public List<EntityName> getEntityList() {
+    public List<EntitySchema> getEntitySchemaList() {
         LOGGER.trace("Retrieving all persons");
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM EntityName");
+        Query query = session.createQuery("FROM EntitySchema");
         // Retrieve all
         return query.list();
     };
 
     @Override
-    public EntityName getEntity(Long id) {
+    @Nullable
+    public EntitySchema getEntitySchema(@Nonnull Long id) {
+        Assert.notNull(id);
+
         LOGGER.trace("Retrieving one person");
 
         Session session = sessionFactory.getCurrentSession();
 
-        EntityName entityName;
-        entityName = (EntityName) session.get(EntityName.class, id);
+        EntitySchema entitySchema;
+        entitySchema = (EntitySchema) session.get(EntitySchema.class, id);
 
-        // Retrieve all
-        return entityName;
+        return entitySchema;
     }
 
     @Override
-    public void saveOrUpdate(EntityName entityName) {
+    public void saveOrUpdate(EntitySchema entitySchema) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(entityName);
+        session.saveOrUpdate(entitySchema);
+    }
+
+    @Override
+    public void delete(EntitySchema entitySchema) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(entitySchema);
     }
 
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <EntityScheme EntityScheme_Id="1"
+                  Name="TEST1"/>
+
+    <EntityScheme EntityScheme_Id="2"
+                  Name="TEST2"/>
+
+    <EntityScheme EntityScheme_Id="3"
+                  Name="TEST3"/>
+
+    <EntityScheme EntityScheme_Id="4"
+                  Name="TEST4"/>
+
+</dataset>

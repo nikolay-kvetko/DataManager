@@ -3,13 +3,15 @@ package com.intetics.bean;
 import javax.persistence.*;
 
 @Entity
-public class EntityName {
+@Table(name = "EntityScheme")
+public class EntitySchema {
 
     @Id
+    @Column(name = "EntityScheme_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long entityNameId;
+    private Long entitySchemeId;
 
-    @Column
+    @Column(name = "Name")
     private String name;
 
    /* @Column
@@ -30,12 +32,12 @@ public class EntityName {
     @OneToMany(mappedBy = "entityName", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
     private Set<EntityInstance> entityInstance = new HashSet<EntityInstance>();
 
-    public Long getEntityNameId() {
-        return entityNameId;
+    public Long getEntitySchemeId() {
+        return entitySchemeId;
     }
 
-    public void setEntityNameId(Long entityNameId) {
-        this.entityNameId = entityNameId;
+    public void setEntitySchemeId(Long entitySchemeId) {
+        this.entitySchemeId = entitySchemeId;
     }
 
     public String getName() {
@@ -86,12 +88,12 @@ public class EntityName {
         this.entityInstance = entityInstance;
     }*/
 
-    public Long getEntityNameId() {
-        return entityNameId;
+    public Long getEntitySchemeId() {
+        return entitySchemeId;
     }
 
-    public void setEntityNameId(Long entityNameId) {
-        this.entityNameId = entityNameId;
+    public void setEntitySchemeId(Long entitySchemeId) {
+        this.entitySchemeId = entitySchemeId;
     }
 
     public String getName() {
