@@ -31,8 +31,20 @@ public class EntityDaoImpl implements EntityDao {
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
         Query query = session.createQuery("FROM EntityName");
-
         // Retrieve all
         return query.list();
+    };
+
+    @Override
+    public EntityName getEntity(Long id) {
+        LOGGER.trace("Retrieving one person");
+
+        Session session = sessionFactory.getCurrentSession();
+
+        EntityName entityName;
+        entityName = (EntityName) session.get(EntityName.class, id);
+
+        // Retrieve all
+        return entityName;
     };
 }

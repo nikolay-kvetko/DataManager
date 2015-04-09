@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-root-context.xml")
@@ -31,9 +32,17 @@ public class EntityDaoImplIntegrationTest {
     private EntityDao entityDao;
 
     @Test
-    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "EntityDaoImplIntegrationTest.testGetEntityList.xml")
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityDaoImplIntegrationTest.testGetEntityList.xml")
     public void testGetEntityList() throws Exception {
         List<EntityName> actual = entityDao.getEntityList();
-        assertFalse(actual.isEmpty());
+        assertTrue(actual.size() == 1);
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityDaoImplIntegrationTest.testGetEntity.xml")
+    public void testGetEntity() throws Exception {
+        EntityName entityName = entityDao.getEntity(1L);
+        //List<EntityName> actual = entityDao.getEntityList();
+        assertNotNull(entityName);
     }
 }
