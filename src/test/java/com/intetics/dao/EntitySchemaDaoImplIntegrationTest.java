@@ -5,12 +5,16 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.TextField;
 import org.hibernate.Session;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -56,5 +60,59 @@ public class EntitySchemaDaoImplIntegrationTest extends AbstractDaoImplIntegrati
         entitySchemaDao.delete(entitySchema);
         // in order to force hibernate to flush changes
         currentSession.flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntityFieldList.setup.xml")
+    public void testGetEntityFieldList() throws Exception {
+        List<Field> actual = entitySchemaDao.getEntityFieldList(1L);
+        assertNotNull(actual);
+        assertFalse(actual.isEmpty());
+        assertEquals("First Name", actual.get(0).getName());
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntityField.setup.xml")
+    public void testGetEntityField() throws Exception {
+        Field actual = entitySchemaDao.getField(1L);
+        assertNotNull(actual);
+        assertEquals("First Name", actual.getName());
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testSaveOrUpdateField.setup.xml")
+    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testSaveOrUpdateField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testSaveOrUpdateField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field newField = new TextField();
+        newField.setName("Last Name");
+        entitySchema.getFields().add(newField);
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testDeleteField.setup.xml")
+    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testDeleteField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testDeleteField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field field = entitySchemaDao.getField(1L);
+        entitySchema.getFields().remove(field);
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testEditField.setup.xml")
+    @ExpectedDatabase(value = "/EntitySchemaDaoImplIntegrationTest.testEditField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testEditField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field field = entitySchemaDao.getField(1L);
+        field.setName("First Name");
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
     }
 }

@@ -1,6 +1,7 @@
 package com.intetics.dao;
 
 import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -64,6 +65,25 @@ public class EntitySchemaDaoImpl implements EntitySchemaDao {
     public void delete(EntitySchema entitySchema) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(entitySchema);
+    }
+
+    @Override
+    public List<Field> getEntityFieldList(Long entitySchemaId) {
+        LOGGER.trace("Retrieving list of entity {} fields", entitySchemaId);
+
+        return this.getEntitySchema(entitySchemaId).getFields();
+    }
+
+    @Override
+    public Field getField(long fieldId) {
+        Assert.notNull(fieldId);
+
+        LOGGER.trace("Retrieving entity field by id {}", fieldId);
+
+        Session session = sessionFactory.getCurrentSession();
+        Field field = (Field) session.get(Field.class, fieldId);
+
+        return field;
     }
 
 }
