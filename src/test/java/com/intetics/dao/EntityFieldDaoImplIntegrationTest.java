@@ -2,7 +2,11 @@ package com.intetics.dao;
 
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import com.intetics.bean.EntitySchema;
 import com.intetics.bean.Field;
+import com.intetics.bean.TextField;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +20,9 @@ public class EntityFieldDaoImplIntegrationTest extends AbstractDaoImplIntegratio
 
     @Autowired
     private EntityFieldDao entityFieldDao;
+
+    @Autowired
+    private EntitySchemaDao entitySchemaDao;
 
 
     @Test
@@ -34,4 +41,29 @@ public class EntityFieldDaoImplIntegrationTest extends AbstractDaoImplIntegratio
         assertNotNull(actual);
         assertEquals("First Name", actual.getName());
     }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityFieldDaoImplIntegrationTest.testSaveOrUpdateField.setup.xml")
+    @ExpectedDatabase(value = "/EntityFieldDaoImplIntegrationTest.testSaveOrUpdateField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testSaveOrUpdateField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field newField = new TextField();
+        newField.setName("Last Name");
+        entitySchema.getFields().add(newField);
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+//    @Test
+//    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.setup.xml")
+//    @ExpectedDatabase(value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.expected.xml",
+//            assertionMode = DatabaseAssertionMode.NON_STRICT)
+//    public void testDeleteField() throws Exception {
+//        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+//        Field field = entityFieldDao.getField(1L);
+//        entitySchema.getFields().remove(field);
+//        // in order to force hibernate to flush changes
+//        sessionFactory.getCurrentSession().flush();
+//    }
 }

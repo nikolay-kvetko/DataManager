@@ -15,7 +15,7 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "entity_schema_id", nullable = false)
     private List<Field> fields;
 

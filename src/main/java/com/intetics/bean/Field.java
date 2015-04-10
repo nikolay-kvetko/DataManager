@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "field")
 @Inheritance(strategy= InheritanceType.JOINED)
-public class Field {
+public abstract class Field {
 
     @Id
     @Column(name = "field_id")
