@@ -55,15 +55,15 @@ public class EntityFieldDaoImplIntegrationTest extends AbstractDaoImplIntegratio
         sessionFactory.getCurrentSession().flush();
     }
 
-//    @Test
-//    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.setup.xml")
-//    @ExpectedDatabase(value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.expected.xml",
-//            assertionMode = DatabaseAssertionMode.NON_STRICT)
-//    public void testDeleteField() throws Exception {
-//        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
-//        Field field = entityFieldDao.getField(1L);
-//        entitySchema.getFields().remove(field);
-//        // in order to force hibernate to flush changes
-//        sessionFactory.getCurrentSession().flush();
-//    }
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.setup.xml")
+    @ExpectedDatabase(value = "/EntityFieldDaoImplIntegrationTest.testDeleteField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testDeleteField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field field = entityFieldDao.getField(1L);
+        entitySchema.getFields().remove(field);
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
+    }
 }
