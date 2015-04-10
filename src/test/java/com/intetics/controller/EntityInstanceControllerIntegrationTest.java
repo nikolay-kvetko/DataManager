@@ -26,8 +26,8 @@ public class EntityInstanceControllerIntegrationTest extends AbstractControllerI
                 post("/entity/1/instance/new")
                         .param("1", "Anton")
                         .param("2", "Chervyakovsky")
-                        .param("3", "java")
-                        .param("3", "java script")
+                        .param("3", "1") // java
+                        .param("3", "2") // java script
                      )
                 .andDo(print());
 //                .andExpect(status().isFound())

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
     @Autowired
@@ -42,6 +43,28 @@ public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegra
         entityInstance.setEntitySchema(entitySchema);
         StringValue value = new StringValue();
         value.setValue("Anton");
+        value.setField(field);
+        entityInstance.setValues(Arrays.<FieldValue>asList(value));
+
+        entityInstanceDao.saveOrUpdate(entityInstance);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityInstanceDaoImplIntegrationTest.testSaveOrUpdateEntityInstanceWithMultiChoiceValues.setup.xml")
+    @ExpectedDatabase(value = "/EntityInstanceDaoImplIntegrationTest.testSaveOrUpdateEntityInstanceWithMultiChoiceValue.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testSaveOrUpdateEntityInstanceWithMultiChoiceValue() throws Exception {
+        EntityInstance entityInstance = new EntityInstance();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field field = entitySchema.getFields().get(0);
+        List<Choice> choiceList = ((MultiChoiceField)field).getChoices();
+
+        entityInstance.setEntitySchema(entitySchema);
+        MultiChoiceValue value = new MultiChoiceValue();
+
+        value.setChoices(choiceList.subList(0, 2));
         value.setField(field);
         entityInstance.setValues(Arrays.<FieldValue>asList(value));
 

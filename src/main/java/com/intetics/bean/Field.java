@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "field")
 @Inheritance(strategy= InheritanceType.JOINED)
 public abstract class Field {
+
     @Transient
     private ValueType valueType;
 

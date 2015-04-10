@@ -1,6 +1,9 @@
 package com.intetics.controller;
 
 import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.MultiChoiceField;
+import com.intetics.bean.TextField;
 import com.intetics.dao.EntitySchemaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +76,21 @@ public class EntitySchemaController {
         model.addAttribute("modalSaveButton", "Edit");
 
 
+        return "create-edit-entity";
+    }
+
+
+//    @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
+    public String addNewField(@PathVariable Long fieldType, @PathVariable Long entitySchemaId) {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        Field field = null;
+        // text field
+        if (fieldType == 1) {
+            field = new TextField();
+        } else if (fieldType == 3) {
+            field = new MultiChoiceField();
+        }
+        entitySchema.getFields().add(field);
         return "create-edit-entity";
     }
 

@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name="field_id")
 public class TextField extends Field {
 
+
     public TextField() {
         super(ValueType.STRING);
     }

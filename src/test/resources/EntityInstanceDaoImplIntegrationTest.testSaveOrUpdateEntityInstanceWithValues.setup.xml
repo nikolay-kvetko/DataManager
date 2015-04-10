@@ -2,11 +2,11 @@
 <dataset>
 
     <entity_schema entity_schema_id="1"
-                  name="Employee"/>
+                  name="TEST"/>
 
     <field entity_schema_id="1"
            field_id="1"
-           name="First name"/>
+           name="Last name"/>
 
     <text_field field_id="1"/>
 
