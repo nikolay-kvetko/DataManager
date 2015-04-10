@@ -66,4 +66,16 @@ public class EntityFieldDaoImplIntegrationTest extends AbstractDaoImplIntegratio
         entitySchemaDao.saveOrUpdate(entitySchema);
         sessionFactory.getCurrentSession().flush();
     }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityFieldDaoImplIntegrationTest.testEditField.setup.xml")
+    @ExpectedDatabase(value = "/EntityFieldDaoImplIntegrationTest.testEditField.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testEditField() throws Exception {
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(1L);
+        Field field = entityFieldDao.getField(1L);
+        field.setName("First Name");
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        sessionFactory.getCurrentSession().flush();
+    }
 }
