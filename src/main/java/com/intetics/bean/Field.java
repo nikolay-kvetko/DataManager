@@ -1,18 +1,17 @@
 package com.intetics.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "field")
 @Inheritance(strategy= InheritanceType.JOINED)
 public abstract class Field {
+    @Transient
+    private ValueType valueType;
+
+    public Field(ValueType valueType) {
+        this.valueType = valueType;
+    }
 
     @Id
     @Column(name = "field_id")
@@ -36,5 +35,9 @@ public abstract class Field {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
     }
 }

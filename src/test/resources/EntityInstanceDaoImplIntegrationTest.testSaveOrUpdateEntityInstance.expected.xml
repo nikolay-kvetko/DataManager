@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                   name="Employee"/>
+
+    <entity_instance entity_instance_id="1"
+           entity_schema_id="1"/>
+
+</dataset>
