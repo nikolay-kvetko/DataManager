@@ -34,7 +34,7 @@
                 <td>
                     <a href="#">Delete</a>
                     <br>
-                    <a href="/entity/edit/<c:out value="${entity.entitySchemaId}"/>">Edit</a>
+                    <a href="/entity/edit/<c:out value="${entity.id}"/>">Edit</a>
                 </td>
             </tr>
         </c:forEach>

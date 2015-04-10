@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
 
-    <EntitySchema EntitySchema_Id="1"
-                  Name="TEST1"/>
+    <entity_schema entity_schema_id="1"
+                  name="TEST1"/>
 
 </dataset>

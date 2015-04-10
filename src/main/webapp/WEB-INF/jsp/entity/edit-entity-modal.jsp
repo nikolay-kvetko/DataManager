@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Entity Name*</label>
                         <div class="col-sm-8">
-                            <s:input type="hidden" path="entitySchemaId"/>
+                            <s:input type="hidden" path="id"/>
                             <s:input class="form-control" type="text"  placeholder="Entity Name" path="name" required="required"/>
                         </div>
                     </div>

@@ -6,30 +6,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.List;
 
 @Entity
-@Table(name = "entity_schema")
-public class EntitySchema {
+@Table(name = "field")
+public class Field {
 
     @Id
-    @Column(name = "entity_schema_id")
+    @Column(name = "field_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long fieldId;
 
     @Column(name = "name")
     private String name;
 
-    @Transient
-    private List<Field> fields;
-
-    public Long getId() {
-        return id;
+    public Long getFieldId() {
+        return fieldId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
     }
 
     public String getName() {
@@ -38,13 +33,5 @@ public class EntitySchema {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Field> getFields() {
-        return fields;
-    }
-
-    public void setFields(List<Field> fields) {
-        this.fields = fields;
     }
 }
