@@ -10,4 +10,6 @@ import java.util.List;
 public interface EntityFieldDao {
 
     List<Field> getEntityFieldList(Long entitySchemaId);
+
+    Field getField(long fieldId);
 }

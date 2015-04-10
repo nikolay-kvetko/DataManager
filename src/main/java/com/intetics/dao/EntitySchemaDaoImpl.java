@@ -29,7 +29,7 @@ public class EntitySchemaDaoImpl implements EntitySchemaDao {
 
     @Override
     public List<EntitySchema> getEntitySchemaList() {
-        LOGGER.trace("Retrieving all persons");
+        LOGGER.trace("Retrieving list of entity schemas");
 
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();

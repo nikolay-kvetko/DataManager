@@ -1,12 +1,6 @@
 package com.intetics.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,7 +15,8 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "entity_schema_id", nullable = false)
     private List<Field> fields;
 
     public Long getId() {
