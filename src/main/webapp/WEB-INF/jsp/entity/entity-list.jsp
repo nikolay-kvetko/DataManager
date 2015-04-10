@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3 col-xs-offset-9 col-sm-2 col-sm-offset-10">
-            <button class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span> Create entity</button>
+            <button form="CreateEntitySchema" class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span> Create entity</button>
         </div>
     </div>
     <table class="table table-hover">
@@ -63,3 +63,5 @@
             </ul>
         </div>
     </div>
+    <form id="CreateEntitySchema" action="/entity/create" method="post"></form>
+</div>
