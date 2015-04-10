@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ public class EntitySchemaController {
     @Autowired
     private EntitySchemaDao entitySchemaDao;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list")
     public String getEntitySchemaList(ModelMap model) {
 
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
@@ -42,14 +41,22 @@ public class EntitySchemaController {
 
     }
 
-    @RequestMapping(value = "/saveNewEntitySchema", method = RequestMethod.POST)
-    public String createEntitySchema(HttpServletRequest request) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String createEntitySchema(ModelMap model) {
 
-        String name = request.getParameter("name");
+        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        model.addAttribute("entitySchemaList", entitySchemas);
+
         EntitySchema entitySchema = new EntitySchema();
-        entitySchema.setName(name);
-        entitySchemaDao.saveOrUpdate(entitySchema);
-        return "redirect:/entity/list";
+        entitySchema.setName("");
+        model.addAttribute("EntitySchema", entitySchema);
+
+        model.addAttribute("modalTitle", "Create Entity");
+        model.addAttribute("modalSaveButton", "Create");
+
+        LOGGER.trace("Create new EntitySchema");
+
+        return "create-edit-entity";
 
     }
 
@@ -57,15 +64,19 @@ public class EntitySchemaController {
     public String startToEditEntitySchema(@PathVariable Long entitySchemaId, ModelMap model) {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchemaEdit", entitySchema);
+        model.addAttribute("EntitySchema", entitySchema);
 
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
         model.addAttribute("entitySchemaList", entitySchemas);
 
-        return "edit-entity";
+        model.addAttribute("modalTitle", "Edit Entity");
+        model.addAttribute("modalSaveButton", "Edit");
+
+
+        return "create-edit-entity";
     }
 
-    @RequestMapping(value = "/saveEditedEntitySchema", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveEditedEntitySchema(EntitySchema entitySchema) {
 
         entitySchemaDao.saveOrUpdate(entitySchema);
