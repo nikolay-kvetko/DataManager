@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,16 +30,46 @@ public class EntitySchemaController {
     public String getEntitySchemaList(ModelMap model) {
 
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
-        model.addAttribute("entitySchemasList", entitySchemas);
+        model.addAttribute("entitySchemaList", entitySchemas);
+
+        EntitySchema entitySchema = new EntitySchema();
+        entitySchema.setName("");
+        model.addAttribute("EntitySchema", entitySchema);
+
         LOGGER.trace("The list of entities has been requested");
+
         return "entity-list";
 
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create() {
+    @RequestMapping(value = "/saveNewEntitySchema", method = RequestMethod.POST)
+    public String createEntitySchema(HttpServletRequest request) {
 
-        return "";
+        String name = request.getParameter("name");
+        EntitySchema entitySchema = new EntitySchema();
+        entitySchema.setName(name);
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        return "redirect:/entity/list";
+
+    }
+
+    @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
+    public String startToEditEntitySchema(@PathVariable Long entitySchemaId, ModelMap model) {
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchemaEdit", entitySchema);
+
+        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        model.addAttribute("entitySchemaList", entitySchemas);
+
+        return "edit-entity";
+    }
+
+    @RequestMapping(value = "/saveEditedEntitySchema", method = RequestMethod.POST)
+    public String saveEditedEntitySchema(EntitySchema entitySchema) {
+
+        entitySchemaDao.saveOrUpdate(entitySchema);
+        return "redirect:/entity/list";
 
     }
 }

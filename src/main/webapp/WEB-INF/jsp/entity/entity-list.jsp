@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
         <h2>Data Structure</h2>
@@ -17,24 +19,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Employees</td>
-            <td>2013-04-20</td>
-            <td>2013-04-18</td>
-            <td><a href="#">Delete</a></td>
-        </tr>
-        <tr>
-            <td>Clients</td>
-            <td>2013-04-21</td>
-            <td>2013-04-19</td>
-            <td><a href="#">Delete</a></td>
-        </tr>
-        <tr>
-            <td>Positions</td>
-            <td>2013-04-22</td>
-            <td>2013-04-21</td>
-            <td><a href="#">Delete</a></td>
-        </tr>
+
+        <c:forEach var="entity" items="${entitySchemaList}">
+            <tr>
+                <td>
+                    <c:out value="${entity.name}"/>
+                </td>
+                <td>
+                    Modified
+                </td>
+                <td>
+                    Create
+                </td>
+                <td>
+                    <a href="#">Delete</a>
+                    <br>
+                    <a href="/entity/edit/<c:out value="${entity.entitySchemaId}"/>">Edit</a>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
     <div class="row">
