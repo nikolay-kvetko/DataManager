@@ -5,6 +5,7 @@
                    name="Employee"/>
 
     <field entity_schema_id="1"
-           name="Last Name"/>
+           name="Last Name"
+           require="false"/>
 
 </dataset>

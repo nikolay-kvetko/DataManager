@@ -6,7 +6,8 @@
 
     <field entity_schema_id="1"
            field_id="1"
-           name="Skills"/>
+           name="Skills"
+           require="false"/>
 
     <multi_choice_field field_id="1"/>
 

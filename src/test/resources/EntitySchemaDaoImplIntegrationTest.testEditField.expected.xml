@@ -6,8 +6,10 @@
 
     <field entity_schema_id="1"
            field_id="1"
-           name="First Name"/>
+           name="First Name"
+           require="false"/>
 
-    <text_field field_id="1" />
+    <text_field field_id="1"
+            size="1"/>
 
 </dataset>
