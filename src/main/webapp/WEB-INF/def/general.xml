@@ -26,4 +26,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
     </definition>
 
+    <definition name="create-field" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/field-modal.jsp"/>
+    </definition>
+
 </tiles-definitions>

@@ -22,6 +22,9 @@ public abstract class Field {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "require")
+    private boolean require;
+
     public Long getFieldId() {
         return fieldId;
     }
@@ -40,5 +43,13 @@ public abstract class Field {
 
     public ValueType getValueType() {
         return valueType;
+    }
+
+    public boolean getRequire() {
+        return require;
+    }
+
+    public void setRequire(boolean require) {
+        this.require = require;
     }
 }

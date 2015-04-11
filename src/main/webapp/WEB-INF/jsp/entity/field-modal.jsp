@@ -8,13 +8,19 @@
                 <h4 class="modal-title"><c:out value="${modalTitle}"/></h4>
             </div>
             <div class="modal-body form-horizontal">
-                <spring:url var = "action" value='/entity/save'/>
-                <s:form id="EntitySchema" name="EntitySchema" action="${action}" modelAttribute="EntitySchema" method="post">
+                <spring:url var = "action" value='/entity/${EntitySchema.id}/field/add'/>
+                <s:form id="textField" name="textField" action="${action}" modelAttribute="textField" method="post">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Entity Name*</label>
+                        <label class="col-sm-4 control-label">Field Name*</label>
                         <div class="col-sm-8">
-                            <s:input type="hidden" path="id"/>
-                            <s:input class="form-control" type="text"  placeholder="Entity Name" path="name" required="required"/>
+                            <s:input type="hidden" path="fieldId"/>
+                            <s:input class="form-control" type="text"  placeholder="Field Name" path="name" required="required"/>
+                        </div>
+
+                        <label class="col-sm-4 control-label">String Size*</label>
+                        <div class="col-sm-3">
+                            <s:input class="form-control" type="number"  path="size" min="1" max="255" required="required"/>
+                            <input type="checkbox" name="active" value="true"> Require
                         </div>
                     </div>
                 </s:form>
@@ -22,14 +28,14 @@
             <div class="modal-footer">
                 <c:choose>
                     <c:when test="${modalSaveButton eq 'Create'}">
-                        <form id="Cancel" action="/entity/list" method="get"></form>
+                        <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
-                        <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                        <button form="textField" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:when>
                     <c:otherwise>
                         <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
-                        <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                        <button form="textField" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:otherwise>
                 </c:choose>
             </div>

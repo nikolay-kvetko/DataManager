@@ -23,7 +23,7 @@
         <c:forEach var="entity" items="${entitySchemaList}">
             <tr>
                 <td>
-                    <a href="/entity/<c:out value="${entity.id}"/>/field/list" style="display: block">
+                    <a href="/entity/<c:out value="${entity.id}"/>/field/list" style="display: block; text-decoration: none">
                         <c:out value="${entity.name}"/>
                     </a>
                 </td>

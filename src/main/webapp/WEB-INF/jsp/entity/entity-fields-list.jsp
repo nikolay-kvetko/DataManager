@@ -9,7 +9,7 @@
         <div class="col-lg-5">
             <div>Edit <c:out value="${EntitySchema.name}"/>
                 <a href="/entity/edit/<c:out value="${EntitySchema.id}"/>">
-                    <span class="glyphicon glyphicon-edit"></span>
+                    <span class="glyphicon glyphicon-edit" style="font-size: 1.5em"></span>
                 </a>
             </div>
         </div>
@@ -22,7 +22,7 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/entity/1/field/add">Text Field</a></li>
+                        <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create">Text Field</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,7 +32,7 @@
         <thead>
         <tr>
             <th>Field Name</th>
-            <th>Require</th>
+            <th>Required</th>
             <th>Last Modified</th>
             <th>Created</th>
             <th>Action</th>
@@ -40,13 +40,20 @@
         </thead>
         <tbody>
 
-        <c:forEach var="field" items="${entitySchema.fields}">
+        <c:forEach var="field" items="${EntitySchema.fields}">
             <tr>
                 <td>
                     <c:out value="${field.name}"/>
                 </td>
                 <td>
-                    True/False
+                    <c:choose>
+                        <c:when test="${field.require eq true}">
+                            <span class="glyphicon glyphicon-ok" style="font-size: 1.5em; color: #4cae4c"></span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="glyphicon glyphicon-remove" style="font-size: 1.5em; color: orangered"></span>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
                 <td>
                     Modified
