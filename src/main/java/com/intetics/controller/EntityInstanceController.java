@@ -46,7 +46,7 @@ public class EntityInstanceController {
 
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
-            FieldValue fieldValue = field.getValueType().newValue(values);
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
             fieldValue.setField(field);
             entityInstance.getValues().add(fieldValue);
         }

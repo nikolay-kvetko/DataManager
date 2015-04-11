@@ -30,6 +30,7 @@ public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegra
         sessionFactory.getCurrentSession().flush();
     }
 
+
     @Test
     @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityInstanceDaoImplIntegrationTest.testSaveOrUpdateEntityInstanceWithValues.setup.xml")
     @ExpectedDatabase(value = "/EntityInstanceDaoImplIntegrationTest.testSaveOrUpdateEntityInstanceWithValues.expected.xml",

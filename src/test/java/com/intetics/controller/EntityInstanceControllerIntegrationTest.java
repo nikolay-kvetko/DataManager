@@ -1,6 +1,7 @@
 package com.intetics.controller;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,6 +19,7 @@ public class EntityInstanceControllerIntegrationTest extends AbstractControllerI
         this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
     }
 
+    @Ignore
     @Test
     public void testAddInstance() throws Exception {
 //        this.mockMvc.perform(get("/entity/edit/1"))
