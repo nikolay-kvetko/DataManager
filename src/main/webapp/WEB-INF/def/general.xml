@@ -12,9 +12,18 @@
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
     </definition>
 
-    <definition name="create-edit-entity" extends="pageSkeleton">
+    <definition name="create-entity" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/entity-modal.jsp"/>
+    </definition>
+
+    <definition name="edit-entity" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/entity-modal.jsp"/>
+    </definition>
+
+    <definition name="entity-field-list" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
     </definition>
 
 </tiles-definitions>

@@ -5,14 +5,34 @@
         <h2>Data Structure</h2>
     </div>
     <div class="row">
-        <div class="col-xs-3 col-xs-offset-9 col-sm-2 col-sm-offset-10">
-            <button form="CreateEntitySchema" class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span>Add Field</button>
+
+        <div class="col-lg-5">
+            <div>Edit <c:out value="${EntitySchema.name}"/>
+                <a href="/entity/edit/<c:out value="${EntitySchema.id}"/>">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="col-xs-3 col-xs-offset-9 col-sm-2 col-sm-offset-11">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                        Add Field
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/entity/1/field/add">Text Field</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Entities</th>
+            <th>Field Name</th>
+            <th>Require</th>
             <th>Last Modified</th>
             <th>Created</th>
             <th>Action</th>
@@ -20,10 +40,13 @@
         </thead>
         <tbody>
 
-        <c:forEach var="entity" items="${entitySchemaList}">
+        <c:forEach var="field" items="${entitySchema.fields}">
             <tr>
                 <td>
-                    <c:out value="${entity.name}"/>
+                    <c:out value="${field.name}"/>
+                </td>
+                <td>
+                    True/False
                 </td>
                 <td>
                     Modified
@@ -34,7 +57,7 @@
                 <td>
                     <a href="#">Delete</a>
                     <br>
-                    <a href="/entity/edit/<c:out value="${entity.id}"/>">Edit</a>
+                    <%--<a href="/entity/edit/<c:out value="${entity.id}"/>">Edit</a>--%>
                 </td>
             </tr>
         </c:forEach>
@@ -63,5 +86,4 @@
             </ul>
         </div>
     </div>
-    <form id="CreateEntitySchema" action="/entity/create" method="post"></form>
 </div>

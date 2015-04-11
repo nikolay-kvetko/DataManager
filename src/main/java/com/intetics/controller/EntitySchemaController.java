@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class EntitySchemaController {
 
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create")
     public String createEntitySchema(ModelMap model) {
 
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
@@ -59,24 +61,21 @@ public class EntitySchemaController {
 
         LOGGER.trace("Create new EntitySchema");
 
-        return "create-edit-entity";
+        return "create-entity";
 
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
-    public String startToEditEntitySchema(@PathVariable Long entitySchemaId, ModelMap model) {
+    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+        Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         model.addAttribute("EntitySchema", entitySchema);
 
-        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
-        model.addAttribute("entitySchemaList", entitySchemas);
-
         model.addAttribute("modalTitle", "Edit Entity");
         model.addAttribute("modalSaveButton", "Edit");
 
-
-        return "create-edit-entity";
+        return "edit-entity";
     }
 
 
@@ -95,7 +94,12 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEditedEntitySchema(EntitySchema entitySchema) {
+    public String saveEntitySchema(EntitySchema entitySchema) {
+
+        if(entitySchema.getId() != null){
+            entitySchemaDao.saveOrUpdate(entitySchema);
+            return "redirect:/entity/"+entitySchema.getId()+"/field/list";
+        }
 
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";

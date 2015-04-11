@@ -23,7 +23,9 @@
         <c:forEach var="entity" items="${entitySchemaList}">
             <tr>
                 <td>
-                    <c:out value="${entity.name}"/>
+                    <a href="/entity/<c:out value="${entity.id}"/>/field/list" style="display: block">
+                        <c:out value="${entity.name}"/>
+                    </a>
                 </td>
                 <td>
                     Modified
@@ -33,8 +35,6 @@
                 </td>
                 <td>
                     <a href="#">Delete</a>
-                    <br>
-                    <a href="/entity/edit/<c:out value="${entity.id}"/>">Edit</a>
                 </td>
             </tr>
         </c:forEach>

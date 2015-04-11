@@ -20,9 +20,18 @@
                 </s:form>
             </div>
             <div class="modal-footer">
-                <form id="Cancel" action="/entity/list" method="get"></form>
-                <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
-                <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                <c:choose>
+                    <c:when test="${modalSaveButton eq 'Create'}">
+                        <form id="Cancel" action="/entity/list" method="get"></form>
+                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                    </c:when>
+                    <c:otherwise>
+                        <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
+                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
