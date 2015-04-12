@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
     @Autowired
     private EntityInstanceDao entityInstanceDao;
@@ -71,5 +73,14 @@ public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegra
 
         entityInstanceDao.saveOrUpdate(entityInstance);
         sessionFactory.getCurrentSession().flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityInstanceDaoImplIntegrationTest.testGetEntityInstancesByEntitySchema.setup.xml")
+    public void testGetEntityInstancesByEntitySchema() throws Exception {
+
+        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchemaDao.getEntitySchema(1L));
+
+        assertTrue("entityInstances size must be 3", entityInstances.size() == 3);
     }
 }

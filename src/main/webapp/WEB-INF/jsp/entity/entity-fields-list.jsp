@@ -65,7 +65,6 @@
                 <td>
                     <a href="#">Delete</a>
                     <br>
-                    <%--<a href="/entity/edit/<c:out value="${entity.id}"/>">Edit</a>--%>
                 </td>
             </tr>
         </c:forEach>

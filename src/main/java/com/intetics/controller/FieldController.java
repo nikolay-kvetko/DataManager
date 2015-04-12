@@ -52,13 +52,12 @@ public class FieldController {
 
         if(fieldType.equalsIgnoreCase("STRING")) {
             model.addAttribute("modalTitle", "Create Text Field");
-            model.addAttribute("modalSaveButton", "Create");
 
         } else if(fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             model.addAttribute("modalTitle", "Create Choice Field");
-            model.addAttribute("modalSaveButton", "Create");
         }
 
+        model.addAttribute("modalSaveButton", "Create");
         model.addAttribute("fieldType", fieldType);
 
         return "create-field";

@@ -16,7 +16,7 @@
                         <spring:url var = "action" value='/entity/${EntitySchema.id}/field/add/multi_choice'/>
                     </c:otherwise>
                 </c:choose>
-                <form id="textField" name="textField" action="${action}" method="post">
+                <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Field Name*</label>
                         <div class="col-sm-8">
@@ -53,12 +53,12 @@
                     <c:when test="${modalSaveButton eq 'Create'}">
                         <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
-                        <button form="textField" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                        <button form="Field" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:when>
                     <c:otherwise>
                         <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
-                        <button form="textField" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
+                        <button form="Field" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:otherwise>
                 </c:choose>
             </div>

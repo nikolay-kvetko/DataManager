@@ -16,8 +16,9 @@ public enum ValueType {
     },
     MULTI_CHOICE {
         public FieldValue newValue(List<String> values, Field field) {
+            List<Choice> choiceList = ((MultiChoiceField)field).getChoices();
             ArrayList<Choice> choices = new ArrayList<Choice>();
-            for (Choice choice : choices) {
+            for (Choice choice : choiceList) {
                 if (values.contains(choice.getId().toString())) {
                     choices.add(choice);
                 }
