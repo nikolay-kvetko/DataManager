@@ -22,7 +22,8 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create">Text Field</a></li>
+                        <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/string">Text Field</a></li>
+                        <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/multi_choice">Choice Field</a></li>
                     </ul>
                 </div>
             </div>

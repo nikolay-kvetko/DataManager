@@ -8,22 +8,45 @@
                 <h4 class="modal-title"><c:out value="${modalTitle}"/></h4>
             </div>
             <div class="modal-body form-horizontal">
-                <spring:url var = "action" value='/entity/${EntitySchema.id}/field/add'/>
-                <s:form id="textField" name="textField" action="${action}" modelAttribute="textField" method="post">
+                <c:choose>
+                    <c:when test="${fieldType eq 'string'}">
+                        <spring:url var = "action" value='/entity/${EntitySchema.id}/field/add/string'/>
+                    </c:when>
+                    <c:otherwise>
+                        <spring:url var = "action" value='/entity/${EntitySchema.id}/field/add/multi_choice'/>
+                    </c:otherwise>
+                </c:choose>
+                <form id="textField" name="textField" action="${action}" method="post">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Field Name*</label>
                         <div class="col-sm-8">
-                            <s:input type="hidden" path="fieldId"/>
-                            <s:input class="form-control" type="text"  placeholder="Field Name" path="name" required="required"/>
+                            <input type="hidden" name="fieldId"/>
+                            <input class="form-control" type="text"  name="fieldName"  placeholder="Field Name" required="required"/>
+                            <input type="checkbox" name="active" value="true"> Require that this column contains information
                         </div>
+                        <c:choose>
+                            <c:when test="${fieldType eq 'string'}">
+                                <label class="col-sm-4 control-label">String Size*</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="number" name="size" min="1" max="255" required="required"/>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <label class="col-sm-4 control-label">Type each choice on a separate line*</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="5" cols="20" name="choices" required="required"></textarea>
+                                </div>
 
-                        <label class="col-sm-4 control-label">String Size*</label>
-                        <div class="col-sm-3">
-                            <s:input class="form-control" type="number"  path="size" min="1" max="255" required="required"/>
-                            <input type="checkbox" name="active" value="true"> Require
-                        </div>
+                                <label class="col-sm-4 control-label">Display choices using*</label>
+                                <div class="col-sm-8">
+                                    <input type="radio" name="display" value="radio"/> Radio Buttons <br>
+                                    <input type="radio" name="display" value="checkbox"/> Checkboxes <br>
+                                    <input type="radio" name="display" value="dropdown"/> Drop-down Menu
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-                </s:form>
+                </form>
             </div>
             <div class="modal-footer">
                 <c:choose>
