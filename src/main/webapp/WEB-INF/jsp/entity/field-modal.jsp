@@ -16,10 +16,15 @@
                             <s:input type="hidden" path="fieldId"/>
                             <s:input class="form-control" type="text"  placeholder="Field Name" path="name" required="required"/>
                         </div>
-
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-4 control-label">String Size*</label>
                         <div class="col-sm-3">
                             <s:input class="form-control" type="number"  path="size" min="1" max="255" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-4">
                             <input type="checkbox" name="active" value="true"> Require
                         </div>
                     </div>
