@@ -39,7 +39,10 @@
         <c:forEach var="field" items="${EntitySchema.fields}">
             <tr>
                 <td>
-                    <c:out value="${field.name}"/>
+                    <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/edit/<c:out value="${field.fieldId}"/>"
+                       style="display: block; text-decoration: none">
+                        <c:out value="${field.name}"/>
+                    </a>
                 </td>
                 <td>
                     <c:choose>

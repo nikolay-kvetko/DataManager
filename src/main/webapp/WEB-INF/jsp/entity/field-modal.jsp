@@ -9,6 +9,10 @@
             </div>
             <div class="modal-body form-horizontal">
                 <c:choose>
+                    <c:when test="${field != null}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/change/${field.fieldId}'/>
+                    </c:when>
                     <c:when test="${fieldType eq 'string'}">
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/string'/>
@@ -25,12 +29,18 @@
                         <div class="col-sm-8">
                             <input type="hidden" name="fieldId"/>
                             <input class="form-control" type="text" name="fieldName"
-                                   placeholder="Field Name" required="required"/>
+                                   placeholder="Field Name" required="required"
+                                    <c:if test="${field.name != null}">
+                                        value="<c:out value="${field.name}"/>"
+                                    </c:if>/>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <input type="checkbox" name="active" value="true" id="requireId">
+                            <input type="checkbox" name="active" value="true" id="requireId"
+                                    <c:if test="${field.require eq true}">
+                                        checked
+                                    </c:if>/>
                             <label for="requireId" style="font-weight: normal !important;"> Require
                                 that this column contains information</label>
                         </div>
@@ -42,7 +52,11 @@
 
                                 <div class="col-sm-3">
                                     <input class="form-control" type="number" name="size" min="1"
-                                           max="255" required="required"/>
+                                           max="255" required="required"
+                                            <c:if test="${field.size != null}">
+                                                value="<c:out value="${field.size}"/>"
+                                            </c:if>
+                                            />
                                 </div>
                             </div>
                         </c:when>
@@ -53,7 +67,11 @@
 
                                 <div class="col-sm-8">
                                     <textarea class="form-control" rows="5" cols="20" name="choices"
-                                              required="required"></textarea>
+                                              required="required"><c:if
+                                            test="${field.choices != null}"><c:forEach
+                                            var="choiceValue" items="${field.choices}"><c:out
+                                            value="${choiceValue.name}"/>&#13;&#10;</c:forEach></c:if
+                                            ></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
