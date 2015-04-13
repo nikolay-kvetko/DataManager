@@ -52,4 +52,28 @@ public abstract class Field {
     public void setRequire(boolean require) {
         this.require = require;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Field field = (Field) o;
+
+        if (require != field.require) return false;
+        if (fieldId != null ? !fieldId.equals(field.fieldId) : field.fieldId != null) return false;
+        if (!name.equals(field.name)) return false;
+        if (valueType != field.valueType) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = valueType != null ? valueType.hashCode() : 0;
+        result = 31 * result + (fieldId != null ? fieldId.hashCode() : 0);
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (require ? 1 : 0);
+        return result;
+    }
 }

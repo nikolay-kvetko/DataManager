@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -191,5 +192,36 @@ public class FieldController {
         model.addAttribute("EntitySchema", entitySchema);
 
         return "redirect:/entity/" + entitySchemaId + "/field/list";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/field/delete/{fieldId}/confirm", method = RequestMethod.GET)
+    public String startDeleteField(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                   @Nonnull @PathVariable Long fieldId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(fieldId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        Field field = entitySchemaDao.getField(fieldId);
+        model.addAttribute("field", field);
+
+        return "delete-field";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/field/delete/{fieldId}", method = RequestMethod.GET)
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, @Nonnull @PathVariable Long fieldId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(fieldId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        Field field = entitySchemaDao.getField(fieldId);
+        entitySchema.getFields().remove(field);
+
+        entitySchemaDao.saveOrUpdate(entitySchema);
+
+        return "redirect:/entity/" + entitySchemaId + "/field/list";
+
     }
 }

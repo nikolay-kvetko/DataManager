@@ -61,7 +61,7 @@
                     Create
                 </td>
                 <td>
-                    <a href="#">Delete</a>
+                    <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/delete/<c:out value="${field.fieldId}"/>/confirm">Delete</a>
                     <br>
                 </td>
             </tr>

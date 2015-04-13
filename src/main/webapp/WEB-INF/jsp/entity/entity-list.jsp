@@ -34,7 +34,7 @@
                     Create
                 </td>
                 <td>
-                    <a href="#">Delete</a>
+                    <a href="/entity/delete/<c:out value="${entity.id}"/>/confirm">Delete</a>
                 </td>
             </tr>
         </c:forEach>

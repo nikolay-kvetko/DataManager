@@ -33,14 +33,9 @@ public class EntitySchemaController {
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
         model.addAttribute("entitySchemaList", entitySchemas);
 
-        EntitySchema entitySchema = new EntitySchema();
-        entitySchema.setName("");
-        model.addAttribute("EntitySchema", entitySchema);
-
         LOGGER.trace("The list of entities has been requested");
 
         return "entity-list";
-
     }
 
     @RequestMapping(value = "/create")
@@ -59,7 +54,6 @@ public class EntitySchemaController {
         LOGGER.trace("Create new EntitySchema");
 
         return "create-entity";
-
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
@@ -85,6 +79,28 @@ public class EntitySchemaController {
 
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";
+    }
 
+    @RequestMapping(value = "/delete/{entitySchemaId}/confirm", method = RequestMethod.GET)
+    public String startDeleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+        Assert.notNull(entitySchemaId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        model.addAttribute("entitySchemaList", entitySchemas);
+
+        return "delete-entity";
+    }
+
+    @RequestMapping(value = "/delete/{entitySchemaId}", method = RequestMethod.GET)
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId) {
+        Assert.notNull(entitySchemaId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        entitySchemaDao.delete(entitySchema);
+
+        return "redirect:/entity/list";
     }
 }
