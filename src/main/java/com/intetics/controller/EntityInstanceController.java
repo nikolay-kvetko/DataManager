@@ -89,15 +89,13 @@ public class EntityInstanceController {
 
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
-            if (values != null) {
-                FieldValue fieldValue = field.getValueType().newValue(values, field);
-                fieldValue.setField(field);
-                fieldValues.add(fieldValue);
-            }
+
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            fieldValue.setField(field);
+            fieldValues.add(fieldValue);
         }
 
         entityInstance.setValues(fieldValues);
-
         entityInstanceDao.saveOrUpdate(entityInstance);
 
         return "redirect:/home/entity/"+entitySchemaId+"/instance/list";

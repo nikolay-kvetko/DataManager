@@ -1,13 +1,7 @@
 package com.intetics.controller;
 
-import com.intetics.bean.Choice;
-import com.intetics.bean.EntitySchema;
-import com.intetics.bean.Field;
-import com.intetics.bean.MultiChoiceField;
-import com.intetics.bean.TextField;
-import com.intetics.bean.ValueType;
+import com.intetics.bean.*;
 import com.intetics.dao.EntitySchemaDao;
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +108,8 @@ public class FieldController {
     }
 
     @RequestMapping(value = "{entitySchemaId}/field/edit/{fieldId}", method = RequestMethod.GET)
-    public String editFieldInEntitySchema(@NotNull @PathVariable Long entitySchemaId, Model model,
-                                          @NotNull @PathVariable Long fieldId) {
+    public String editFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
+                                          @Nonnull @PathVariable Long fieldId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 

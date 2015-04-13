@@ -10,21 +10,30 @@ public enum ValueType {
     STRING {
         public FieldValue newValue(List<String> values, Field field) {
             StringValue value = new StringValue();
-            value.setValue(values.get(0));
+
+            if(value != null) {
+                value.setValue(values.get(0));
+            }
+
             return value;
         }
     },
     MULTI_CHOICE {
         public FieldValue newValue(List<String> values, Field field) {
-            List<Choice> choiceList = ((MultiChoiceField)field).getChoices();
             ArrayList<Choice> choices = new ArrayList<Choice>();
-            for (Choice choice : choiceList) {
-                if (values.contains(choice.getId().toString())) {
-                    choices.add(choice);
+            MultiChoiceValue value = new MultiChoiceValue();
+
+            if(values != null) {
+                List<Choice> choiceList = ((MultiChoiceField)field).getChoices();
+
+                for (Choice choice : choiceList) {
+                    if (values.contains(choice.getId().toString())) {
+                        choices.add(choice);
+                    }
                 }
             }
-            MultiChoiceValue value = new MultiChoiceValue();
             value.setChoices(choices);
+
             return value;
         }
     };
