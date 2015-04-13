@@ -2,9 +2,12 @@ package com.intetics.controller;
 
 import com.intetics.bean.Choice;
 import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
 import com.intetics.bean.MultiChoiceField;
 import com.intetics.bean.TextField;
+import com.intetics.bean.ValueType;
 import com.intetics.dao.EntitySchemaDao;
+import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +53,10 @@ public class FieldController {
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         model.addAttribute("EntitySchema", entitySchema);
 
-        if(fieldType.equalsIgnoreCase("STRING")) {
+        if (fieldType.equalsIgnoreCase("STRING")) {
             model.addAttribute("modalTitle", "Create Text Field");
 
-        } else if(fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
+        } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             model.addAttribute("modalTitle", "Create Choice Field");
         }
 
@@ -71,22 +74,22 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        if(fieldType.equalsIgnoreCase("STRING")) {
+        if (fieldType.equalsIgnoreCase("STRING")) {
             TextField textField = new TextField();
             textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
 
-            if(params.get("active") != null) {
+            if (params.get("active") != null) {
                 textField.setRequire(true);
             }
 
             entitySchema.getFields().add(textField);
 
-        } else if(fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
+        } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
             multiChoiceField.setName(params.get("fieldName").get(0));
 
-            String[] choices =  params.get("choices").get(0).trim().split("\\r?\\n");
+            String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
             for (String choiceName : choices) {
                 Choice choice = new Choice();
@@ -96,7 +99,7 @@ public class FieldController {
 
             multiChoiceField.setChoices(choiceList);
 
-            if(params.get("active") != null) {
+            if (params.get("active") != null) {
                 multiChoiceField.setRequire(true);
             }
 
@@ -107,6 +110,92 @@ public class FieldController {
 
         model.addAttribute("EntitySchema", entitySchema);
 
-        return "redirect:/entity/"+entitySchemaId+"/field/list";
+        return "redirect:/entity/" + entitySchemaId + "/field/list";
+    }
+
+    @RequestMapping(value = "{entitySchemaId}/field/edit/{fieldId}", method = RequestMethod.GET)
+    public String editFieldInEntitySchema(@NotNull @PathVariable Long entitySchemaId, Model model,
+                                          @NotNull @PathVariable Long fieldId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(fieldId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        Field field = entitySchemaDao.getField(fieldId);
+
+        if (field.getValueType() == ValueType.STRING) {
+            model.addAttribute("modalTitle", "Edit Text Field");
+
+        } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
+            model.addAttribute("modalTitle", "Edit Choice Field");
+        }
+
+        model.addAttribute("modalSaveButton", "Edit");
+        model.addAttribute("fieldType", field.getValueType().name().toLowerCase());
+        model.addAttribute("field", field);
+
+        return "create-field";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/field/change/{fieldId}", method = RequestMethod.POST)
+    public String changeFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
+                                         @RequestParam MultiValueMap<String, String> params,
+                                         @Nonnull @PathVariable Long fieldId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(fieldId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        Field field = null;
+
+        for (Field tmpField : entitySchema.getFields()){
+            if (tmpField.getFieldId() == fieldId){
+                field = tmpField;
+            }
+        }
+
+        if (field.getValueType() == ValueType.STRING) {
+
+            TextField textField = (TextField) field;
+
+            textField.setName(params.get("fieldName").get(0));
+            textField.setSize(Integer.valueOf(params.get("size").get(0)));
+
+            if (params.get("active") != null) {
+                textField.setRequire(true);
+            } else {
+                textField.setRequire(false);
+            }
+
+        } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
+
+            MultiChoiceField multiChoiceField = (MultiChoiceField) field;
+
+            multiChoiceField.setName(params.get("fieldName").get(0));
+            multiChoiceField.getChoices().clear();
+
+            String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
+            List<Choice> choiceList = new ArrayList<Choice>();
+            for (String choiceName : choices) {
+                Choice choice = new Choice();
+                choice.setName(choiceName);
+                choiceList.add(choice);
+            }
+
+            multiChoiceField.setChoices(choiceList);
+
+            if (params.get("active") != null) {
+                multiChoiceField.setRequire(true);
+            } else {
+                multiChoiceField.setRequire(false);
+            }
+        }
+
+        entitySchemaDao.saveOrUpdate(entitySchema);
+
+        model.addAttribute("EntitySchema", entitySchema);
+
+        return "redirect:/entity/" + entitySchemaId + "/field/list";
     }
 }
