@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,7 +66,8 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
-    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId,
+                                          ModelMap model) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
@@ -76,11 +80,28 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(EntitySchema entitySchema) {
-
-        if(entitySchema.getId() != null){
+    public String saveEntitySchema(@ModelAttribute
+                                   @Validated(value = EntitySchema.MvcValidationSequence.class)
+                                   EntitySchema entitySchema,
+                                   BindingResult bindingResult, ModelMap model) {
+        if (bindingResult.hasErrors()) {
+            if (entitySchema.getId() == null) {
+                model.addAttribute("EntitySchema", entitySchema);
+                List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+                model.addAttribute("entitySchemaList", entitySchemas);
+                model.addAttribute("modalTitle", "Create Entity");
+                model.addAttribute("modalSaveButton", "Create");
+                return "create-entity";
+            } else {
+                model.addAttribute("EntitySchema", entitySchema);
+                model.addAttribute("modalTitle", "Edit Entity");
+                model.addAttribute("modalSaveButton", "Edit");
+                return "edit-entity";
+            }
+        }
+        if (entitySchema.getId() != null) {
             entitySchemaDao.saveOrUpdate(entitySchema);
-            return "redirect:/entity/"+entitySchema.getId()+"/field/list";
+            return "redirect:/entity/" + entitySchema.getId() + "/field/list";
         }
 
         entitySchemaDao.saveOrUpdate(entitySchema);

@@ -12,12 +12,12 @@ import java.util.List;
 @Table(name = "entity_schema")
 @GroupSequence({
         NotEmpty.class,
-        Size.class,
         EntitySchema.class
 })
 public class EntitySchema {
 
     @GroupSequence({
+            Size.class,
             DuplicateEntity.class
     })
     public interface MvcValidationSequence {}
