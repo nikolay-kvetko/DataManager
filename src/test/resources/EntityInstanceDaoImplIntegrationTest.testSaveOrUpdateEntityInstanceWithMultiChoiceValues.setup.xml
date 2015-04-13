@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                   name="Employee"/>
+
+    <field entity_schema_id="1"
+           field_id="1"
+           name="Skills"
+           require="false"/>
+
+    <multi_choice_field field_id="1"/>
+
+    <choice choice_id="1" multi_choice_field_id="1" name="Java"/>
+    <choice choice_id="2" multi_choice_field_id="1" name="JavaScript"/>
+    <choice choice_id="3" multi_choice_field_id="1" name=".Net"/>
+
+</dataset>

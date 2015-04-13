@@ -11,9 +11,9 @@
         </div>
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Home Page</a></li>
+                <li><a href="/home/entity/list">Home Page</a></li>
                 <li><a href="#">Users</a></li>
-                <li><a href="#">Data Structure</a></li>
+                <li><a href="/entity/list">Data Structure</a></li>
             </ul>
         </div>
     </div>

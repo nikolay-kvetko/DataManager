@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                  name="TEST"/>
+
+    <field entity_schema_id="1"
+           field_id="1"
+           name="Last name"
+           require="false"/>
+
+    <text_field field_id="1"
+            size="1"/>
+
+</dataset>

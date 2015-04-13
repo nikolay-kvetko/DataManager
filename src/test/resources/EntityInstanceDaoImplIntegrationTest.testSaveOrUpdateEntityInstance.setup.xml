@@ -2,6 +2,10 @@
 <dataset>
 
     <entity_schema entity_schema_id="1"
-                  name="TEST1"/>
+                   name="Employee"/>
+
+    <entity_instance />
+
+    <field_value />
 
 </dataset>

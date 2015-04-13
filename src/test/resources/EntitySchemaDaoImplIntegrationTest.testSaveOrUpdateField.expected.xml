@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                   name="Employee"/>
+
+    <field entity_schema_id="1"
+           name="Last Name"
+           require="false"/>
+
+</dataset>

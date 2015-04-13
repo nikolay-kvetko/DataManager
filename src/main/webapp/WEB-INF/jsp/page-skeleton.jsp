@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home page</title>
+    <title>DataManager</title>
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap.min.css">
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap-theme.min.css">
     <script type="text/javascript" src="/js/jquery.min.js"></script>

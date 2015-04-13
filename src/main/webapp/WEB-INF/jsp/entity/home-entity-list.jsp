@@ -2,20 +2,16 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h2>Data Structure</h2>
+        <h2>Home Page</h2>
     </div>
-    <div class="row">
-        <div class="col-xs-4 col-xs-offset-8 col-sm-2 col-sm-offset-10">
-            <button form="CreateEntitySchema" class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span> Create entity</button>
-        </div>
-    </div>
+    <div class="row"></div>
+
     <table class="table table-hover">
         <thead>
         <tr>
             <th>Entities</th>
             <th>Last Modified</th>
             <th>Created</th>
-            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -23,7 +19,7 @@
         <c:forEach var="entity" items="${entitySchemaList}">
             <tr>
                 <td>
-                    <a href="/entity/<c:out value="${entity.id}"/>/field/list" style="display: block; text-decoration: none">
+                    <a href="/home/entity/<c:out value="${entity.id}"/>/instance/list" style="display: block; text-decoration: none">
                         <c:out value="${entity.name}"/>
                     </a>
                 </td>
@@ -33,11 +29,9 @@
                 <td>
                     Create
                 </td>
-                <td>
-                    <a href="#">Delete</a>
-                </td>
             </tr>
         </c:forEach>
+
         </tbody>
     </table>
     <div class="row">
@@ -63,5 +57,4 @@
             </ul>
         </div>
     </div>
-    <form id="CreateEntitySchema" action="/entity/create" method="post"></form>
 </div>

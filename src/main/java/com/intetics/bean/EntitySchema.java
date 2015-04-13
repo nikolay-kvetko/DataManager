@@ -1,25 +1,30 @@
 package com.intetics.bean;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "EntitySchema")
+@Table(name = "entity_schema")
 public class EntitySchema {
 
     @Id
-    @Column(name = "EntitySchema_Id")
+    @Column(name = "entity_schema_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long entitySchemaId;
+    private Long id;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
-    public Long getEntitySchemaId() {
-        return entitySchemaId;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "entity_schema_id", nullable = false)
+    private List<Field> fields;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setEntitySchemaId(Long entitySchemaId) {
-        this.entitySchemaId = entitySchemaId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -28,5 +33,13 @@ public class EntitySchema {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
     }
 }
