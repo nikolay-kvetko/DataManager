@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +31,7 @@ import java.util.List;
 public class FieldController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FieldController.class);
+    private String dateFormat = "HH:mm:ss dd-MM-yyyy";
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
@@ -42,7 +47,8 @@ public class FieldController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/field/create/{fieldType}", method = RequestMethod.GET)
-    public String createFieldForEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model, @PathVariable String fieldType) {
+    public String createFieldForEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
+                                             @PathVariable String fieldType) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
@@ -69,8 +75,13 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
+        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+
         if (fieldType.equalsIgnoreCase("STRING")) {
             TextField textField = new TextField();
+
+            textField.setCreateDate(currentDate);
+            textField.setModifiedDate(currentDate);
             textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
 
@@ -82,6 +93,9 @@ public class FieldController {
 
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
+
+            multiChoiceField.setCreateDate(currentDate);
+            multiChoiceField.setModifiedDate(currentDate);
             multiChoiceField.setName(params.get("fieldName").get(0));
 
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
@@ -101,6 +115,7 @@ public class FieldController {
             entitySchema.getFields().add(multiChoiceField);
         }
 
+        entitySchema.setModifiedDate(currentDate);
         entitySchemaDao.saveOrUpdate(entitySchema);
 
         model.addAttribute("EntitySchema", entitySchema);
@@ -110,7 +125,7 @@ public class FieldController {
 
     @RequestMapping(value = "{entitySchemaId}/field/edit/{fieldId}", method = RequestMethod.GET)
     public String editFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
-                                          @Nonnull @PathVariable Long fieldId) {
+                                          @Nonnull @PathVariable Long fieldId, HttpServletRequest request) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
@@ -126,6 +141,9 @@ public class FieldController {
             model.addAttribute("modalTitle", "Edit Choice Field");
         }
 
+        HttpSession session = request.getSession();
+        session.setAttribute("fieldCreateDate-"+fieldId, field.getCreateDate());
+
         model.addAttribute("modalSaveButton", "Edit");
         model.addAttribute("fieldType", field.getValueType().name().toLowerCase());
         model.addAttribute("field", field);
@@ -136,11 +154,15 @@ public class FieldController {
     @RequestMapping(value = "/{entitySchemaId}/field/change/{fieldId}", method = RequestMethod.POST)
     public String changeFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
                                          @RequestParam MultiValueMap<String, String> params,
-                                         @Nonnull @PathVariable Long fieldId) {
+                                         @Nonnull @PathVariable Long fieldId, HttpServletRequest request) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+
+        HttpSession session = request.getSession();
 
         Field field = null;
 
@@ -150,8 +172,10 @@ public class FieldController {
             }
         }
 
-        if (field.getValueType() == ValueType.STRING) {
+        field.setCreateDate((String) session.getAttribute("fieldCreateDate-"+fieldId));
+        field.setModifiedDate(currentDate);
 
+        if (field.getValueType() == ValueType.STRING) {
             TextField textField = (TextField) field;
 
             textField.setName(params.get("fieldName").get(0));
@@ -164,7 +188,6 @@ public class FieldController {
             }
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
-
             MultiChoiceField multiChoiceField = (MultiChoiceField) field;
 
             multiChoiceField.setName(params.get("fieldName").get(0));
@@ -187,6 +210,7 @@ public class FieldController {
             }
         }
 
+        entitySchema.setModifiedDate(currentDate);
         entitySchemaDao.saveOrUpdate(entitySchema);
 
         model.addAttribute("EntitySchema", entitySchema);
@@ -216,12 +240,14 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
+        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+
         Field field = entitySchemaDao.getField(fieldId);
         entitySchema.getFields().remove(field);
 
+        entitySchema.setModifiedDate(currentDate);
         entitySchemaDao.saveOrUpdate(entitySchema);
 
         return "redirect:/entity/" + entitySchemaId + "/field/list";
-
     }
 }

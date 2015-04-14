@@ -28,10 +28,10 @@
                     </a>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${entity.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${entity.createDate}"/>
                 </td>
                 <td>
                     <a href="/entity/delete/<c:out value="${entity.id}"/>/confirm" title="Delete <c:out value="${entity.name}"/>">

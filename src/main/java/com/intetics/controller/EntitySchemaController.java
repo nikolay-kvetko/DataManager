@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Nonnull;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
 public class EntitySchemaController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntitySchemaController.class);
+    private String dateFormat = "HH:mm:ss dd-MM-yyyy";
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
@@ -73,9 +76,13 @@ public class EntitySchemaController {
     public String saveEntitySchema(EntitySchema entitySchema) {
 
         if(entitySchema.getId() != null){
+            entitySchema.setModifiedDate(new SimpleDateFormat(dateFormat).format(new Date()));
             entitySchemaDao.saveOrUpdate(entitySchema);
             return "redirect:/entity/"+entitySchema.getId()+"/field/list";
         }
+
+        entitySchema.setCreateDate(new SimpleDateFormat(dateFormat).format(new Date()));
+        entitySchema.setModifiedDate(new SimpleDateFormat(dateFormat).format(new Date()));
 
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";

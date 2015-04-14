@@ -55,10 +55,10 @@
                     </c:choose>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${field.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${field.createDate}"/>
                 </td>
                 <td>
                     <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/delete/<c:out value="${field.fieldId}"/>/confirm"
