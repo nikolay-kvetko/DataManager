@@ -54,4 +54,9 @@
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
     </definition>
 
+    <definition name="delete-instance" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+    </definition>
+
 </tiles-definitions>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
@@ -82,5 +83,26 @@ public class EntityInstanceDaoImplIntegrationTest extends AbstractDaoImplIntegra
         List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchemaDao.getEntitySchema(1L));
 
         assertTrue("entityInstances size must be 3", entityInstances.size() == 3);
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntityInstanceDaoImplIntegrationTest.testDeleteEntityInstance.setup.xml")
+    @ExpectedDatabase(value = "/EntityInstanceDaoImplIntegrationTest.testDeleteEntityInstance.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testDeleteEntityInstance() throws Exception {
+        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchemaDao.getEntitySchema(1L));
+        EntityInstance entityInstance = entityInstances.get(0);
+
+        entityInstanceDao.delete(entityInstance);
+        sessionFactory.getCurrentSession().flush();
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetEntityInstance.setup.xml")
+    public void testGetEntityInstance() throws Exception {
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(1L);
+        assertNotNull(entityInstance);
+        assertTrue("TEST".equals(entityInstance.getEntitySchema().getName()));
     }
 }
