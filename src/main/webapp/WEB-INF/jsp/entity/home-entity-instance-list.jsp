@@ -32,11 +32,16 @@
                             <c:when test="${value.field.valueType eq 'STRING'}">
                                 <c:out value="${value.value}"/>
                             </c:when>
-                            <c:otherwise>
+                            <c:when test="${value.field.valueType eq 'MULTI_CHOICE'}">
                                 <c:forEach var="choiceValue" items="${value.choices}">
                                     <c:out value="${choiceValue.name}"/> <br>
                                 </c:forEach>
-                            </c:otherwise>
+                            </c:when>
+                            <c:when test="${value.field.valueType eq 'TEXT_AREA'}">
+                                <textarea style="resize: none; border: none; background: none" readonly
+                                          rows="<c:out value="${value.field.countLine}"/>"><c:out
+                                        value="${value.textAreaValue}"/></textarea>
+                            </c:when>
                         </c:choose>
                     </td>
                 </c:forEach>

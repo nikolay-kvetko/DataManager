@@ -17,10 +17,14 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/string'/>
                     </c:when>
-                    <c:otherwise>
+                    <c:when test="${fieldType eq 'multi_choice'}">
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/multi_choice'/>
-                    </c:otherwise>
+                    </c:when>
+                    <c:when test="${fieldType eq 'text_area'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/text_area'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -60,14 +64,14 @@
                                 </div>
                             </div>
                         </c:when>
-                        <c:otherwise>
+                        <c:when test="${fieldType eq 'multi_choice'}">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Type each choice on a separate
                                     line*</label>
 
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" cols="20" name="choices"
-                                              required="required"><c:if
+                                    <textarea class="form-control" rows="5" name="choices"
+                                              required="required" style="resize:none;"><c:if
                                             test="${field.choices != null}"><c:forEach
                                             var="choiceValue" items="${field.choices}"><c:out
                                             value="${choiceValue.name}"/>&#13;&#10;</c:forEach></c:if
@@ -96,7 +100,24 @@
                                         Dropdown Menu</label>
                                 </div>
                             </div>
-                        </c:otherwise>
+                        </c:when>
+                        <c:when test="${fieldType eq 'text_area'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Number of lines for
+                                    editing*</label>
+
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="number" name="countLine" min="1"
+                                           max="5" required="required"
+                                            <c:if test="${field.countLine != null}">
+                                                value="<c:out value="${field.countLine}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                                <label class="col-sm-4" style="font-weight: normal !important;">(can
+                                    be from 1 to 5)</label>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </form>
             </div>

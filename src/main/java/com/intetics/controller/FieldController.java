@@ -1,6 +1,12 @@
 package com.intetics.controller;
 
-import com.intetics.bean.*;
+import com.intetics.bean.Choice;
+import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.MultiChoiceField;
+import com.intetics.bean.TextAreaField;
+import com.intetics.bean.TextField;
+import com.intetics.bean.ValueType;
 import com.intetics.dao.EntitySchemaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +59,8 @@ public class FieldController {
 
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             model.addAttribute("modalTitle", "Create Choice Field");
+        } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
+            model.addAttribute("modalTitle", "Create Text Area Field");
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -80,6 +88,16 @@ public class FieldController {
 
             entitySchema.getFields().add(textField);
 
+        } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
+            TextAreaField textAreaField = new TextAreaField();
+            textAreaField.setName(params.get("fieldName").get(0));
+            textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
+
+            if (params.get("active") != null) {
+                textAreaField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(textAreaField);
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
             multiChoiceField.setName(params.get("fieldName").get(0));
@@ -124,6 +142,8 @@ public class FieldController {
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
             model.addAttribute("modalTitle", "Edit Choice Field");
+        } else if (field.getValueType() == ValueType.TEXT_AREA) {
+            model.addAttribute("modalTitle", "Edit Text Area Field");
         }
 
         model.addAttribute("modalSaveButton", "Edit");
@@ -150,26 +170,28 @@ public class FieldController {
             }
         }
 
+        field.setName(params.get("fieldName").get(0));
+        if (params.get("active") != null) {
+            field.setRequire(true);
+        } else {
+            field.setRequire(false);
+        }
+
         if (field.getValueType() == ValueType.STRING) {
 
             TextField textField = (TextField) field;
-
-            textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
 
-            if (params.get("active") != null) {
-                textField.setRequire(true);
-            } else {
-                textField.setRequire(false);
-            }
+        } else if(field.getValueType() == ValueType.TEXT_AREA){
+
+            TextAreaField textAreaField = (TextAreaField)field;
+            textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
 
             MultiChoiceField multiChoiceField = (MultiChoiceField) field;
 
-            multiChoiceField.setName(params.get("fieldName").get(0));
             multiChoiceField.getChoices().clear();
-
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
             for (String choiceName : choices) {
@@ -180,11 +202,6 @@ public class FieldController {
 
             multiChoiceField.setChoices(choiceList);
 
-            if (params.get("active") != null) {
-                multiChoiceField.setRequire(true);
-            } else {
-                multiChoiceField.setRequire(false);
-            }
         }
 
         entitySchemaDao.saveOrUpdate(entitySchema);
