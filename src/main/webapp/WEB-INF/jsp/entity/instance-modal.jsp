@@ -73,7 +73,8 @@
                                                   style="resize:none;"
                                                 <c:if test="${field.require}">
                                                     required="<c:out value="${field.require}"/>
-                                                </c:if>"></textarea>
+                                                </c:if>"><c:forEach var="value" items="${entityInstance.values}"><c:out value="${value.textAreaValue}"/>
+                                        </c:forEach></textarea>
                                     </div>
                                 </div>
                             </c:when>
