@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                             </c:when>
-                            <c:otherwise>
+                            <c:when test="${field.valueType eq 'MULTI_CHOICE'}">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label"><c:out
                                             value="${field.name}"/></label>
@@ -47,7 +47,24 @@
                                     </c:forEach>
 
                                 </div>
-                            </c:otherwise>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'TEXT_AREA'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control"
+                                                  rows="<c:out value="${field.countLine}" />"
+                                                  name="<c:out value="${field.fieldId}"/>"
+                                                  style="resize:none;"
+                                                <c:if test="${field.require}">
+                                                    required="<c:out value="${field.require}"/>
+                                                </c:if>"></textarea>
+                                    </div>
+                                </div>
+                            </c:when>
                         </c:choose>
                     </c:forEach>
                 </form>

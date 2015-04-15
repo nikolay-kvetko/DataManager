@@ -59,6 +59,9 @@ public class FieldController {
 
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             model.addAttribute("modalTitle", "Create Choice Field");
+            
+        } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
+            model.addAttribute("modalTitle", "Create Text Area Field");
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -91,6 +94,19 @@ public class FieldController {
 
             entitySchema.getFields().add(textField);
 
+        } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
+            TextAreaField textAreaField = new TextAreaField();
+
+            textAreaField.setCreateDate(currentDate);
+            textAreaField.setModifiedDate(currentDate);
+            textAreaField.setName(params.get("fieldName").get(0));
+            textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
+
+            if (params.get("active") != null) {
+                textAreaField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(textAreaField);
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
 
@@ -139,6 +155,9 @@ public class FieldController {
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
             model.addAttribute("modalTitle", "Edit Choice Field");
+            
+        } else if (field.getValueType() == ValueType.TEXT_AREA) {
+            model.addAttribute("modalTitle", "Edit Text Area Field");
         }
 
         HttpSession session = request.getSession();
@@ -172,27 +191,29 @@ public class FieldController {
             }
         }
 
+        field.setName(params.get("fieldName").get(0));
+        if (params.get("active") != null) {
+            field.setRequire(true);
+        } else {
+            field.setRequire(false);
+        }
+
         field.setCreateDate((String) session.getAttribute("fieldCreateDate-"+fieldId));
         field.setModifiedDate(currentDate);
 
         if (field.getValueType() == ValueType.STRING) {
             TextField textField = (TextField) field;
-
-            textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
 
-            if (params.get("active") != null) {
-                textField.setRequire(true);
-            } else {
-                textField.setRequire(false);
-            }
+        } else if(field.getValueType() == ValueType.TEXT_AREA){
+
+            TextAreaField textAreaField = (TextAreaField)field;
+            textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
             MultiChoiceField multiChoiceField = (MultiChoiceField) field;
 
-            multiChoiceField.setName(params.get("fieldName").get(0));
             multiChoiceField.getChoices().clear();
-
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
             for (String choiceName : choices) {
@@ -203,11 +224,6 @@ public class FieldController {
 
             multiChoiceField.setChoices(choiceList);
 
-            if (params.get("active") != null) {
-                multiChoiceField.setRequire(true);
-            } else {
-                multiChoiceField.setRequire(false);
-            }
         }
 
         entitySchema.setModifiedDate(currentDate);
