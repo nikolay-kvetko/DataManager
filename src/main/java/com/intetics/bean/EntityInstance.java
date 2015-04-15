@@ -1,6 +1,7 @@
 package com.intetics.bean;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,12 @@ public class EntityInstance {
     @ManyToOne
     @JoinColumn(name = "entity_schema_id")
     private EntitySchema entitySchema;
+
+    @Column(name = "create_date")
+    private Date createDate;
+
+    @Column(name = "modified_date")
+    private Date modifiedDate;
 
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn(name="entity_instance_id")
@@ -40,5 +47,21 @@ public class EntityInstance {
 
     public EntitySchema getEntitySchema() {
         return entitySchema;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

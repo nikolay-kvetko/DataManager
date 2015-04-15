@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,13 +99,18 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/add", method = RequestMethod.POST)
-    public String addEntityInstance(@Nonnull @PathVariable Long entitySchemaId, @RequestParam MultiValueMap<String, String> params) {
+    public String addEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
+                                    @RequestParam MultiValueMap<String, String> params) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
+        Date currentDate = new Date();
+
         EntityInstance entityInstance = new EntityInstance();
         entityInstance.setEntitySchema(entitySchema);
+        entityInstance.setCreateDate(currentDate);
+        entityInstance.setModifiedDate(currentDate);
 
         List<FieldValue> fieldValues = new ArrayList<FieldValue>();
 
@@ -117,6 +123,7 @@ public class EntityInstanceController {
         }
 
         entityInstance.setValues(fieldValues);
+
         entityInstanceDao.saveOrUpdate(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
@@ -141,7 +148,8 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}", method = RequestMethod.GET)
-    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, @Nonnull @PathVariable Long instanceId) {
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId,
+                                     @Nonnull @PathVariable Long instanceId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(instanceId);
 

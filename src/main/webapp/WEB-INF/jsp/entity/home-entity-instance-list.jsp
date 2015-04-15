@@ -2,7 +2,9 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h2>Home Page</h2>
+        <h3>
+            <a href="/home/entity/list">Home Page</a> > <c:out value="${EntitySchema.name}"/>
+        </h3>
     </div>
     <div class="row">
         <div class="col-xs-3 col-xs-offset-9 col-sm-2 col-sm-offset-10">
@@ -20,6 +22,12 @@
                     <c:out value="${field.name}"/>
                 </th>
             </c:forEach>
+            <th>
+                Last Modified
+            </th>
+            <th>
+                Created
+            </th>
             <th>
                 Action
             </th>
@@ -48,6 +56,12 @@
                         </c:choose>
                     </td>
                 </c:forEach>
+                <td>
+                    <c:out value="${instance.modifiedDate}"/>
+                </td>
+                <td>
+                    <c:out value="${instance.createDate}"/>
+                </td>
                 <td>
                     <a href="/home/entity/<c:out value="${EntitySchema.id}"/>/instance/delete/<c:out value="${instance.id}"/>/confirm"
                        title="Delete">
