@@ -5,10 +5,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Create Instance</h4>
+                <h4 class="modal-title">Create\Edit Instance</h4>
             </div>
             <div class="modal-body form-horizontal">
-                <spring:url var="action" value='/home/entity/${EntitySchema.id}/instance/add'/>
+                <c:choose>
+                    <c:when test="${empty entityInstance}">
+                        <spring:url var="action"
+                                    value='/home/entity/${EntitySchema.id}/instance/add'/>
+                    </c:when>
+                    <c:otherwise>
+                        <spring:url var="action"
+                                    value='/home/entity/${EntitySchema.id}/instance/update/${entityInstance.id}'/>
+                    </c:otherwise>
+                </c:choose>
                 <form id="Instance" name="Instance" action="${action}" method="post">
                     <c:forEach var="field" items="${EntitySchema.fields}">
                         <c:choose>
@@ -24,6 +33,10 @@
                                                 <c:if test="${field.require}">
                                                     required="<c:out value="${field.require}"/>
                                                 </c:if>"
+                                                <c:forEach var="value"
+                                                           items="${entityInstance.values}">
+                                                    value="<c:out value="${value.value}"/>"
+                                                </c:forEach>
                                                 />
                                     </div>
                                 </div>
@@ -45,7 +58,6 @@
                                                     value="${choice.name}"/></label>
                                         </div>
                                     </c:forEach>
-
                                 </div>
                             </c:when>
                             <c:when test="${field.valueType eq 'TEXT_AREA'}">
