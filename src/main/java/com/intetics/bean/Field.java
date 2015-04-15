@@ -1,6 +1,7 @@
 package com.intetics.bean;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "field")
@@ -26,10 +27,10 @@ public abstract class Field {
     private boolean require;
 
     @Column(name = "create_date")
-    private String createDate;
+    private Date createDate;
 
     @Column(name = "modified_date")
-    private String modifiedDate;
+    private Date modifiedDate;
 
     public Long getFieldId() {
         return fieldId;
@@ -59,19 +60,19 @@ public abstract class Field {
         this.require = require;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public String getModifiedDate() {
+    public Date getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
