@@ -1,6 +1,7 @@
 package com.intetics.bean;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,10 +17,10 @@ public class EntitySchema {
     private String name;
 
     @Column(name = "create_date")
-    private String createDate;
+    private Date createDate;
 
     @Column(name = "modified_date")
-    private String modifiedDate;
+    private Date modifiedDate;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "entity_schema_id", nullable = false)
@@ -49,19 +50,19 @@ public class EntitySchema {
         this.fields = fields;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public String getModifiedDate() {
+    public Date getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 }

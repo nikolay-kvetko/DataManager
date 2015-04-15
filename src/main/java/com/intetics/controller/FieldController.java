@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +77,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         if (fieldType.equalsIgnoreCase("STRING")) {
             TextField textField = new TextField();
@@ -179,7 +178,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         HttpSession session = request.getSession();
 
@@ -198,7 +197,7 @@ public class FieldController {
             field.setRequire(false);
         }
 
-        field.setCreateDate((String) session.getAttribute("fieldCreateDate-"+fieldId));
+        field.setCreateDate((Date) session.getAttribute("fieldCreateDate-"+fieldId));
         field.setModifiedDate(currentDate);
 
         if (field.getValueType() == ValueType.STRING) {
@@ -256,7 +255,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         Field field = entitySchemaDao.getField(fieldId);
         entitySchema.getFields().remove(field);
