@@ -44,6 +44,11 @@
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/instance-modal.jsp"/>
     </definition>
 
+    <definition name="edit-instance" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/instance-modal.jsp"/>
+    </definition>
+
     <definition name="delete-entity" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
@@ -51,6 +56,11 @@
 
     <definition name="delete-field" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+    </definition>
+
+    <definition name="delete-instance" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
     </definition>
 
