@@ -1,6 +1,12 @@
 package com.intetics.controller;
 
-import com.intetics.bean.*;
+import com.intetics.bean.Choice;
+import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.MultiChoiceField;
+import com.intetics.bean.TextAreaField;
+import com.intetics.bean.TextField;
+import com.intetics.bean.ValueType;
 import com.intetics.dao.EntitySchemaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,6 +119,7 @@ public class FieldController {
             multiChoiceField.setCreateDate(currentDate);
             multiChoiceField.setModifiedDate(currentDate);
             multiChoiceField.setName(params.get("fieldName").get(0));
+            multiChoiceField.setChoiceType(params.get("display").get(0));
 
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
@@ -212,6 +219,8 @@ public class FieldController {
 
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
             MultiChoiceField multiChoiceField = (MultiChoiceField) field;
+
+            multiChoiceField.setChoiceType(params.get("display").get(0));
 
             multiChoiceField.getChoices().clear();
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");

@@ -83,21 +83,40 @@
                                 <label class="col-sm-4 control-label">Display choices using*</label>
 
                                 <div class="col-sm-8">
-                                    <input type="radio" name="display" value="radio" id="radioId"/>
-                                    <label for="radioId" style="font-weight: normal !important;">
-                                        Radio Buttons</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="radio"
+                                                   <c:if test="${field.choiceType == null}">
+                                                       checked
+                                                   </c:if>
+                                                   <c:if test="${field.choiceType eq 'radio'}" >
+                                                       checked
+                                                   </c:if>/>
+                                            Radio Buttons
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="checkbox"
-                                           id="checkboxId"/>
-                                    <label for="checkboxId" style="font-weight: normal !important;">
-                                        Checkboxes</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="checkbox"
+                                                    <c:if test="${field.choiceType eq 'checkbox'}" >
+                                                        checked
+                                                    </c:if>/>
+                                            Checkboxes
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="dropdown"
-                                           id="dropdownId"/>
-                                    <label for="dropdownId" style="font-weight: normal !important;">
-                                        Dropdown Menu</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="dropdown"
+                                                    <c:if test="${field.choiceType eq 'dropdown'}" >
+                                                        checked
+                                                    </c:if>/>
+                                            Dropdown Menu
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>
@@ -107,7 +126,8 @@
                                     editing*</label>
 
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="number" name="countLine" min="1"
+                                    <input class="form-control" type="number" name="countLine"
+                                           min="1"
                                            max="5" required="required"
                                             <c:if test="${field.countLine != null}">
                                                 value="<c:out value="${field.countLine}"/>"
