@@ -121,4 +121,35 @@ public class EntityInstanceController {
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
     }
+
+    @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}/confirm", method = RequestMethod.GET)
+    public String startDeleteField(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                   @Nonnull @PathVariable Long instanceId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(instanceId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        model.addAttribute("entityInstances", entityInstances);
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+        model.addAttribute("entityInstance", entityInstance);
+
+        return "delete-instance";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}", method = RequestMethod.GET)
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, @Nonnull @PathVariable Long instanceId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(instanceId);
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+
+        entityInstanceDao.delete(entityInstance);
+
+        return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
+
+    }
 }

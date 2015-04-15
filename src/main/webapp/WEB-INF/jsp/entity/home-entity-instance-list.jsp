@@ -20,6 +20,9 @@
                     <c:out value="${field.name}"/>
                 </th>
             </c:forEach>
+            <th>
+                Action
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +43,12 @@
                         </c:choose>
                     </td>
                 </c:forEach>
+                <td>
+                    <a href="/home/entity/<c:out value="${EntitySchema.id}"/>/instance/delete/<c:out value="${instance.id}"/>/confirm"
+                       title="Delete">
+                        <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                    </a>
+                </td>
             </tr>
         </c:forEach>
         </tbody>

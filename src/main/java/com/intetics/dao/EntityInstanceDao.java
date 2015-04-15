@@ -13,4 +13,8 @@ public interface EntityInstanceDao {
     void saveOrUpdate(EntityInstance entityInstance);
 
     List<EntityInstance> getEntityInstancesByEntitySchema (EntitySchema entitySchema);
+
+    void delete(EntityInstance entityInstance);
+
+    EntityInstance getEntityInstance(Long id);
 }

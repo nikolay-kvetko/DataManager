@@ -15,6 +15,12 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "create_date")
+    private String createDate;
+
+    @Column(name = "modified_date")
+    private String modifiedDate;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "entity_schema_id", nullable = false)
     private List<Field> fields;
@@ -41,5 +47,21 @@ public class EntitySchema {
 
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

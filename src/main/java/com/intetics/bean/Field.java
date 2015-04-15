@@ -25,6 +25,12 @@ public abstract class Field {
     @Column(name = "require")
     private boolean require;
 
+    @Column(name = "create_date")
+    private String createDate;
+
+    @Column(name = "modified_date")
+    private String modifiedDate;
+
     public Long getFieldId() {
         return fieldId;
     }
@@ -51,6 +57,22 @@ public abstract class Field {
 
     public void setRequire(boolean require) {
         this.require = require;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     @Override

@@ -55,14 +55,16 @@
                     </c:choose>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${field.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${field.createDate}"/>
                 </td>
                 <td>
-                    <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/delete/<c:out value="${field.fieldId}"/>/confirm">Delete</a>
-                    <br>
+                    <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/delete/<c:out value="${field.fieldId}"/>/confirm"
+                       title="Delete <c:out value="${field.name}"/>">
+                        <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                    </a>
                 </td>
             </tr>
         </c:forEach>
