@@ -56,19 +56,116 @@
                                         <label class="col-sm-4 control-label"><c:out
                                                 value="${field.name}"/></label>
 
-                                        <c:forEach var="choice" items="${field.choices}">
-                                            <div class="col-sm-8 col-sm-offset-4">
-
-                                                <input type="checkbox"
-                                                       name="<c:out value="${field.fieldId}"/>"
-                                                       value="<c:out value="${choice.id}"/>"
-                                                       id="<c:out value="${field.fieldId}"/><c:out value="${choice.id}"/>">
-                                                <label for="<c:out value="${field.fieldId}"/><c:out value="${choice.id}"/>"
-                                                       style="font-weight: normal !important;">
-                                                    <c:out
-                                                            value="${choice.name}"/></label>
-                                            </div>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${field.choiceType eq 'radio'}">
+                                                <c:forEach var="choice" items="${field.choices}">
+                                                    <c:set var="checked" value="false"
+                                                           scope="page"/>
+                                                    <c:forEach var="choiced"
+                                                               items="${coincidedValue.choices}">
+                                                        <c:if test="${choice.name eq choiced.name}">
+                                                            <c:set var="checked" value="true"
+                                                                   scope="page"/>
+                                                            <c:set var="checkedValue"
+                                                                   value="${choiced.name}"
+                                                                   scope="page"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <div class="col-sm-8 col-sm-offset-4">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <c:choose>
+                                                                    <c:when test="${checked eq true}">
+                                                                        <input type="radio"
+                                                                               name="<c:out value="${field.fieldId}"/>"
+                                                                               value="<c:out value="${choice.id}"/>"
+                                                                               checked>
+                                                                        <c:out value="${checkedValue}"/>
+                                                                    </c:when>
+                                                                    <c:when test="${checked eq false}">
+                                                                        <input type="radio"
+                                                                               name="<c:out value="${field.fieldId}"/>"
+                                                                               value="<c:out value="${choice.id}"/>">
+                                                                        <c:out value="${choice.name}"/>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${field.choiceType eq 'checkbox'}">
+                                                <c:forEach var="choice" items="${field.choices}">
+                                                    <c:set var="checked" value="false"
+                                                           scope="page"/>
+                                                    <c:forEach var="choiced"
+                                                               items="${coincidedValue.choices}">
+                                                        <c:if test="${choice.name eq choiced.name}">
+                                                            <c:set var="checked" value="true"
+                                                                   scope="page"/>
+                                                            <c:set var="checkedValue"
+                                                                   value="${choiced.name}"
+                                                                   scope="page"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <div class="col-sm-8 col-sm-offset-4">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <c:choose>
+                                                                    <c:when test="${checked eq true}">
+                                                                        <input type="checkbox"
+                                                                               name="<c:out value="${field.fieldId}"/>"
+                                                                               value="<c:out value="${choice.id}"/>"
+                                                                               checked>
+                                                                        <c:out value="${checkedValue}"/>
+                                                                    </c:when>
+                                                                    <c:when test="${checked eq false}">
+                                                                        <input type="checkbox"
+                                                                               name="<c:out value="${field.fieldId}"/>"
+                                                                               value="<c:out value="${choice.id}"/>">
+                                                                        <c:out value="${choice.name}"/>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${field.choiceType eq 'dropdown'}">
+                                                <div class="col-sm-8 col-sm-offset-4">
+                                                    <select name="<c:out value="${field.fieldId}"/>"
+                                                            class="form-control">
+                                                        <c:forEach var="choice"
+                                                                   items="${field.choices}">
+                                                            <c:set var="checked" value="false"
+                                                                   scope="page"/>
+                                                            <c:forEach var="choiced"
+                                                                       items="${coincidedValue.choices}">
+                                                                <c:if test="${choice.name eq choiced.name}">
+                                                                    <c:set var="checked"
+                                                                           value="true"
+                                                                           scope="page"/>
+                                                                    <c:set var="checkedValue"
+                                                                           value="${choiced.name}"
+                                                                           scope="page"/>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <c:choose>
+                                                                <c:when test="${checked eq true}">
+                                                                    <option value="<c:out value="${choice.id}"/>"
+                                                                            selected>
+                                                                        <c:out value="${choice.name}"/></option>
+                                                                </c:when>
+                                                                <c:when test="${checked eq false}">
+                                                                    <option value="<c:out value="${choice.id}"/>">
+                                                                        <c:out value="${choice.name}"/></option>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </c:when>
+                                        </c:choose>
                                     </div>
                                 </c:when>
                                 <c:when test="${coincidedValue.field.valueType eq 'TEXT_AREA'}">
@@ -97,53 +194,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out
                                                 value="${field.name}"/></label>
-                                        <div class="col-sm-8">
-                                            <input class="form-control" type="text"
-                                                   name="<c:out value="${field.fieldId}"/>"
-                                                   maxlength="<c:out value="${field.size}"/>"
-                                                    <c:if test="${field.require}">
-                                                        required="<c:out
-                                                            value="${field.require}"/>
-                                                    </c:if>"
-                                                    />
 
-                                    <c:if test="${field.choiceType eq 'radio'}">
-                                        <c:forEach var="choice" items="${field.choices}">
-                                            <div class="col-sm-8 col-sm-offset-4">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio"
-                                                               name="<c:out value="${field.fieldId}"/>"
-                                                               value="<c:out value="${choice.id}"/>">
-                                                        <c:out value="${choice.name}"/>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <c:if test="${field.choiceType eq 'checkbox'}">
-                                        <c:forEach var="choice" items="${field.choices}">
-                                            <div class="col-sm-8 col-sm-offset-4">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox"
-                                                               name="<c:out value="${field.fieldId}"/>"
-                                                               value="<c:out value="${choice.id}"/>">
-                                                        <c:out value="${choice.name}"/>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <c:if test="${field.choiceType eq 'dropdown'}">
-                                        <div class="col-sm-8 col-sm-offset-4">
-                                            <select name="<c:out value="${field.fieldId}"/>"
-                                                    class="form-control">
-                                                <c:forEach var="choice" items="${field.choices}">
-                                                    <option value="<c:out value="${choice.id}"/>">
-                                                        <c:out value="${choice.name}"/></option>
-                                                </c:forEach>
-                                            </select>
                                         <div class="col-sm-8">
                                             <input class="form-control" type="text"
                                                    name="<c:out value="${field.fieldId}"/>"
@@ -154,34 +205,71 @@
                                                     </c:if>"
                                                     />
                                         </div>
-                                    </c:if>
-                                </div>
-                            </c:when>
-                            <c:when test="${field.valueType eq 'TEXT_AREA'}">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">
-                                        <c:out value="${field.name}"/>
-                                    </label>
+                                    </div>
+                                </c:when>
+                                <c:when test="${field.valueType eq 'TEXT_AREA'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            <c:out value="${field.name}"/>
+                                        </label>
+
+                                        <div class="col-sm-8">
+                                        <textarea class="form-control"
+                                                  rows="<c:out value="${field.countLine}" />"
+                                                  name="<c:out value="${field.fieldId}"/>"
+                                                  style="resize:none;"
+                                                <c:if test="${field.require}">
+                                                    required="<c:out value="${field.require}"/>
+                                                </c:if>"></textarea>
+                                        </div>
                                     </div>
                                 </c:when>
                                 <c:when test="${field.valueType eq 'MULTI_CHOICE'}">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out
                                                 value="${field.name}"/></label>
-
-                                        <c:forEach var="choice" items="${field.choices}">
-                                            <div class="col-sm-8 col-sm-offset-4">
-
-                                                <input type="checkbox"
-                                                       name="<c:out value="${field.fieldId}"/>"
-                                                       value="<c:out value="${choice.id}"/>"
-                                                       id="<c:out value="${field.fieldId}"/><c:out value="${choice.id}"/>">
-                                                <label for="<c:out value="${field.fieldId}"/><c:out value="${choice.id}"/>"
-                                                       style="font-weight: normal !important;">
-                                                    <c:out
-                                                            value="${choice.name}"/></label>
-                                            </div>
-                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${field.choiceType eq 'radio'}">
+                                                <c:forEach var="choice" items="${field.choices}">
+                                                    <div class="col-sm-8 col-sm-offset-4">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio"
+                                                                       name="<c:out value="${field.fieldId}"/>"
+                                                                       value="<c:out value="${choice.id}"/>">
+                                                                <c:out value="${choice.name}"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${field.choiceType eq 'checkbox'}">
+                                                <c:forEach var="choice" items="${field.choices}">
+                                                    <div class="col-sm-8 col-sm-offset-4">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox"
+                                                                       name="<c:out value="${field.fieldId}"/>"
+                                                                       value="<c:out value="${choice.id}"/>">
+                                                                <c:out value="${choice.name}"/>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${field.choiceType eq 'dropdown'}">
+                                                <div class="col-sm-8 col-sm-offset-4">
+                                                    <select name="<c:out value="${field.fieldId}"/>"
+                                                            class="form-control">
+                                                        <c:forEach var="choice"
+                                                                   items="${field.choices}">
+                                                            <option value="<c:out value="${choice.id}"/>">
+                                                                <c:out value="${choice.name}"/></option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </c:when>
+                                        </c:choose>
                                     </div>
                                 </c:when>
                                 <c:when test="${field.valueType eq 'TEXT_AREA'}">
