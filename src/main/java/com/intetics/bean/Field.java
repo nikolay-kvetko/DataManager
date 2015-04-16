@@ -2,6 +2,7 @@ package com.intetics.bean;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "field")
@@ -31,6 +32,10 @@ public abstract class Field {
 
     @Column(name = "modified_date")
     private Date modifiedDate;
+
+    @OneToMany(mappedBy = "field")
+    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
+    private List<FieldValue> fieldValues;
 
     public Long getFieldId() {
         return fieldId;
