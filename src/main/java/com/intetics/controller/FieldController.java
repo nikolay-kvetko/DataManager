@@ -3,6 +3,7 @@ package com.intetics.controller;
 import com.intetics.bean.Choice;
 import com.intetics.bean.EntitySchema;
 import com.intetics.bean.Field;
+import com.intetics.bean.ImageField;
 import com.intetics.bean.MultiChoiceField;
 import com.intetics.bean.NumberField;
 import com.intetics.bean.TextAreaField;
@@ -70,6 +71,8 @@ public class FieldController {
             model.addAttribute("modalTitle", "Create Text Area Field");
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             model.addAttribute("modalTitle", "Create Number Field");
+        } else if (fieldType.equalsIgnoreCase("IMAGE")){
+            model.addAttribute("modalTitle", "Create Image Field");
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -153,6 +156,18 @@ public class FieldController {
                 numberField.setRequire(true);
             }
             entitySchema.getFields().add(numberField);
+        } else if (fieldType.equalsIgnoreCase("IMAGE")){
+            ImageField imageField = new ImageField();
+
+            imageField.setCreateDate(currentDate);
+            imageField.setModifiedDate(currentDate);
+            imageField.setName(params.get("fieldName").get(0));
+
+            if (params.get("active") != null) {
+                imageField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(imageField);
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -184,6 +199,8 @@ public class FieldController {
             model.addAttribute("modalTitle", "Edit Text Area Field");
         } else if (field.getValueType() == ValueType.NUMBER) {
             model.addAttribute("modalTitle", "Edit Number Field");
+        } else if (field.getValueType() == ValueType.IMAGE) {
+            model.addAttribute("modalTitle", "Edit Image Field");
         }
 
         HttpSession session = request.getSession();

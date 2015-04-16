@@ -29,6 +29,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/number'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'image'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/image'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
