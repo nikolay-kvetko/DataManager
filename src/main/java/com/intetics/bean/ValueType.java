@@ -53,6 +53,11 @@ public enum ValueType {
             return null;
         }
     },
+    LOOK_UP{
+        public FieldValue newValue(List<String> values, Field field) {
+            return null;
+        }
+    },
     IMAGE{
         public FieldValue newValue(List<String> values, Field field) {
             return null;
