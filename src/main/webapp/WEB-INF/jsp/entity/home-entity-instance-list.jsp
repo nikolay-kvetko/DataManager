@@ -76,10 +76,10 @@
                     </c:if>
                 </c:forEach>
                 <td>
-                    <%--<c:out value="${instance.modifiedDate}"/>--%>
+                    <c:out value="${instance.modifiedDate}"/>
                 </td>
                 <td>
-                    <%--<c:out value="${instance.createDate}"/>--%>
+                    <c:out value="${instance.createDate}"/>
                 </td>
                 <td>
                     <a href="/home/entity/<c:out value="${EntitySchema.id}"/>/instance/delete/<c:out value="${instance.id}"/>/confirm"

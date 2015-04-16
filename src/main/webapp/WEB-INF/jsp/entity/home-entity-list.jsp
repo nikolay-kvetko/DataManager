@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h2>Home Page</h2>
+        <h3>Home Page</h3>
     </div>
     <div class="row"></div>
 
@@ -24,10 +24,10 @@
                     </a>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${entity.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${entity.createDate}"/>
                 </td>
             </tr>
         </c:forEach>

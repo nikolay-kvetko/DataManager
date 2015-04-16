@@ -97,7 +97,53 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out
                                                 value="${field.name}"/></label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text"
+                                                   name="<c:out value="${field.fieldId}"/>"
+                                                   maxlength="<c:out value="${field.size}"/>"
+                                                    <c:if test="${field.require}">
+                                                        required="<c:out
+                                                            value="${field.require}"/>
+                                                    </c:if>"
+                                                    />
 
+                                    <c:if test="${field.choiceType eq 'radio'}">
+                                        <c:forEach var="choice" items="${field.choices}">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio"
+                                                               name="<c:out value="${field.fieldId}"/>"
+                                                               value="<c:out value="${choice.id}"/>">
+                                                        <c:out value="${choice.name}"/>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${field.choiceType eq 'checkbox'}">
+                                        <c:forEach var="choice" items="${field.choices}">
+                                            <div class="col-sm-8 col-sm-offset-4">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"
+                                                               name="<c:out value="${field.fieldId}"/>"
+                                                               value="<c:out value="${choice.id}"/>">
+                                                        <c:out value="${choice.name}"/>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${field.choiceType eq 'dropdown'}">
+                                        <div class="col-sm-8 col-sm-offset-4">
+                                            <select name="<c:out value="${field.fieldId}"/>"
+                                                    class="form-control">
+                                                <c:forEach var="choice" items="${field.choices}">
+                                                    <option value="<c:out value="${choice.id}"/>">
+                                                        <c:out value="${choice.name}"/></option>
+                                                </c:forEach>
+                                            </select>
                                         <div class="col-sm-8">
                                             <input class="form-control" type="text"
                                                    name="<c:out value="${field.fieldId}"/>"
@@ -108,6 +154,14 @@
                                                     </c:if>"
                                                     />
                                         </div>
+                                    </c:if>
+                                </div>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'TEXT_AREA'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
                                     </div>
                                 </c:when>
                                 <c:when test="${field.valueType eq 'MULTI_CHOICE'}">

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Nonnull;
-import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,6 @@ import java.util.List;
 public class EntitySchemaController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntitySchemaController.class);
-    private String dateFormat = "HH:mm:ss dd-MM-yyyy";
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
@@ -60,11 +60,15 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
-    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                          HttpServletRequest request) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         model.addAttribute("EntitySchema", entitySchema);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("entitySchemaCreateDate-"+entitySchemaId, entitySchema.getCreateDate());
 
         model.addAttribute("modalTitle", "Edit Entity");
         model.addAttribute("modalSaveButton", "Edit");
@@ -73,16 +77,20 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(EntitySchema entitySchema) {
+    public String saveEntitySchema(EntitySchema entitySchema, HttpServletRequest request) {
+
+        Date currentDate = new Date();
 
         if(entitySchema.getId() != null){
-            entitySchema.setModifiedDate(new SimpleDateFormat(dateFormat).format(new Date()));
+            HttpSession session = request.getSession();
+            entitySchema.setCreateDate((Date) session.getAttribute("entitySchemaCreateDate-"+entitySchema.getId()));
+            entitySchema.setModifiedDate(currentDate);
             entitySchemaDao.saveOrUpdate(entitySchema);
             return "redirect:/entity/"+entitySchema.getId()+"/field/list";
         }
 
-        entitySchema.setCreateDate(new SimpleDateFormat(dateFormat).format(new Date()));
-        entitySchema.setModifiedDate(new SimpleDateFormat(dateFormat).format(new Date()));
+        entitySchema.setCreateDate(currentDate);
+        entitySchema.setModifiedDate(currentDate);
 
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";

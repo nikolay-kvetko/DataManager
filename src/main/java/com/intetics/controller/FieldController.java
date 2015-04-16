@@ -1,6 +1,13 @@
 package com.intetics.controller;
 
-import com.intetics.bean.*;
+import com.intetics.bean.Choice;
+import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.MultiChoiceField;
+import com.intetics.bean.NumberField;
+import com.intetics.bean.TextAreaField;
+import com.intetics.bean.TextField;
+import com.intetics.bean.ValueType;
 import com.intetics.dao.EntitySchemaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +68,8 @@ public class FieldController {
             
         } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
             model.addAttribute("modalTitle", "Create Text Area Field");
+        } else if (fieldType.equalsIgnoreCase("NUMBER")){
+            model.addAttribute("modalTitle", "Create Number Field");
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -78,7 +86,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         if (fieldType.equalsIgnoreCase("STRING")) {
             TextField textField = new TextField();
@@ -113,6 +121,7 @@ public class FieldController {
             multiChoiceField.setCreateDate(currentDate);
             multiChoiceField.setModifiedDate(currentDate);
             multiChoiceField.setName(params.get("fieldName").get(0));
+            multiChoiceField.setChoiceType(params.get("display").get(0));
 
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
@@ -129,6 +138,21 @@ public class FieldController {
             }
 
             entitySchema.getFields().add(multiChoiceField);
+        } else if (fieldType.equalsIgnoreCase("NUMBER")){
+            NumberField numberField = new NumberField();
+
+            numberField.setCreateDate(currentDate);
+            numberField.setModifiedDate(currentDate);
+            numberField.setName(params.get("fieldName").get(0));
+
+            numberField.setMinValue(Integer.valueOf(params.get("minValue").get(0)));
+            numberField.setMaxValue(Integer.valueOf(params.get("maxValue").get(0)));
+            numberField.setNumberDecimal(Integer.valueOf(params.get("numberDecimal").get(0)));
+
+            if (params.get("active") != null) {
+                numberField.setRequire(true);
+            }
+            entitySchema.getFields().add(numberField);
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -158,6 +182,8 @@ public class FieldController {
             
         } else if (field.getValueType() == ValueType.TEXT_AREA) {
             model.addAttribute("modalTitle", "Edit Text Area Field");
+        } else if (field.getValueType() == ValueType.NUMBER) {
+            model.addAttribute("modalTitle", "Edit Number Field");
         }
 
         HttpSession session = request.getSession();
@@ -179,7 +205,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         HttpSession session = request.getSession();
 
@@ -198,7 +224,7 @@ public class FieldController {
             field.setRequire(false);
         }
 
-        field.setCreateDate((String) session.getAttribute("fieldCreateDate-"+fieldId));
+        field.setCreateDate((Date) session.getAttribute("fieldCreateDate-"+fieldId));
         field.setModifiedDate(currentDate);
 
         if (field.getValueType() == ValueType.STRING) {
@@ -213,6 +239,8 @@ public class FieldController {
         } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
             MultiChoiceField multiChoiceField = (MultiChoiceField) field;
 
+            multiChoiceField.setChoiceType(params.get("display").get(0));
+
             multiChoiceField.getChoices().clear();
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
@@ -224,6 +252,12 @@ public class FieldController {
 
             multiChoiceField.setChoices(choiceList);
 
+        } else if (field.getValueType() == ValueType.NUMBER){
+            NumberField numberField = (NumberField) field;
+
+            numberField.setMinValue(Integer.valueOf(params.get("minValue").get(0)));
+            numberField.setMaxValue(Integer.valueOf(params.get("maxValue").get(0)));
+            numberField.setNumberDecimal(Integer.valueOf(params.get("numberDecimal").get(0)));
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -256,7 +290,7 @@ public class FieldController {
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        String currentDate = new SimpleDateFormat(dateFormat).format(new Date());
+        Date currentDate = new Date();
 
         Field field = entitySchemaDao.getField(fieldId);
         entitySchema.getFields().remove(field);

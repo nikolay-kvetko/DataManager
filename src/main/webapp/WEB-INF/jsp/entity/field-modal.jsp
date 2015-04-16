@@ -25,6 +25,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/text_area'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'number'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/number'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -83,21 +87,40 @@
                                 <label class="col-sm-4 control-label">Display choices using*</label>
 
                                 <div class="col-sm-8">
-                                    <input type="radio" name="display" value="radio" id="radioId"/>
-                                    <label for="radioId" style="font-weight: normal !important;">
-                                        Radio Buttons</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="radio"
+                                                    <c:if test="${field.choiceType == null}">
+                                                        checked
+                                                    </c:if>
+                                                    <c:if test="${field.choiceType eq 'radio'}">
+                                                        checked
+                                                    </c:if>/>
+                                            Radio Buttons
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="checkbox"
-                                           id="checkboxId"/>
-                                    <label for="checkboxId" style="font-weight: normal !important;">
-                                        Checkboxes</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="checkbox"
+                                                    <c:if test="${field.choiceType eq 'checkbox'}">
+                                                        checked
+                                                    </c:if>/>
+                                            Checkboxes
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="dropdown"
-                                           id="dropdownId"/>
-                                    <label for="dropdownId" style="font-weight: normal !important;">
-                                        Dropdown Menu</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="dropdown"
+                                                    <c:if test="${field.choiceType eq 'dropdown'}">
+                                                        checked
+                                                    </c:if>/>
+                                            Dropdown Menu
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>
@@ -107,7 +130,8 @@
                                     editing*</label>
 
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="number" name="countLine" min="1"
+                                    <input class="form-control" type="number" name="countLine"
+                                           min="1"
                                            max="5" required="required"
                                             <c:if test="${field.countLine != null}">
                                                 value="<c:out value="${field.countLine}"/>"
@@ -116,6 +140,57 @@
                                 </div>
                                 <label class="col-sm-4" style="font-weight: normal !important;">(can
                                     be from 1 to 5)</label>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'number'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Minimum allowed value</label>
+
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="number" name="minValue"
+                                            <c:if test="${field.minValue != null}">
+                                                value="<c:out value="${field.minValue}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Maximum allowed value</label>
+
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="number" name="maxValue"
+                                            <c:if test="${field.maxValue != null}">
+                                                value="<c:out value="${field.maxValue}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Number of decimal
+                                    places*</label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="numberDecimal">
+                                        <option <c:if test="${field.numberDecimal == 0}">
+                                            selected
+                                        </c:if> value="0">0</option>
+                                        <option <c:if test="${field.numberDecimal == 1}">
+                                            selected
+                                        </c:if> value="1">1</option>
+                                        <option <c:if test="${field.numberDecimal == 2}">
+                                            selected
+                                        </c:if> value="2">2</option>
+                                        <option <c:if test="${field.numberDecimal == 3}">
+                                            selected
+                                        </c:if> value="3">3</option>
+                                        <option <c:if test="${field.numberDecimal == 4}">
+                                            selected
+                                        </c:if> value="4">4</option>
+                                        <option <c:if test="${field.numberDecimal == 5}">
+                                            selected
+                                        </c:if> value="5">5</option>
+                                    </select>
+                                </div>
                             </div>
                         </c:when>
                     </c:choose>
