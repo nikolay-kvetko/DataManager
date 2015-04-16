@@ -67,6 +67,9 @@
                                           rows="<c:out value="${coincidedValue.field.countLine}"/>"><c:out
                                         value="${coincidedValue.textAreaValue}"/></textarea>
                                     </c:when>
+                                    <c:when test="${coincidedValue.field.valueType eq 'NUMBER'}">
+                                        <c:out value="${coincidedValue.numberValue}"/>
+                                    </c:when>
                                 </c:choose>
                             </a>
                         </td>

@@ -50,7 +50,13 @@ public enum ValueType {
     },
     NUMBER{
         public FieldValue newValue(List<String> values, Field field) {
-            return null;
+            NumberValue value = new NumberValue();
+
+            if(value != null) {
+                value.setNumberValue(Double.parseDouble(values.get(0)));
+            }
+
+            return value;
         }
     };
 

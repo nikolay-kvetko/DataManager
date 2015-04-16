@@ -51,6 +51,26 @@
                                         </div>
                                     </div>
                                 </c:when>
+                                <c:when test="${coincidedValue.field.valueType eq 'NUMBER'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><c:out
+                                                value="${field.name}"/></label>
+
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="number"
+                                                   name="<c:out value="${field.fieldId}"/>"
+                                                   min="<c:out value="${field.minValue}"/>"
+                                                   max="<c:out value="${field.maxValue}"/>"
+                                                   <%--step=""--%>
+                                                    <c:if test="${field.require}">
+                                                        required="<c:out
+                                                            value="${field.require}"/>
+                                                    </c:if>"
+                                                   value="<c:out value="${coincidedValue.numberValue}"/>"
+                                                    />
+                                        </div>
+                                    </div>
+                                </c:when>
                                 <c:when test="${coincidedValue.field.valueType eq 'MULTI_CHOICE'}">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out
@@ -199,6 +219,25 @@
                                             <input class="form-control" type="text"
                                                    name="<c:out value="${field.fieldId}"/>"
                                                    maxlength="<c:out value="${field.size}"/>"
+                                                    <c:if test="${field.require}">
+                                                        required="<c:out
+                                                            value="${field.require}"/>
+                                                    </c:if>"
+                                                    />
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${field.valueType eq 'NUMBER'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><c:out
+                                                value="${field.name}"/></label>
+
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="number"
+                                                   name="<c:out value="${field.fieldId}"/>"
+                                                   min="<c:out value="${field.minValue}"/>"
+                                                   max="<c:out value="${field.maxValue}"/>"
+                                                   <%--step=""--%>
                                                     <c:if test="${field.require}">
                                                         required="<c:out
                                                             value="${field.require}"/>
