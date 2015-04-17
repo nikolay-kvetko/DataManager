@@ -61,7 +61,11 @@
                                                    name="<c:out value="${field.fieldId}"/>"
                                                    min="<c:out value="${field.minValue}"/>"
                                                    max="<c:out value="${field.maxValue}"/>"
-                                                   <%--step=""--%>
+                                                    <c:set var="step" value="${1}"/>
+                                                    <c:forEach begin="1" end="${field.numberDecimal}">
+                                                        <c:set var="step" value="${step / 10}"/>
+                                                    </c:forEach>
+                                                   step="<c:out value="${step}"/>"
                                                     <c:if test="${field.require}">
                                                         required="<c:out
                                                             value="${field.require}"/>
@@ -237,7 +241,11 @@
                                                    name="<c:out value="${field.fieldId}"/>"
                                                    min="<c:out value="${field.minValue}"/>"
                                                    max="<c:out value="${field.maxValue}"/>"
-                                                   <%--step=""--%>
+                                                   <c:set var="step" value="${1}"/>
+                                                   <c:forEach begin="1" end="${field.numberDecimal}">
+                                                      <c:set var="step" value="${step / 10}"/>
+                                                   </c:forEach>
+                                                   step="<c:out value="${step}"/>"
                                                     <c:if test="${field.require}">
                                                         required="<c:out
                                                             value="${field.require}"/>
