@@ -29,6 +29,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/number'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'date'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/date'/>
+                    </c:when>
                     <c:when test="${fieldType eq 'look_up'}">
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/look_up'/>
@@ -53,12 +57,15 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <input type="checkbox" name="active" value="true" id="requireId"
-                                    <c:if test="${field.require eq true}">
-                                        checked
-                                    </c:if>/>
-                            <label for="requireId" style="font-weight: normal !important;"> Require
-                                that this column contains information</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="active" value="true" id="requireId"
+                                            <c:if test="${field.require eq true}">
+                                                checked
+                                            </c:if>/>
+                                    Require that this column contains information
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <c:choose>
@@ -181,29 +188,49 @@
                                     <select class="form-control" name="numberDecimal">
                                         <option <c:if test="${field.numberDecimal == 0}">
                                             selected
-                                        </c:if> value="0">0
-                                        </option>
+                                        </c:if> value="0">0</option>
                                         <option <c:if test="${field.numberDecimal == 1}">
                                             selected
-                                        </c:if> value="1">1
-                                        </option>
+                                        </c:if> value="1">1</option>
                                         <option <c:if test="${field.numberDecimal == 2}">
                                             selected
-                                        </c:if> value="2">2
-                                        </option>
+                                        </c:if> value="2">2</option>
                                         <option <c:if test="${field.numberDecimal == 3}">
                                             selected
-                                        </c:if> value="3">3
-                                        </option>
+                                        </c:if> value="3">3</option>
                                         <option <c:if test="${field.numberDecimal == 4}">
                                             selected
-                                        </c:if> value="4">4
-                                        </option>
+                                        </c:if> value="4">4</option>
                                         <option <c:if test="${field.numberDecimal == 5}">
                                             selected
-                                        </c:if> value="5">5
-                                        </option>
+                                        </c:if> value="5">5</option>
                                     </select>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'date'}">
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate eq true}">
+                                                        checked
+                                                    </c:if>/>
+                                            Date and Time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="false"
+                                                    <c:if test="${field.fullDate eq false}">
+                                                        checked
+                                                    </c:if>/>
+                                            Only Date
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>

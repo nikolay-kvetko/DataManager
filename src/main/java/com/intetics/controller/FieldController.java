@@ -30,7 +30,6 @@ import java.util.List;
 public class FieldController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FieldController.class);
-    private String dateFormat = "HH:mm:ss dd-MM-yyyy";
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
@@ -61,10 +60,16 @@ public class FieldController {
             
         } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
             model.addAttribute("modalTitle", "Create Text Area Field");
+            
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             model.addAttribute("modalTitle", "Create Number Field");
+
+        } else if (fieldType.equalsIgnoreCase("DATE")){
+            model.addAttribute("modalTitle", "Create Date Field");
+            
         } else if (fieldType.equalsIgnoreCase("IMAGE")){
             model.addAttribute("modalTitle", "Create Image Field");
+            
         } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
             model.addAttribute("modalTitle", "Create Look Up Field");
 
@@ -116,6 +121,7 @@ public class FieldController {
             }
 
             entitySchema.getFields().add(textAreaField);
+
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
 
@@ -139,6 +145,7 @@ public class FieldController {
             }
 
             entitySchema.getFields().add(multiChoiceField);
+
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             NumberField numberField = new NumberField();
 
@@ -154,6 +161,21 @@ public class FieldController {
                 numberField.setRequire(true);
             }
             entitySchema.getFields().add(numberField);
+
+        } else if (fieldType.equalsIgnoreCase("DATE")){
+            DateField dateField = new DateField();
+
+            dateField.setCreateDate(currentDate);
+            dateField.setModifiedDate(currentDate);
+            dateField.setName(params.get("fieldName").get(0));
+
+            dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
+
+            if (params.get("active") != null) {
+                dateField.setRequire(true);
+            }
+            entitySchema.getFields().add(dateField);
+            
         } else if (fieldType.equalsIgnoreCase("IMAGE")){
             ImageField imageField = new ImageField();
 
@@ -210,8 +232,13 @@ public class FieldController {
             
         } else if (field.getValueType() == ValueType.TEXT_AREA) {
             model.addAttribute("modalTitle", "Edit Text Area Field");
+
         } else if (field.getValueType() == ValueType.NUMBER) {
             model.addAttribute("modalTitle", "Edit Number Field");
+
+        } else if (field.getValueType() == ValueType.DATE) {
+            model.addAttribute("modalTitle", "Edit Date Field");
+
         } else if (field.getValueType() == ValueType.IMAGE) {
             model.addAttribute("modalTitle", "Edit Image Field");
         } else if (field.getValueType() == ValueType.LOOK_UP) {
@@ -305,6 +332,12 @@ public class FieldController {
             numberField.setMinValue(Integer.valueOf(params.get("minValue").get(0)));
             numberField.setMaxValue(Integer.valueOf(params.get("maxValue").get(0)));
             numberField.setNumberDecimal(Integer.valueOf(params.get("numberDecimal").get(0)));
+
+        } else if (field.getValueType() == ValueType.DATE){
+            DateField dateField = (DateField) field;
+
+            dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
+            
         } else if (field.getValueType() == ValueType.LOOK_UP){
             LookUpField lookUpField = (LookUpField)field;
 
