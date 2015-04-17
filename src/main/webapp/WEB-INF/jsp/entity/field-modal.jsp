@@ -29,6 +29,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/number'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'date'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/date'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -45,12 +49,23 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <input type="checkbox" name="active" value="true" id="requireId"
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="active" value="true" id="requireId"
+                                            <c:if test="${field.require eq true}">
+                                                checked
+                                            </c:if>/>
+                                    Require that this column contains information
+                                </label>
+                            </div>
+
+                            <%--<input type="checkbox" name="active" value="true" id="requireId"
                                     <c:if test="${field.require eq true}">
                                         checked
                                     </c:if>/>
                             <label for="requireId" style="font-weight: normal !important;"> Require
-                                that this column contains information</label>
+                                that this column contains information</label>--%>
                         </div>
                     </div>
                     <c:choose>
@@ -190,6 +205,32 @@
                                             selected
                                         </c:if> value="5">5</option>
                                     </select>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'date'}">
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate eq true}">
+                                                        checked
+                                                    </c:if>/>
+                                            Date and Time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="false"
+                                                    <c:if test="${field.fullDate eq false}">
+                                                        checked
+                                                    </c:if>/>
+                                            Only Date
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </c:when>

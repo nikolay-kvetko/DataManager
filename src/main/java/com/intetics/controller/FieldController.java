@@ -1,13 +1,6 @@
 package com.intetics.controller;
 
-import com.intetics.bean.Choice;
-import com.intetics.bean.EntitySchema;
-import com.intetics.bean.Field;
-import com.intetics.bean.MultiChoiceField;
-import com.intetics.bean.NumberField;
-import com.intetics.bean.TextAreaField;
-import com.intetics.bean.TextField;
-import com.intetics.bean.ValueType;
+import com.intetics.bean.*;
 import com.intetics.dao.EntitySchemaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +30,6 @@ import java.util.List;
 public class FieldController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FieldController.class);
-    private String dateFormat = "HH:mm:ss dd-MM-yyyy";
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
@@ -68,8 +60,12 @@ public class FieldController {
             
         } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
             model.addAttribute("modalTitle", "Create Text Area Field");
+
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             model.addAttribute("modalTitle", "Create Number Field");
+
+        } else if (fieldType.equalsIgnoreCase("DATE")){
+            model.addAttribute("modalTitle", "Create Date Field");
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -115,6 +111,7 @@ public class FieldController {
             }
 
             entitySchema.getFields().add(textAreaField);
+
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
 
@@ -138,6 +135,7 @@ public class FieldController {
             }
 
             entitySchema.getFields().add(multiChoiceField);
+
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             NumberField numberField = new NumberField();
 
@@ -153,6 +151,20 @@ public class FieldController {
                 numberField.setRequire(true);
             }
             entitySchema.getFields().add(numberField);
+
+        } else if (fieldType.equalsIgnoreCase("DATE")){
+            DateField dateField = new DateField();
+
+            dateField.setCreateDate(currentDate);
+            dateField.setModifiedDate(currentDate);
+            dateField.setName(params.get("fieldName").get(0));
+
+            dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
+
+            if (params.get("active") != null) {
+                dateField.setRequire(true);
+            }
+            entitySchema.getFields().add(dateField);
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -182,8 +194,13 @@ public class FieldController {
             
         } else if (field.getValueType() == ValueType.TEXT_AREA) {
             model.addAttribute("modalTitle", "Edit Text Area Field");
+
         } else if (field.getValueType() == ValueType.NUMBER) {
             model.addAttribute("modalTitle", "Edit Number Field");
+
+        } else if (field.getValueType() == ValueType.DATE) {
+            model.addAttribute("modalTitle", "Edit Date Field");
+
         }
 
         HttpSession session = request.getSession();
@@ -258,6 +275,11 @@ public class FieldController {
             numberField.setMinValue(Integer.valueOf(params.get("minValue").get(0)));
             numberField.setMaxValue(Integer.valueOf(params.get("maxValue").get(0)));
             numberField.setNumberDecimal(Integer.valueOf(params.get("numberDecimal").get(0)));
+
+        } else if (field.getValueType() == ValueType.DATE){
+            DateField dateField = (DateField) field;
+
+            dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
         }
 
         entitySchema.setModifiedDate(currentDate);

@@ -26,6 +26,10 @@ public class EntitySchema {
     @JoinColumn(name = "entity_schema_id", nullable = false)
     private List<Field> fields;
 
+    @OneToMany(mappedBy = "entitySchema")
+    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
+    private List<EntityInstance> entityInstances;
+
     public Long getId() {
         return id;
     }
