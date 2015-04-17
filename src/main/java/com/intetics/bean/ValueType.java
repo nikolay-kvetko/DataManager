@@ -1,6 +1,10 @@
 package com.intetics.bean;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,7 +65,20 @@ public enum ValueType {
     },
     DATE {
         public FieldValue newValue(List<String> values, Field field) {
-            return null;
+            DateValue value = new DateValue();
+            DateFormat format = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
+            Date date = null;
+            try {
+                date = format.parse(values.get(0));
+            } catch (ParseException e) {
+                //TODO: LOGGER
+                // e.printStackTrace();
+            }
+            if(value != null) {
+                value.setDateValue(date);
+            }
+
+            return value;
         }
     };
 

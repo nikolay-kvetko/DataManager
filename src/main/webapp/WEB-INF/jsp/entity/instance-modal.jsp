@@ -62,7 +62,8 @@
                                                    min="<c:out value="${field.minValue}"/>"
                                                    max="<c:out value="${field.maxValue}"/>"
                                                     <c:set var="step" value="${1}"/>
-                                                    <c:forEach begin="1" end="${field.numberDecimal}">
+                                                    <c:forEach begin="1"
+                                                               end="${field.numberDecimal}">
                                                         <c:set var="step" value="${step / 10}"/>
                                                     </c:forEach>
                                                    step="<c:out value="${step}"/>"
@@ -231,6 +232,23 @@
                                         </div>
                                     </div>
                                 </c:when>
+                                <c:when test="${field.valueType eq 'DATE'}">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><c:out
+                                                value="${field.name}"/></label>
+
+                                        <div class="col-sm-8">
+                                            <div class="input-group date" id="datetimepicker">
+                                                <input type="text" class="form-control"/>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </c:when>
                                 <c:when test="${field.valueType eq 'NUMBER'}">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out
@@ -241,10 +259,11 @@
                                                    name="<c:out value="${field.fieldId}"/>"
                                                    min="<c:out value="${field.minValue}"/>"
                                                    max="<c:out value="${field.maxValue}"/>"
-                                                   <c:set var="step" value="${1}"/>
-                                                   <c:forEach begin="1" end="${field.numberDecimal}">
-                                                      <c:set var="step" value="${step / 10}"/>
-                                                   </c:forEach>
+                                                    <c:set var="step" value="${1}"/>
+                                                    <c:forEach begin="1"
+                                                               end="${field.numberDecimal}">
+                                                        <c:set var="step" value="${step / 10}"/>
+                                                    </c:forEach>
                                                    step="<c:out value="${step}"/>"
                                                     <c:if test="${field.require}">
                                                         required="<c:out
