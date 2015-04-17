@@ -13,6 +13,9 @@ public class LookUpField extends Field{
         super(ValueType.LOOK_UP);
     }
 
+    @Column(name = "look_up_entity_id")
+    private Long lookUpEntityId;
+
     @Column(name = "look_up_field_id")
     private Long lookUpFieldId;
 
@@ -22,5 +25,13 @@ public class LookUpField extends Field{
 
     public void setLookUpFieldId(Long lookUpFieldId) {
         this.lookUpFieldId = lookUpFieldId;
+    }
+
+    public Long getLookUpEntityId() {
+        return lookUpEntityId;
+    }
+
+    public void setLookUpEntityId(Long lookUpEntityId) {
+        this.lookUpEntityId = lookUpEntityId;
     }
 }
