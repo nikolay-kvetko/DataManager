@@ -81,6 +81,14 @@ public abstract class Field {
         this.modifiedDate = modifiedDate;
     }
 
+    public List<FieldValue> getFieldValues() {
+        return fieldValues;
+    }
+
+    public void setFieldValues(List<FieldValue> fieldValues) {
+        this.fieldValues = fieldValues;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

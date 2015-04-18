@@ -33,6 +33,14 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/date'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'look_up'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/look_up'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'image'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/image'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -60,12 +68,6 @@
                                 </label>
                             </div>
 
-                            <%--<input type="checkbox" name="active" value="true" id="requireId"
-                                    <c:if test="${field.require eq true}">
-                                        checked
-                                    </c:if>/>
-                            <label for="requireId" style="font-weight: normal !important;"> Require
-                                that this column contains information</label>--%>
                         </div>
                     </div>
                     <c:choose>
@@ -188,22 +190,28 @@
                                     <select class="form-control" name="numberDecimal">
                                         <option <c:if test="${field.numberDecimal == 0}">
                                             selected
-                                        </c:if> value="0">0</option>
+                                        </c:if> value="0">0
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 1}">
                                             selected
-                                        </c:if> value="1">1</option>
+                                        </c:if> value="1">1
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 2}">
                                             selected
-                                        </c:if> value="2">2</option>
+                                        </c:if> value="2">2
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 3}">
                                             selected
-                                        </c:if> value="3">3</option>
+                                        </c:if> value="3">3
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 4}">
                                             selected
-                                        </c:if> value="4">4</option>
+                                        </c:if> value="4">4
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 5}">
                                             selected
-                                        </c:if> value="5">5</option>
+                                        </c:if> value="5">5
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -234,6 +242,36 @@
                                 </div>
                             </div>
                         </c:when>
+                        <c:when test="${fieldType eq 'look_up'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Get information from entity*</label>
+
+                                <div class="col-sm-8">
+                                    <select name="selectEntity" class="form-control" id="entityList">
+                                        <c:forEach var="entity" items="${listEntity}">
+                                            <option <c:if
+                                                    test="${entity.id == field.lookUpEntityId}">
+                                                selected
+                                            </c:if> value="${entity.id}"><c:out value="${entity.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">In this field*</label>
+
+                                <div class="col-sm-8" id="fieldList">
+                                    <select name="selectField" class="form-control" id="selectField">
+                                        <c:forEach var="fieldItem" items="${listField}">
+                                            <option <c:if
+                                                    test="${fieldItem.fieldId == field.lookUpFieldId}">
+                                                selected
+                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </form>
             </div>
@@ -260,4 +298,19 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#entityList').change(function () {
+        var entityId = $('#entityList')[0].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/getNewFieldList',
+            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            success: function (fieldList) {
+                $("#fieldList").html(fieldList);
+            }
+        });
+    })
+</script>
 
