@@ -232,23 +232,6 @@
                                         </div>
                                     </div>
                                 </c:when>
-                                <c:when test="${field.valueType eq 'DATE'}">
-
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label"><c:out
-                                                value="${field.name}"/></label>
-
-                                        <div class="col-sm-8">
-                                            <div class="input-group date" id="datetimepicker">
-                                                <input type="text" class="form-control"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </c:when>
                                 <c:when test="${field.valueType eq 'NUMBER'}">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label"><c:out

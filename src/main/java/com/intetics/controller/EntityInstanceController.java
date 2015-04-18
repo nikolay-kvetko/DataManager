@@ -135,9 +135,12 @@ public class EntityInstanceController {
         Assert.notNull(entitySchemaId);
         Assert.notNull(entityInstanceId);
 
+        Date currentDate = new Date();
+
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
         entityInstance.setEntitySchema(entitySchema);
+        entityInstance.setModifiedDate(currentDate);
 
         List<FieldValue> fieldValues = new ArrayList<FieldValue>();
 
@@ -184,6 +187,5 @@ public class EntityInstanceController {
         entityInstanceDao.delete(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
-
     }
 }

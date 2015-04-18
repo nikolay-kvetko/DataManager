@@ -15,7 +15,7 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             StringValue value = new StringValue();
 
-            if(value != null) {
+            if(values != null) {
                 value.setValue(values.get(0));
             }
 
@@ -26,7 +26,7 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field){
             TextAreaValue value = new TextAreaValue();
 
-            if(value != null) {
+            if(values != null) {
                 value.setTextAreaValue(values.get(0));
             }
 
@@ -56,7 +56,7 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             NumberValue value = new NumberValue();
 
-            if(value != null) {
+            if(values != null) {
                 value.setNumberValue(Double.parseDouble(values.get(0)));
             }
 
@@ -67,15 +67,16 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             DateValue value = new DateValue();
             DateFormat format = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
-            Date date = null;
-            try {
-                date = format.parse(values.get(0));
-            } catch (ParseException e) {
-                //TODO: LOGGER
-                // e.printStackTrace();
-            }
-            if(value != null) {
-                value.setDateValue(date);
+
+            if(values != null) {
+                Date date;
+
+                try {
+                    date = format.parse(values.get(0));
+                    value.setDateValue(date);
+                } catch (ParseException e) {
+                    //TODO: LOGGER
+                }
             }
 
             return value;
