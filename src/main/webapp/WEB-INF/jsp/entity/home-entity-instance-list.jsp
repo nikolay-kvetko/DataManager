@@ -3,7 +3,7 @@
 <div class="container">
     <div class="page-header">
         <h3>
-            <a href="/home/entity/list">Home Page</a> > <c:out value="${EntitySchema.name}"/>
+            <a href="/home/entity/list"><spring:message code="label.homepage"/></a> > <c:out value="${EntitySchema.name}"/>
         </h3>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
                   method="post"></form>
             <button form="CreateInstance" class="btn btn-success" data-toggle="modal"
                     data-target="#entityModal">
-                <span class="glyphicon glyphicon-plus-sign"></span> Create Instance
+                <span class="glyphicon glyphicon-plus-sign"></span> <spring:message code="button.createinstance"/>
             </button>
         </div>
     </div>
@@ -25,13 +25,13 @@
                 </th>
             </c:forEach>
             <th>
-                Last Modified
+                <spring:message code="label.lastmodified"/>
             </th>
             <th>
-                Created
+                <spring:message code="label.created"/>
             </th>
             <th>
-                Action
+                <spring:message code="label.action"/>
             </th>
         </tr>
         </thead>

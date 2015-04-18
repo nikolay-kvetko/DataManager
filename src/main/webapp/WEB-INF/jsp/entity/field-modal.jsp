@@ -64,7 +64,7 @@
                                             <c:if test="${field.require eq true}">
                                                 checked
                                             </c:if>/>
-                                    Require that this column contains information
+                                    <spring:message code="label.modal.require"/>
                                 </label>
                             </div>
 
@@ -73,7 +73,8 @@
                     <c:choose>
                         <c:when test="${fieldType eq 'string'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">String Size*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.stringsize"/></label>
 
                                 <div class="col-sm-3">
                                     <input class="form-control" type="number" name="size" min="1"
@@ -87,8 +88,8 @@
                         </c:when>
                         <c:when test="${fieldType eq 'multi_choice'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Type each choice on a separate
-                                    line*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.choicevalues"/></label>
 
                                 <div class="col-sm-8">
                                     <textarea class="form-control" rows="5" name="choices"
@@ -101,7 +102,8 @@
                             </div>
                             <div class="form-group">
 
-                                <label class="col-sm-4 control-label">Display choices using*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.choicetype"/></label>
 
                                 <div class="col-sm-8">
                                     <div class="radio">
@@ -113,7 +115,7 @@
                                                     <c:if test="${field.choiceType eq 'radio'}">
                                                         checked
                                                     </c:if>/>
-                                            Radio Buttons
+                                            <spring:message code="label.modal.radio"/>
                                         </label>
                                     </div>
                                 </div>
@@ -124,7 +126,7 @@
                                                     <c:if test="${field.choiceType eq 'checkbox'}">
                                                         checked
                                                     </c:if>/>
-                                            Checkboxes
+                                            <spring:message code="label.modal.checkbox"/>
                                         </label>
                                     </div>
                                 </div>
@@ -135,7 +137,7 @@
                                                     <c:if test="${field.choiceType eq 'dropdown'}">
                                                         checked
                                                     </c:if>/>
-                                            Dropdown Menu
+                                            <spring:message code="label.modal.dropdown"/>
                                         </label>
                                     </div>
                                 </div>
@@ -143,8 +145,8 @@
                         </c:when>
                         <c:when test="${fieldType eq 'text_area'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Number of lines for
-                                    editing*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.numberoflines"/></label>
 
                                 <div class="col-sm-4">
                                     <input class="form-control" type="number" name="countLine"
@@ -155,13 +157,15 @@
                                             </c:if>
                                             />
                                 </div>
-                                <label class="col-sm-4" style="font-weight: normal !important;">(can
-                                    be from 1 to 5)</label>
+                                <label class="col-sm-4"
+                                       style="font-weight: normal !important;"><spring:message
+                                        code="label.modal.numberoflinesadditional"/></label>
                             </div>
                         </c:when>
                         <c:when test="${fieldType eq 'number'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Minimum allowed value</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.min"/></label>
 
                                 <div class="col-sm-3">
                                     <input class="form-control" type="number" name="minValue"
@@ -172,7 +176,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Maximum allowed value</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.max"/></label>
 
                                 <div class="col-sm-3">
                                     <input class="form-control" type="number" name="maxValue"
@@ -183,8 +188,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Number of decimal
-                                    places*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.decimalplaces"/></label>
 
                                 <div class="col-sm-8">
                                     <select class="form-control" name="numberDecimal">
@@ -281,7 +286,8 @@
                         <form id="Cancel"
                               action="/entity/<c:out value="${EntitySchema.id}"/>/field/list"
                               method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message
+                                code="button.cancel"/></button>
                         <button form="Field" type="submit" class="btn btn-primary"><c:out
                                 value="${modalSaveButton}"/></button>
                     </c:when>
@@ -289,7 +295,8 @@
                         <form id="Cancel"
                               action="/entity/<c:out value="${EntitySchema.id}"/>/field/list"
                               method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message
+                                code="button.cancel"/></button>
                         <button form="Field" type="submit" class="btn btn-primary"><c:out
                                 value="${modalSaveButton}"/></button>
                     </c:otherwise>

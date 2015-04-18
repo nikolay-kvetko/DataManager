@@ -5,7 +5,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Create\Edit Instance</h4>
+                <h4 class="modal-title"><spring:message code="header.createinstance"/></h4>
             </div>
             <div class="modal-body form-horizontal">
                 <c:choose>
