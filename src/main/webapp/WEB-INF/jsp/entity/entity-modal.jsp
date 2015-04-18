@@ -5,7 +5,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><c:out value="${modalTitle}"/></h4>
+                <h4 class="modal-title"><spring:message code="header.createentity"/> <spring:message code="header.editentity"/></h4>
             </div>
             <div class="modal-body form-horizontal">
                 <spring:url var = "action" value='/entity/save'/>
@@ -23,12 +23,12 @@
                 <c:choose>
                     <c:when test="${modalSaveButton eq 'Create'}">
                         <form id="Cancel" action="/entity/list" method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message code="button.cancel"/></button>
                         <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:when>
                     <c:otherwise>
                         <form id="Cancel" action="/entity/<c:out value="${EntitySchema.id}"/>/field/list" method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message code="button.cancel"/></button>
                         <button form="EntitySchema" type="submit" class="btn btn-primary"><c:out value="${modalSaveButton}"/></button>
                     </c:otherwise>
                 </c:choose>
