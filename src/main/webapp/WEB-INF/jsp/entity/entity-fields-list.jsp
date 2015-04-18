@@ -21,6 +21,9 @@
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/text_area"><spring:message code="dropdown.textarea"/></a></li>
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/multi_choice"><spring:message code="dropdown.choicefield"/></a></li>
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/number"><spring:message code="dropdown.numberfield"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/date">Date Field</a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/look_up">Look Up</a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/image">Image Field</a></li>
                 </ul>
             </div>
         </div>

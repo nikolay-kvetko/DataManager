@@ -29,6 +29,18 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/number'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'date'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/date'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'look_up'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/look_up'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'image'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/image'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -45,12 +57,17 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <input type="checkbox" name="active" value="true" id="requireId"
-                                    <c:if test="${field.require eq true}">
-                                        checked
-                                    </c:if>/>
-                            <label for="requireId" style="font-weight: normal !important;">
-                                <spring:message code="label.modal.require"/></label>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="active" value="true" id="requireId"
+                                            <c:if test="${field.require eq true}">
+                                                checked
+                                            </c:if>/>
+                                    <spring:message code="label.modal.require"/>
+                                </label>
+                            </div>
+
                         </div>
                     </div>
                     <c:choose>
@@ -204,6 +221,62 @@
                                 </div>
                             </div>
                         </c:when>
+                        <c:when test="${fieldType eq 'date'}">
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate eq true}">
+                                                        checked
+                                                    </c:if>/>
+                                            Date and Time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="false"
+                                                    <c:if test="${field.fullDate eq false}">
+                                                        checked
+                                                    </c:if>/>
+                                            Only Date
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'look_up'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Get information from entity*</label>
+
+                                <div class="col-sm-8">
+                                    <select name="selectEntity" class="form-control" id="entityList">
+                                        <c:forEach var="entity" items="${listEntity}">
+                                            <option <c:if
+                                                    test="${entity.id == field.lookUpEntityId}">
+                                                selected
+                                            </c:if> value="${entity.id}"><c:out value="${entity.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">In this field*</label>
+
+                                <div class="col-sm-8" id="fieldList">
+                                    <select name="selectField" class="form-control" id="selectField">
+                                        <c:forEach var="fieldItem" items="${listField}">
+                                            <option <c:if
+                                                    test="${fieldItem.fieldId == field.lookUpFieldId}">
+                                                selected
+                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </form>
             </div>
@@ -232,4 +305,19 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#entityList').change(function () {
+        var entityId = $('#entityList')[0].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/getNewFieldList',
+            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            success: function (fieldList) {
+                $("#fieldList").html(fieldList);
+            }
+        });
+    })
+</script>
 

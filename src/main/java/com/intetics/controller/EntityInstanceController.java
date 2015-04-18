@@ -86,14 +86,13 @@ public class EntityInstanceController {
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         model.addAttribute("EntitySchema", entitySchema);
 
-        List<EntityInstance> instances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
-        EntityInstance entityInstance = instances.get(entityInstanceId.intValue());
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
         model.addAttribute("entityInstance", entityInstance);
 
         List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
         model.addAttribute("entityInstances", entityInstances);
 
-        model.addAttribute("modalSaveButton", "Create");
+        model.addAttribute("modalSaveButton", "Edit");
 
         return "edit-instance";
     }
@@ -129,6 +128,36 @@ public class EntityInstanceController {
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
     }
 
+    @RequestMapping(value = "/{entitySchemaId}/instance/update/{entityInstanceId}", method = RequestMethod.POST)
+    public String editEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
+                                     @Nonnull @PathVariable Long entityInstanceId,
+                                     @RequestParam MultiValueMap<String, String> params) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(entityInstanceId);
+
+        Date currentDate = new Date();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
+        entityInstance.setEntitySchema(entitySchema);
+        entityInstance.setModifiedDate(currentDate);
+
+        List<FieldValue> fieldValues = new ArrayList<FieldValue>();
+
+        for (Field field : entitySchema.getFields()) {
+            List<String> values = params.get(field.getFieldId().toString());
+
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            fieldValue.setField(field);
+            fieldValues.add(fieldValue);
+        }
+
+        entityInstance.setValues(fieldValues);
+        entityInstanceDao.saveOrUpdate(entityInstance);
+
+        return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
+    }
+
     @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}/confirm", method = RequestMethod.GET)
     public String startDeleteField(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
                                    @Nonnull @PathVariable Long instanceId) {
@@ -158,6 +187,5 @@ public class EntityInstanceController {
         entityInstanceDao.delete(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
-
     }
 }

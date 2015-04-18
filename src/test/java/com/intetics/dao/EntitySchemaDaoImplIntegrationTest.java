@@ -115,4 +115,14 @@ public class EntitySchemaDaoImplIntegrationTest extends AbstractDaoImplIntegrati
         entitySchemaDao.saveOrUpdate(entitySchema);
         sessionFactory.getCurrentSession().flush();
     }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/EntitySchemaDaoImplIntegrationTest.testGetFieldValuesByField.setup.xml")
+    public void testGetFieldValuesByField() throws Exception{
+
+        Field field = entitySchemaDao.getField(1L);
+
+        assertTrue("size must be 4", field.getFieldValues().size() == 4);
+
+    }
 }
