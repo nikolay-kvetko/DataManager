@@ -49,7 +49,9 @@
                         <div class="col-sm-8">
                             <input type="hidden" name="fieldId"/>
                             <input class="form-control" type="text" name="fieldName"
-                                   placeholder="Field Name" required="required"
+                                    <spring:message code="label.modal.fieldname"
+                                                    var="labelentityname"/>
+                                   placeholder="${labelentityname}" required="required"
                                     <c:if test="${field.name != null}">
                                         value="<c:out value="${field.name}"/>"
                                     </c:if>/>
@@ -249,15 +251,18 @@
                         </c:when>
                         <c:when test="${fieldType eq 'look_up'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Get information from entity*</label>
+                                <label class="col-sm-4 control-label">Get information from
+                                    entity*</label>
 
                                 <div class="col-sm-8">
-                                    <select name="selectEntity" class="form-control" id="entityList">
+                                    <select name="selectEntity" class="form-control"
+                                            id="entityList">
                                         <c:forEach var="entity" items="${listEntity}">
                                             <option <c:if
                                                     test="${entity.id == field.lookUpEntityId}">
                                                 selected
-                                            </c:if> value="${entity.id}"><c:out value="${entity.name}"/></option>
+                                            </c:if> value="${entity.id}"><c:out
+                                                    value="${entity.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -266,12 +271,14 @@
                                 <label class="col-sm-4 control-label">In this field*</label>
 
                                 <div class="col-sm-8" id="fieldList">
-                                    <select name="selectField" class="form-control" id="selectField">
+                                    <select name="selectField" class="form-control"
+                                            id="selectField">
                                         <c:forEach var="fieldItem" items="${listField}">
                                             <option <c:if
                                                     test="${fieldItem.fieldId == field.lookUpFieldId}">
                                                 selected
-                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                            </c:if> value="${fieldItem.fieldId}"><c:out
+                                                    value="${fieldItem.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -313,7 +320,7 @@
         $.ajax({
             type: 'POST',
             url: '/ajax/getNewFieldList',
-            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            data: ({entityId: entityId, currentEntityId: '${field.fieldId}'}),
             success: function (fieldList) {
                 $("#fieldList").html(fieldList);
             }
