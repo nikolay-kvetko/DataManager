@@ -66,6 +66,16 @@ public class FieldController {
 
         } else if (fieldType.equalsIgnoreCase("DATE")){
             model.addAttribute("modalTitle", "Create Date Field");
+            
+        } else if (fieldType.equalsIgnoreCase("IMAGE")){
+            model.addAttribute("modalTitle", "Create Image Field");
+            
+        } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
+            model.addAttribute("modalTitle", "Create Look Up Field");
+
+            List<EntitySchema> entitySchemaList = entitySchemaDao.getEntitySchemaList();
+            model.addAttribute("listEntity", entitySchemaList);
+            model.addAttribute("listField", entitySchemaDao.getEntityFieldList(entitySchemaList.get(0).getId()));
         }
 
         model.addAttribute("modalSaveButton", "Create");
@@ -165,6 +175,35 @@ public class FieldController {
                 dateField.setRequire(true);
             }
             entitySchema.getFields().add(dateField);
+            
+        } else if (fieldType.equalsIgnoreCase("IMAGE")){
+            ImageField imageField = new ImageField();
+
+            imageField.setCreateDate(currentDate);
+            imageField.setModifiedDate(currentDate);
+            imageField.setName(params.get("fieldName").get(0));
+
+            if (params.get("active") != null) {
+                imageField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(imageField);
+            
+        } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
+            LookUpField lookUpField = new LookUpField();
+
+            lookUpField.setCreateDate(currentDate);
+            lookUpField.setModifiedDate(currentDate);
+            lookUpField.setName(params.get("fieldName").get(0));
+
+            lookUpField.setLookUpEntityId(Long.valueOf(Integer.valueOf(params.get("selectEntity").get(0))));
+            lookUpField.setLookUpFieldId(Long.valueOf(Integer.valueOf(params.get("selectField").get(0))));
+
+            if (params.get("active") != null) {
+                lookUpField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(lookUpField);
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -201,6 +240,26 @@ public class FieldController {
         } else if (field.getValueType() == ValueType.DATE) {
             model.addAttribute("modalTitle", "Edit Date Field");
 
+        } else if (field.getValueType() == ValueType.IMAGE) {
+            model.addAttribute("modalTitle", "Edit Image Field");
+            
+        } else if (field.getValueType() == ValueType.LOOK_UP) {
+            model.addAttribute("modalTitle", "Edit Look Up Field");
+
+            List<EntitySchema> entitySchemaList = entitySchemaDao.getEntitySchemaList();
+            model.addAttribute("listEntity", entitySchemaList);
+
+            LookUpField lookUpField = (LookUpField)field;
+
+            List<Field> entityFieldList = entitySchemaDao.getEntityFieldList(lookUpField.getLookUpEntityId());
+            Field tmpField = null;
+            for (Field fieldItem : entityFieldList){
+                if (fieldItem.getFieldId() == fieldId){
+                    tmpField = fieldItem;
+                }
+            }
+            entityFieldList.remove(tmpField);
+            model.addAttribute("listField", entityFieldList);
         }
 
         HttpSession session = request.getSession();
@@ -280,6 +339,12 @@ public class FieldController {
             DateField dateField = (DateField) field;
 
             dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
+            
+        } else if (field.getValueType() == ValueType.LOOK_UP){
+            LookUpField lookUpField = (LookUpField)field;
+
+            lookUpField.setLookUpEntityId(Long.valueOf(Integer.valueOf(params.get("selectEntity").get(0))));
+            lookUpField.setLookUpFieldId(Long.valueOf(Integer.valueOf(params.get("selectField").get(0))));
         }
 
         entitySchema.setModifiedDate(currentDate);

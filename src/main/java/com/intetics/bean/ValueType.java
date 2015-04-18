@@ -57,6 +57,16 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             return null;
         }
+    },
+    LOOK_UP{
+        public FieldValue newValue(List<String> values, Field field) {
+            return null;
+        }
+    },
+    IMAGE{
+        public FieldValue newValue(List<String> values, Field field) {
+            return null;
+        }
     };
 
     public abstract FieldValue newValue(List<String> values, Field field);
