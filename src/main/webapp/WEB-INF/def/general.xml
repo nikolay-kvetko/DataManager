@@ -64,4 +64,8 @@
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
     </definition>
 
+    <definition name="user-registration" extends="pageSkeleton">
+        <put-attribute name="user-registration" value="/WEB-INF/jsp/entity/user-registration.jsp"/>
+    </definition>
+
 </tiles-definitions>
