@@ -188,8 +188,8 @@
 
                                     <div class="col-sm-8">
                                         <div class="input-group date" id="date${field.fieldId}">
-                                            <input type="text" class="form-control" name="dateValue">
-                                            <span class="input-group-addon">
+                                            <input type="text" class="form-control" name="<c:out value="${field.fieldId}"/>">
+                                            <span class="input-group-addon add-on">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
                                         </div>
@@ -198,11 +198,19 @@
                                 <script type="text/javascript">
                                     $(function () {
                                         var idDateField = "#date" + '${field.fieldId}';
-                                        if (${field.fullDate}) {
-                                            $(idDateField).datetimepicker();
-                                        } else {
-                                            $(idDateField).datetimepicker();
-                                        }
+                                        <%--if (${field.fullDate}) {--%>
+                                            if (${coincidedValue.dateValue != null}){
+                                                var dateValue = new Date('${coincidedValue.dateValue}');
+                                                var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
+                                                $(idDateField).datetimepicker({
+                                                    defaultDate : newDate
+                                                });
+                                            } else {
+                                                $(idDateField).datetimepicker();
+                                            }
+//                                        } else {
+//                                            $(idDateField).datetimepicker();
+//                                        }
                                     });
                                 </script>
                             </c:when>
