@@ -65,7 +65,7 @@
                                             <c:if test="${field.require eq true}">
                                                 checked
                                             </c:if>/>
-                                    Require that this column contains information
+                                    <spring:message code="label.modal.require"/>
                                 </label>
                             </div>
                         </div>
