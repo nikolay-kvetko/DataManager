@@ -66,7 +66,7 @@ public enum ValueType {
     DATE {
         public FieldValue newValue(List<String> values, Field field) {
             DateValue value = new DateValue();
-            DateFormat format = new SimpleDateFormat("dd-MM-yy:HH:mm:SS");
+            DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
 
             if(values != null) {
                 Date date;
