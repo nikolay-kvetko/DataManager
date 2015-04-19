@@ -60,7 +60,7 @@ public class FieldController {
             
         } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
             model.addAttribute("modalTitle", "Create Text Area Field");
-
+            
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             model.addAttribute("modalTitle", "Create Number Field");
 
