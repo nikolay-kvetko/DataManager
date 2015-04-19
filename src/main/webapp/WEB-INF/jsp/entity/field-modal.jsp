@@ -49,7 +49,9 @@
                         <div class="col-sm-8">
                             <input type="hidden" name="fieldId"/>
                             <input class="form-control" type="text" name="fieldName"
-                                   placeholder="Field Name" required="required"
+                                    <spring:message code="label.modal.fieldname"
+                                                    var="labelentityname"/>
+                                   placeholder="${labelentityname}" required="required"
                                     <c:if test="${field.name != null}">
                                         value="<c:out value="${field.name}"/>"
                                     </c:if>/>
@@ -57,7 +59,6 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="active" value="true" id="requireId"
@@ -67,7 +68,6 @@
                                     <spring:message code="label.modal.require"/>
                                 </label>
                             </div>
-
                         </div>
                     </div>
                     <c:choose>
@@ -195,28 +195,22 @@
                                     <select class="form-control" name="numberDecimal">
                                         <option <c:if test="${field.numberDecimal == 0}">
                                             selected
-                                        </c:if> value="0">0
-                                        </option>
+                                        </c:if> value="0">0</option>
                                         <option <c:if test="${field.numberDecimal == 1}">
                                             selected
-                                        </c:if> value="1">1
-                                        </option>
+                                        </c:if> value="1">1</option>
                                         <option <c:if test="${field.numberDecimal == 2}">
                                             selected
-                                        </c:if> value="2">2
-                                        </option>
+                                        </c:if> value="2">2</option>
                                         <option <c:if test="${field.numberDecimal == 3}">
                                             selected
-                                        </c:if> value="3">3
-                                        </option>
+                                        </c:if> value="3">3</option>
                                         <option <c:if test="${field.numberDecimal == 4}">
                                             selected
-                                        </c:if> value="4">4
-                                        </option>
+                                        </c:if> value="4">4</option>
                                         <option <c:if test="${field.numberDecimal == 5}">
                                             selected
-                                        </c:if> value="5">5
-                                        </option>
+                                        </c:if> value="5">5</option>
                                     </select>
                                 </div>
                             </div>

@@ -14,7 +14,8 @@
                         <label class="col-sm-4 control-label">Entity Name*</label>
                         <div class="col-sm-8">
                             <s:hidden path="id"/>
-                            <s:input class="form-control" type="text"  placeholder="Entity Name" path="name" required="required"/>
+                            <spring:message code="label.modal.fieldname" var="labelentityname"/>
+                            <s:input class="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required"/>
                         </div>
                     </div>
                 </s:form>

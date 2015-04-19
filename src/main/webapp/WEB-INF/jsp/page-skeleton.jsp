@@ -17,11 +17,6 @@
             $('#myModal').modal('show');
         });
     </script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker').datetimepicker();
-        });
-    </script>
 </head>
 <body>
 <tiles:insertAttribute name="header"/>
