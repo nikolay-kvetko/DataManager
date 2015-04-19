@@ -12,14 +12,10 @@
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
+
     <script>
         $(window).load(function(){
             $('#myModal').modal('show');
-        });
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker').datetimepicker();
         });
     </script>
 </head>
