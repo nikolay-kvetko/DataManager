@@ -1,7 +1,9 @@
 package com.intetics.controller;
 
+import com.intetics.bean.Company;
 import com.intetics.bean.Role;
 import com.intetics.bean.User;
+import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller responsible for processing requests to User-related operations
@@ -28,8 +33,11 @@ public class UserController {
     @Autowired
     RoleDao roleDao;
 
+    @Autowired
+    CompanyDao companyDao;
+
     @RequestMapping(value = "/registration")
-    public String getEntitySchemaList() {
+    public String getRegistration() {
 
         return "admin-registration";
     }
@@ -47,11 +55,12 @@ public class UserController {
         user.setConfirmed(false);
         user.setRole(role);
 
+        //this will be confirm URL
         String emailMessage = "localhost:8080/registration/confirm/"+params.get("email").get(0).replace(".", "_");
 
         userDao.saveOrUpdate(user);
 
-        return "redirect:/entity/list";
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/registration/confirm/{email}")
@@ -64,7 +73,30 @@ public class UserController {
 
         userDao.saveOrUpdate(user);
 
-        return "redirect:/entity/list";
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/registration/new_company")
+    public String createNewCompany() {
+
+        return "new-company";
+    }
+
+    @RequestMapping(value = "/registration/create_company", method = RequestMethod.POST)
+    public String createCompany(@RequestParam MultiValueMap<String, String> params, Principal principal) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        List<User> users = new ArrayList<User>();
+        users.add(user);
+
+        Company company = new Company();
+        company.setName(params.get("name").get(0));
+        company.setAddress(params.get("address").get(0));
+        company.setUsers(users);
+        user.setCompany(company);
+        companyDao.saveOrUpdate(company);
+
+        return "redirect:/home/entity/list";
     }
 
     @RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})

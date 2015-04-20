@@ -69,6 +69,11 @@
         <put-attribute name="content" value="/WEB-INF/jsp/User/user-registration.jsp"/>
     </definition>
 
+    <definition name="new-company" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/User/new-company.jsp"/>
+    </definition>
+
     <definition name="logIn" template="/WEB-INF/jsp/User/login.jsp">
     </definition>
 
