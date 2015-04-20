@@ -3,7 +3,8 @@
 <div class="container">
     <div class="page-header">
         <h3>
-            <a href="/home/entity/list"><spring:message code="label.homepage"/></a> > <c:out value="${EntitySchema.name}"/>
+            <a href="/home/entity/list"><spring:message code="label.homepage"/></a> > <c:out
+                value="${EntitySchema.name}"/>
         </h3>
     </div>
     <div class="row">
@@ -71,7 +72,11 @@
                                         <c:out value="${coincidedValue.numberValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'DATE'}">
-                                        <c:out value="${coincidedValue.dateValue}" />
+                                        <c:out value="${coincidedValue.dateValue}"/>
+                                    </c:when>
+                                    <c:when test="${coincidedValue.field.valueType eq 'IMAGE'}">
+                                        <img src="data:image/png;base64,${coincidedValue.image}"
+                                             style="max-height: 100px; max-width: 100px">
                                     </c:when>
                                 </c:choose>
                             </a>

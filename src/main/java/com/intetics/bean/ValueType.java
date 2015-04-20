@@ -1,5 +1,12 @@
 package com.intetics.bean;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,7 +96,28 @@ public enum ValueType {
     },
     IMAGE{
         public FieldValue newValue(List<String> values, Field field) {
-            return null;
+            ImageValue value = new ImageValue();
+
+            if(values != null) {
+                try {
+                    URL url = new URL(values.get(0));
+                    InputStream inputStream = url.openStream();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, len);
+                    }
+                    byteArrayOutputStream.flush();
+                    value.setImage(Base64.encode(byteArrayOutputStream.toByteArray()));
+                    value.setImageUrl(values.get(0));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return value;
         }
     };
 

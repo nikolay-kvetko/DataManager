@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -34,6 +36,21 @@ public class AjaxController {
         }
 
         result += "</select>";
+
+        return result;
+    }
+    @RequestMapping(value = "/getImageByUrl", method = RequestMethod.POST)
+    public @ResponseBody String getImageByUrl(@RequestParam String url){
+
+        URL tmpUrl;
+
+        try {
+            tmpUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            return null;
+        }
+
+        String result = "<img src=\" " + tmpUrl + "\" style=\"max-width: 150px; max-height: 150px;\">";
 
         return result;
     }

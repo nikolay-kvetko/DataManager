@@ -188,7 +188,8 @@
 
                                     <div class="col-sm-8">
                                         <div class="input-group date" id="date${field.fieldId}">
-                                            <input type="text" class="form-control" name="<c:out value="${field.fieldId}"/>">
+                                            <input type="text" class="form-control"
+                                                   name="<c:out value="${field.fieldId}"/>">
                                             <span class="input-group-addon add-on">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -199,18 +200,64 @@
                                     $(function () {
                                         var idDateField = "#date" + '${field.fieldId}';
                                         <%--if (${field.fullDate}) {--%>
-                                            if (${coincidedValue.dateValue != null}){
-                                                var dateValue = new Date('${coincidedValue.dateValue}');
-                                                var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
-                                                $(idDateField).datetimepicker({
-                                                    defaultDate : newDate
-                                                });
-                                            } else {
-                                                $(idDateField).datetimepicker();
-                                            }
+                                        if (${coincidedValue.dateValue != null}) {
+                                            var dateValue = new Date('${coincidedValue.dateValue}');
+                                            var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
+                                            $(idDateField).datetimepicker({
+                                                defaultDate: newDate
+                                            });
+                                        } else {
+                                            $(idDateField).datetimepicker();
+                                        }
 //                                        } else {
 //                                            $(idDateField).datetimepicker();
 //                                        }
+                                    });
+                                </script>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'IMAGE'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                               id="imageUrl${field.fieldId}"
+                                        <c:if test="${coincidence eq true}">
+                                               value="<c:out value="${coincidedValue.imageUrl}"/>"
+                                        </c:if>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-4">
+                                        <h6 class="col-sm-5">You should fill url your image</h6>
+
+                                        <div class="col-sm-3" id="imageBox${field.fieldId}">
+                                            <c:if test="${coincidence eq true}">
+                                                <img src="${coincidedValue.imageUrl}"
+                                                     style="max-width: 150px; max-height: 150px">
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        var imageUrlId = "#imageUrl" + '${field.fieldId}';
+                                        var imageBoxId = "#imageBox" + '${field.fieldId}';
+
+                                        $(imageUrlId).bind('input', function () {
+                                            var imageUrlValue = $(this)[0].value;
+
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '/ajax/getImageByUrl',
+                                                data: ({url: imageUrlValue}),
+                                                success: function (fieldList) {
+                                                    $(imageBoxId).html(fieldList);
+                                                }
+                                            });
+                                        })
                                     });
                                 </script>
                             </c:when>
