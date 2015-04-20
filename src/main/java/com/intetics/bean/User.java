@@ -26,9 +26,9 @@ public class User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "company_id")
-    private Company company;*/
+    private Company company;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -88,5 +88,13 @@ public class User {
 
     public void setConfirmed(Boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

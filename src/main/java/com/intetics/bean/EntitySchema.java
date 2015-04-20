@@ -30,6 +30,10 @@ public class EntitySchema {
     @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
     private List<EntityInstance> entityInstances;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     public Long getId() {
         return id;
     }
@@ -68,5 +72,13 @@ public class EntitySchema {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

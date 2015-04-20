@@ -1,10 +1,8 @@
 package com.intetics.dao;
 
-import com.intetics.bean.User;
-import org.hibernate.Criteria;
+import com.intetics.bean.Company;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,47 +16,34 @@ import javax.annotation.Nonnull;
 
 @Repository
 @Transactional
-public class UserDaoImpl implements UserDao {
+public class CompanyDaoImpl implements CompanyDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public User getUserById(@Nonnull Long id) {
+    public Company getCompanyById(@Nonnull Long id) {
         Assert.notNull(id);
 
         Session session = sessionFactory.getCurrentSession();
 
-        User user;
-        user = (User) session.get(User.class, id);
+        Company company;
+        company = (Company) session.get(Company.class, id);
 
-        return user;
+        return company;
     }
 
     @Override
-    public void saveOrUpdate(User user) {
+    public void saveOrUpdate(Company company) {
 
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(user);
+        session.saveOrUpdate(company);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public void delete(Company company) {
 
         Session session = sessionFactory.getCurrentSession();
-
-        User user;
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.eq("email", email));
-        user = (User) criteria.uniqueResult();
-
-        return user;
-    }
-
-    @Override
-    public void delete(User user) {
-
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(user);
+        session.delete(company);
     }
 }
