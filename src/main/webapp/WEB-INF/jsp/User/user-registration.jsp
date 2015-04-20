@@ -9,11 +9,11 @@
                     <h4 class="text-center">Registration</h4>
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form role="form" action="/create_admin" method="post">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="first_name" id="first_name"
+                                    <input type="text" name="firstName" id="first_name"
                                            class="form-control input-sm" placeholder="First Name"
                                            required="required">
                                 </div>
@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="last_name" id="last_name"
+                                    <input type="text" name="lastName" id="last_name"
                                            class="form-control input-sm" placeholder="Last Name"
                                            required="required">
                                 </div>

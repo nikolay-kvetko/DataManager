@@ -1,8 +1,10 @@
 package com.intetics.dao;
 
 import com.intetics.bean.User;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,7 @@ public class UserDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public User getUser(@Nonnull Long id) {
+    public User getUserById(@Nonnull Long id) {
         Assert.notNull(id);
 
         Session session = sessionFactory.getCurrentSession();
@@ -36,5 +38,17 @@ public class UserDaoImpl implements UserDao {
     public void saveOrUpdate(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+
+        User user;
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("email", email));
+        user = (User) criteria.uniqueResult();
+
+        return user;
     }
 }

@@ -8,8 +8,9 @@ import com.intetics.bean.User;
 
 public interface UserDao {
 
-    User getUser(Long id);
+    User getUserById(Long id);
 
     void saveOrUpdate(User user);
 
+    User getUserByEmail(String email);
 }

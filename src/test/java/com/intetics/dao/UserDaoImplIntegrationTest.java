@@ -22,9 +22,9 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
 
     @Test
     @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetUserById.setup.xml")
-    public void testGetUser() throws Exception {
+    public void testGetUserById() throws Exception {
 
-        User user = userDao.getUser(1L);
+        User user = userDao.getUserById(1L);
         assertTrue("Admin".equals(user.getRole().getName()));
         assertTrue("Anton".equals(user.getFirstName()));
     }
@@ -53,6 +53,15 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
         user.setRole(role);
 
         userDao.saveOrUpdate(user);
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetUserByEmail.setup.xml")
+    public void testGetUserByEmail() throws Exception {
+
+        User user = userDao.getUserByEmail("anton@tut.by");
+        assertTrue("Admin".equals(user.getRole().getName()));
+        assertTrue("Anton".equals(user.getFirstName()));
     }
 
     /*@Test

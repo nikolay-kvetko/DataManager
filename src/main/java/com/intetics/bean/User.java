@@ -23,6 +23,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "confirmed")
+    private Boolean confirmed;
+
     /*@ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;*/
@@ -77,5 +80,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
     }
 }
