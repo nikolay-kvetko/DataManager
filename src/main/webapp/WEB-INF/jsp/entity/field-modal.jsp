@@ -41,6 +41,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/image'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'gps'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/gps'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -233,7 +237,7 @@
                                                     <c:if test="${field.fullDate eq true}">
                                                         checked
                                                     </c:if>/>
-                                            Date and Time
+                                            <spring:message code="label.modal.date.fullDate"/>
                                         </label>
                                     </div>
                                 </div>
@@ -244,7 +248,7 @@
                                                     <c:if test="${field.fullDate eq false}">
                                                         checked
                                                     </c:if>/>
-                                            Only Date
+                                            <spring:message code="label.modal.date.shortDate"/>
                                         </label>
                                     </div>
                                 </div>
@@ -252,7 +256,8 @@
                         </c:when>
                         <c:when test="${fieldType eq 'look_up'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Get information from entity*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.lookUp.entity"/></label>
 
                                 <div class="col-sm-8">
                                     <select name="selectEntity" class="form-control" id="entityList">
@@ -266,7 +271,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">In this field*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.lookUp.field"/></label>
 
                                 <div class="col-sm-8" id="fieldList">
                                     <select name="selectField" class="form-control" id="selectField">

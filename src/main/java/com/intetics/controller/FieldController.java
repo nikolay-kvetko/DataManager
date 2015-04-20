@@ -70,6 +70,9 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("IMAGE")){
             model.addAttribute("modalTitle", "Create Image Field");
             
+        } else if (fieldType.equalsIgnoreCase("GPS")){
+            model.addAttribute("modalTitle", "Create GPS Field");
+
         } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
             model.addAttribute("modalTitle", "Create Look Up Field");
 
@@ -189,6 +192,19 @@ public class FieldController {
 
             entitySchema.getFields().add(imageField);
             
+        } else if (fieldType.equalsIgnoreCase("GPS")){
+            GPSField gpsField = new GPSField();
+
+            gpsField.setCreateDate(currentDate);
+            gpsField.setModifiedDate(currentDate);
+            gpsField.setName(params.get("fieldName").get(0));
+
+            if (params.get("active") != null) {
+                gpsField.setRequire(true);
+            }
+
+            entitySchema.getFields().add(gpsField);
+
         } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
             LookUpField lookUpField = new LookUpField();
 
@@ -243,6 +259,9 @@ public class FieldController {
         } else if (field.getValueType() == ValueType.IMAGE) {
             model.addAttribute("modalTitle", "Edit Image Field");
             
+        } else if (field.getValueType() == ValueType.GPS) {
+            model.addAttribute("modalTitle", "Edit GPS Field");
+
         } else if (field.getValueType() == ValueType.LOOK_UP) {
             model.addAttribute("modalTitle", "Edit Look Up Field");
 

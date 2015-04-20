@@ -24,6 +24,7 @@
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/date">Date Field</a></li>
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/look_up">Look Up</a></li>
                     <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/image">Image Field</a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/gps">GPS Field</a></li>
                 </ul>
             </div>
         </div>
