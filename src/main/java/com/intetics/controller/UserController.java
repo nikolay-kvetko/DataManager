@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,13 +85,31 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
-    public String createCompany(@RequestParam MultiValueMap<String, String> params, Principal principal) {
+    public String createCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
+                                @RequestParam("image") MultipartFile image) {
 
         User user = userDao.getUserByEmail(principal.getName());
         List<User> users = new ArrayList<User>();
         users.add(user);
 
+        /*BufferedImage image2 = null;
+        try {
+            image2 = ImageIO.read(image.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Integer width = image2.getWidth();
+        Integer height = image2.getHeight();*/
+
         Company company = new Company();
+
+        try {
+            byte[] bytes = image.getBytes();
+            company.setLogo(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         company.setName(params.get("name").get(0));
         company.setAddress(params.get("address").get(0));
         company.setUsers(users);

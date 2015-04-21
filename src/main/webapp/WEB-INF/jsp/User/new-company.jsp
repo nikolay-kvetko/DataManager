@@ -9,9 +9,9 @@
                     <h4 class="text-center"><spring:message code="header.create.company"/></h4>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/registration/company/add" method="post">
+                    <form id="createCompany" role="form" action="/registration/company/add" enctype="multipart/form-data" method="post">
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
                                 <div class="form-group">
                                     <input type="text" name="name" id="name"
                                            class="form-control input-sm"
@@ -21,7 +21,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
                                 <div class="form-group">
                                     <input type="text" name="address" id="address"
                                            class="form-control input-sm"
@@ -29,10 +29,23 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" form="logout" value="<spring:message code="button.logout"/>" class="btn btn-default">
-                        <input type="submit" value="<spring:message code="button.create"/>" class="btn btn-primary">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                <div class="form-group">
+                                    <input type="file" name="image" id="image" class="filestyle"
+                                           data-buttonName="btn-info"
+                                           data-size="sm"
+                                           data-input="false"
+                                           data-buttonText="<spring:message code="placeholder.company.image"/>">
+                                </div>
+                            </div>
+                        </div>
                     </form>
+                </div>
+                <div class="panel-footer">
                     <form id="logout" action="/j_spring_security_logout"></form>
+                    <input type="submit" form="logout" value="<spring:message code="button.logout"/>" class="btn btn-default">
+                    <input type="submit" form="createCompany" value="<spring:message code="button.create"/>" class="btn btn-primary">
                 </div>
             </div>
         </div>
