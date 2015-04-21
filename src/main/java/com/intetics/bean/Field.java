@@ -1,5 +1,7 @@
 package com.intetics.bean;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +29,8 @@ public abstract class Field {
     @Column(name = "require")
     private boolean require;
 
-    @Column(name = "create_date")
+    @CreationTimestamp
+    @Column(name = "create_date", updatable=false)
     private Date createDate;
 
     @Column(name = "modified_date")

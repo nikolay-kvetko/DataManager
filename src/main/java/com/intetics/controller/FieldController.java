@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +43,8 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         model.addAttribute("EntitySchema", entitySchema);
 
@@ -58,7 +57,8 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         model.addAttribute("EntitySchema", entitySchema);
 
@@ -101,14 +101,14 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         Date currentDate = new Date();
 
         if (fieldType.equalsIgnoreCase("STRING")) {
             TextField textField = new TextField();
 
-            textField.setCreateDate(currentDate);
             textField.setModifiedDate(currentDate);
             textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
@@ -122,7 +122,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("TEXT_AREA")){
             TextAreaField textAreaField = new TextAreaField();
 
-            textAreaField.setCreateDate(currentDate);
             textAreaField.setModifiedDate(currentDate);
             textAreaField.setName(params.get("fieldName").get(0));
             textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
@@ -136,7 +135,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("MULTI_CHOICE")) {
             MultiChoiceField multiChoiceField = new MultiChoiceField();
 
-            multiChoiceField.setCreateDate(currentDate);
             multiChoiceField.setModifiedDate(currentDate);
             multiChoiceField.setName(params.get("fieldName").get(0));
             multiChoiceField.setChoiceType(params.get("display").get(0));
@@ -160,7 +158,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("NUMBER")){
             NumberField numberField = new NumberField();
 
-            numberField.setCreateDate(currentDate);
             numberField.setModifiedDate(currentDate);
             numberField.setName(params.get("fieldName").get(0));
 
@@ -176,7 +173,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("DATE")){
             DateField dateField = new DateField();
 
-            dateField.setCreateDate(currentDate);
             dateField.setModifiedDate(currentDate);
             dateField.setName(params.get("fieldName").get(0));
 
@@ -190,7 +186,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("IMAGE")){
             ImageField imageField = new ImageField();
 
-            imageField.setCreateDate(currentDate);
             imageField.setModifiedDate(currentDate);
             imageField.setName(params.get("fieldName").get(0));
 
@@ -203,7 +198,6 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
             LookUpField lookUpField = new LookUpField();
 
-            lookUpField.setCreateDate(currentDate);
             lookUpField.setModifiedDate(currentDate);
             lookUpField.setName(params.get("fieldName").get(0));
 
@@ -227,12 +221,13 @@ public class FieldController {
 
     @RequestMapping(value = "{entitySchemaId}/field/edit/{fieldId}", method = RequestMethod.GET)
     public String editFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
-                                          @Nonnull @PathVariable Long fieldId, HttpServletRequest request) {
+                                          @Nonnull @PathVariable Long fieldId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
 
@@ -278,9 +273,6 @@ public class FieldController {
             model.addAttribute("listField", entityFieldList);
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute("fieldCreateDate-"+fieldId, field.getCreateDate());
-
         model.addAttribute("modalSaveButton", "Edit");
         model.addAttribute("fieldType", field.getValueType().name().toLowerCase());
         model.addAttribute("field", field);
@@ -291,12 +283,13 @@ public class FieldController {
     @RequestMapping(value = "/{entitySchemaId}/field/change/{fieldId}", method = RequestMethod.POST)
     public String changeFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
                                          @RequestParam MultiValueMap<String, String> params,
-                                         @Nonnull @PathVariable Long fieldId, HttpServletRequest request) {
+                                         @Nonnull @PathVariable Long fieldId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
 
@@ -305,8 +298,6 @@ public class FieldController {
 
         Date currentDate = new Date();
 
-        HttpSession session = request.getSession();
-
         field.setName(params.get("fieldName").get(0));
         if (params.get("active") != null) {
             field.setRequire(true);
@@ -314,7 +305,6 @@ public class FieldController {
             field.setRequire(false);
         }
 
-        field.setCreateDate((Date) session.getAttribute("fieldCreateDate-"+fieldId));
         field.setModifiedDate(currentDate);
 
         if (field.getValueType() == ValueType.STRING) {
@@ -376,7 +366,8 @@ public class FieldController {
         Assert.notNull(fieldId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
 
@@ -390,12 +381,13 @@ public class FieldController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/field/delete/{fieldId}", method = RequestMethod.GET)
-    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, @Nonnull @PathVariable Long fieldId) {
+    public String deleteField(@Nonnull @PathVariable Long entitySchemaId, @Nonnull @PathVariable Long fieldId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
-        if(entitySchema == null) return "error";
+        if(entitySchema == null)
+            return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
 

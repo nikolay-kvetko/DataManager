@@ -85,6 +85,14 @@ public class EntitySchema {
         this.company = company;
     }
 
+    public List<EntityInstance> getEntityInstances() {
+        return entityInstances;
+    }
+
+    public void setEntityInstances(List<EntityInstance> entityInstances) {
+        this.entityInstances = entityInstances;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

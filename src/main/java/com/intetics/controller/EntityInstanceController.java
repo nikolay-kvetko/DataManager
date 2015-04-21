@@ -1,14 +1,14 @@
 package com.intetics.controller;
 
-import com.intetics.bean.EntityInstance;
-import com.intetics.bean.EntitySchema;
-import com.intetics.bean.Field;
-import com.intetics.bean.FieldValue;
+import com.intetics.bean.*;
 import com.intetics.dao.EntityInstanceDao;
 import com.intetics.dao.EntitySchemaDao;
+import com.intetics.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,10 +40,14 @@ public class EntityInstanceController {
     @Autowired
     private EntityInstanceDao entityInstanceDao;
 
-    @RequestMapping(value = "/list")
-    public String getHomeEntitySchemaList(ModelMap model) {
+    @Autowired
+    private UserDao userDao;
 
-        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+    @RequestMapping(value = "/list")
+    public String getHomeEntitySchemaList(ModelMap model, Principal principal) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        List<EntitySchema> entitySchemas = user.getCompany().getEntitySchemas();
         model.addAttribute("entitySchemaList", entitySchemas);
 
         return "home-entity-list";
@@ -50,26 +55,32 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/list", method = RequestMethod.GET)
-    public String getEntitySchemaInstancesList(@Nonnull @PathVariable Long entitySchemaId, Model model) {
+    public String getEntityInstancesList(@Nonnull @PathVariable Long entitySchemaId, Model model) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
+
         model.addAttribute("EntitySchema", entitySchema);
 
-        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
         model.addAttribute("entityInstances", entityInstances);
 
         return "home-entity-instance-list";
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/create")
-    public String createEntitySchemaInstance(@Nonnull @PathVariable Long entitySchemaId, Model model) {
+    public String createEntityInstance(@Nonnull @PathVariable Long entitySchemaId, Model model) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
+
         model.addAttribute("EntitySchema", entitySchema);
 
-        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
         model.addAttribute("entityInstances", entityInstances);
 
         model.addAttribute("modalSaveButton", "Create");
@@ -78,18 +89,24 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/edit/{entityInstanceId}")
-    public String editEntitySchemaInstance(@Nonnull @PathVariable Long entitySchemaId,
+    public String editEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
                                            @Nonnull @PathVariable Long entityInstanceId,
                                            Model model) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchema", entitySchema);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
 
         EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
+
+        if(!entitySchema.getEntityInstances().contains(entityInstance))
+            return "error";
+
+        model.addAttribute("EntitySchema", entitySchema);
         model.addAttribute("entityInstance", entityInstance);
 
-        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
         model.addAttribute("entityInstances", entityInstances);
 
         model.addAttribute("modalSaveButton", "Edit");
@@ -102,13 +119,14 @@ public class EntityInstanceController {
                                     @RequestParam MultiValueMap<String, String> params) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
 
         Date currentDate = new Date();
 
         EntityInstance entityInstance = new EntityInstance();
         entityInstance.setEntitySchema(entitySchema);
-        entityInstance.setCreateDate(currentDate);
         entityInstance.setModifiedDate(currentDate);
 
         List<FieldValue> fieldValues = new ArrayList<FieldValue>();
@@ -129,16 +147,23 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/update/{entityInstanceId}", method = RequestMethod.POST)
-    public String editEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
+    public String updateEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
                                      @Nonnull @PathVariable Long entityInstanceId,
                                      @RequestParam MultiValueMap<String, String> params) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(entityInstanceId);
 
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
+
+        if(!entitySchema.getEntityInstances().contains(entityInstance))
+            return "error";
+
         Date currentDate = new Date();
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
         entityInstance.setEntitySchema(entitySchema);
         entityInstance.setModifiedDate(currentDate);
 
@@ -159,33 +184,63 @@ public class EntityInstanceController {
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}/confirm", method = RequestMethod.GET)
-    public String startDeleteField(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+    public String startDeleteEntityInstance(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
                                    @Nonnull @PathVariable Long instanceId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(instanceId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchema", entitySchema);
-
-        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
-        model.addAttribute("entityInstances", entityInstances);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
 
         EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+
+        if(!entitySchema.getEntityInstances().contains(entityInstance))
+            return "error";
+
+        model.addAttribute("EntitySchema", entitySchema);
+
+        List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
+        model.addAttribute("entityInstances", entityInstances);
+
         model.addAttribute("entityInstance", entityInstance);
 
         return "delete-instance";
     }
 
     @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}", method = RequestMethod.GET)
-    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId,
+    public String deleteEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
                                      @Nonnull @PathVariable Long instanceId) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(instanceId);
 
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
+
         EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+
+        if(!entitySchema.getEntityInstances().contains(entityInstance))
+            return "error";
 
         entityInstanceDao.delete(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
+    }
+
+    private EntitySchema verifyComplianceEntitySchemaAndCompany(Long entitySchemaId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userDao.getUserByEmail(authentication.getName());
+
+        Company company = user.getCompany();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        if(company.getEntitySchemas().contains(entitySchema))
+            return entitySchema;
+
+        return null;
     }
 }
