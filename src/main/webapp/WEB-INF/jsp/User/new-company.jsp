@@ -9,7 +9,7 @@
                     <h4 class="text-center"><spring:message code="header.create.company"/></h4>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/registration/create_company" method="post">
+                    <form role="form" action="/registration/company/add" method="post">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">

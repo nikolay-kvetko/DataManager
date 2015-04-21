@@ -31,9 +31,9 @@ public class UserCompanyExistFilter implements Filter {
         User user = userDao.getUserByEmail(authentication.getName());
 
         if(user != null){
-            if("Admin".equals(user.getRole().getName())){
+            if("ADMIN".equalsIgnoreCase(user.getRole().getName())){
                 if(user.getCompany() == null){
-                    response.sendRedirect("/registration/new_company");
+                    response.sendRedirect("/registration/company/create");
                 } else {
                     chain.doFilter(req, resp);
                 }

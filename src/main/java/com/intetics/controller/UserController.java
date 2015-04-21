@@ -28,13 +28,13 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    RoleDao roleDao;
+    private RoleDao roleDao;
 
     @Autowired
-    CompanyDao companyDao;
+    private CompanyDao companyDao;
 
     @RequestMapping(value = "/registration")
     public String getRegistration() {
@@ -76,13 +76,13 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/registration/new_company")
+    @RequestMapping(value = "/registration/company/create")
     public String createNewCompany() {
 
         return "new-company";
     }
 
-    @RequestMapping(value = "/registration/create_company", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
     public String createCompany(@RequestParam MultiValueMap<String, String> params, Principal principal) {
 
         User user = userDao.getUserByEmail(principal.getName());

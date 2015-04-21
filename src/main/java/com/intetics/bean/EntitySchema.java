@@ -1,5 +1,7 @@
 package com.intetics.bean;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,8 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "create_date")
+    @CreationTimestamp
+    @Column(name = "create_date", updatable=false)
     private Date createDate;
 
     @Column(name = "modified_date")
@@ -80,5 +83,25 @@ public class EntitySchema {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EntitySchema that = (EntitySchema) o;
+
+        if (company != null ? !company.equals(that.company) : that.company != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        return result;
     }
 }

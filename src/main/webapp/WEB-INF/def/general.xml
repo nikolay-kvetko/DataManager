@@ -77,4 +77,7 @@
     <definition name="logIn" template="/WEB-INF/jsp/User/login.jsp">
     </definition>
 
+    <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
+    </definition>
+
 </tiles-definitions>

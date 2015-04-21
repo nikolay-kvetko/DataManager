@@ -1,7 +1,10 @@
 package com.intetics.controller;
 
+import com.intetics.bean.Company;
 import com.intetics.bean.EntitySchema;
+import com.intetics.bean.User;
 import com.intetics.dao.EntitySchemaDao;
+import com.intetics.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +32,14 @@ public class EntitySchemaController {
     @Autowired
     private EntitySchemaDao entitySchemaDao;
 
-    @RequestMapping(value = "/list")
-    public String getEntitySchemaList(ModelMap model) {
+    @Autowired
+    private UserDao userDao;
 
-        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+    @RequestMapping(value = "/list")
+    public String getEntitySchemaList(ModelMap model, Principal principal) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        List<EntitySchema> entitySchemas = user.getCompany().getEntitySchemas();
         model.addAttribute("entitySchemaList", entitySchemas);
 
         LOGGER.trace("The list of entities has been requested");
@@ -42,13 +48,13 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/create")
-    public String createEntitySchema(ModelMap model) {
+    public String createEntitySchema(ModelMap model, Principal principal) {
 
-        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        User user = userDao.getUserByEmail(principal.getName());
+        List<EntitySchema> entitySchemas = user.getCompany().getEntitySchemas();
         model.addAttribute("entitySchemaList", entitySchemas);
 
         EntitySchema entitySchema = new EntitySchema();
-        entitySchema.setName("");
         model.addAttribute("EntitySchema", entitySchema);
 
         model.addAttribute("modalTitle", "Create Entity");
@@ -61,14 +67,20 @@ public class EntitySchemaController {
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
     public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
-                                          HttpServletRequest request) {
+                                          Principal principal) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchema", entitySchema);
+        User user = userDao.getUserByEmail(principal.getName());
 
-        HttpSession session = request.getSession();
-        session.setAttribute("entitySchemaCreateDate-"+entitySchemaId, entitySchema.getCreateDate());
+        Company company = user.getCompany();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        if(!company.getEntitySchemas().contains(entitySchema)) {
+            return "error";
+        }
+
+        model.addAttribute("EntitySchema", entitySchema);
 
         model.addAttribute("modalTitle", "Edit Entity");
         model.addAttribute("modalSaveButton", "Edit");
@@ -77,43 +89,68 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(EntitySchema entitySchema, HttpServletRequest request) {
+    public String saveEntitySchema(EntitySchema entitySchema, Principal principal) {
 
         Date currentDate = new Date();
 
+        User user = userDao.getUserByEmail(principal.getName());
+
+        Company company = user.getCompany();
+        entitySchema.setCompany(company);
+
         if(entitySchema.getId() != null){
-            HttpSession session = request.getSession();
-            entitySchema.setCreateDate((Date) session.getAttribute("entitySchemaCreateDate-"+entitySchema.getId()));
+            if(!company.getEntitySchemas().contains(entitySchema)) {
+                return "error";
+            }
             entitySchema.setModifiedDate(currentDate);
             entitySchemaDao.saveOrUpdate(entitySchema);
             return "redirect:/entity/"+entitySchema.getId()+"/field/list";
         }
 
-        entitySchema.setCreateDate(currentDate);
         entitySchema.setModifiedDate(currentDate);
+        entitySchema.setCompany(company);
 
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";
     }
 
     @RequestMapping(value = "/delete/{entitySchemaId}/confirm", method = RequestMethod.GET)
-    public String startDeleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+    public String startDeleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                          Principal principal) {
         Assert.notNull(entitySchemaId);
 
+        User user = userDao.getUserByEmail(principal.getName());
+
+        Company company = user.getCompany();
+
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        if(!company.getEntitySchemas().contains(entitySchema)) {
+            return "error";
+        }
+
         model.addAttribute("EntitySchema", entitySchema);
 
-        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        List<EntitySchema> entitySchemas = user.getCompany().getEntitySchemas();
         model.addAttribute("entitySchemaList", entitySchemas);
 
         return "delete-entity";
     }
 
     @RequestMapping(value = "/delete/{entitySchemaId}", method = RequestMethod.GET)
-    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId) {
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Principal principal) {
         Assert.notNull(entitySchemaId);
 
+        User user = userDao.getUserByEmail(principal.getName());
+
+        Company company = user.getCompany();
+
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        if(!company.getEntitySchemas().contains(entitySchema)) {
+            return "error";
+        }
+
         entitySchemaDao.delete(entitySchema);
 
         return "redirect:/entity/list";

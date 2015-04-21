@@ -96,4 +96,24 @@ public class Company {
     public void setEntitySchemas(List<EntitySchema> entitySchemas) {
         this.entitySchemas = entitySchemas;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Company company = (Company) o;
+
+        if (companyId != null ? !companyId.equals(company.companyId) : company.companyId != null) return false;
+        if (name != null ? !name.equals(company.name) : company.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = companyId != null ? companyId.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }
