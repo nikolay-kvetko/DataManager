@@ -8,6 +8,8 @@ import com.intetics.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
@@ -66,22 +68,14 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
-    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
-                                          Principal principal) {
+    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
         Assert.notNull(entitySchemaId);
 
-        User user = userDao.getUserByEmail(principal.getName());
-
-        Company company = user.getCompany();
-
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-
-        if(!company.getEntitySchemas().contains(entitySchema)) {
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
             return "error";
-        }
 
         model.addAttribute("EntitySchema", entitySchema);
-
         model.addAttribute("modalTitle", "Edit Entity");
         model.addAttribute("modalSaveButton", "Edit");
 
@@ -99,9 +93,9 @@ public class EntitySchemaController {
         entitySchema.setCompany(company);
 
         if(entitySchema.getId() != null){
-            if(!company.getEntitySchemas().contains(entitySchema)) {
+            if(verifyComplianceEntitySchemaAndCompany(entitySchema.getId()) == null)
                 return "error";
-            }
+
             entitySchema.setModifiedDate(currentDate);
             entitySchemaDao.saveOrUpdate(entitySchema);
             return "redirect:/entity/"+entitySchema.getId()+"/field/list";
@@ -119,17 +113,13 @@ public class EntitySchemaController {
                                           Principal principal) {
         Assert.notNull(entitySchemaId);
 
-        User user = userDao.getUserByEmail(principal.getName());
-
-        Company company = user.getCompany();
-
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-
-        if(!company.getEntitySchemas().contains(entitySchema)) {
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
             return "error";
-        }
 
         model.addAttribute("EntitySchema", entitySchema);
+
+        User user = userDao.getUserByEmail(principal.getName());
 
         List<EntitySchema> entitySchemas = user.getCompany().getEntitySchemas();
         model.addAttribute("entitySchemaList", entitySchemas);
@@ -138,21 +128,31 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/delete/{entitySchemaId}", method = RequestMethod.GET)
-    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Principal principal) {
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId) {
         Assert.notNull(entitySchemaId);
 
-        User user = userDao.getUserByEmail(principal.getName());
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null)
+            return "error";
+
+        entitySchemaDao.delete(entitySchema);
+
+        return "redirect:/entity/list";
+    }
+
+    private EntitySchema verifyComplianceEntitySchemaAndCompany(Long entitySchemaId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userDao.getUserByEmail(authentication.getName());
 
         Company company = user.getCompany();
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
-        if(!company.getEntitySchemas().contains(entitySchema)) {
-            return "error";
-        }
+        if(company.getEntitySchemas().contains(entitySchema))
+            return entitySchema;
 
-        entitySchemaDao.delete(entitySchema);
-
-        return "redirect:/entity/list";
+        return null;
     }
 }

@@ -2,9 +2,12 @@ package com.intetics.controller;
 
 import com.intetics.bean.*;
 import com.intetics.dao.EntitySchemaDao;
+import com.intetics.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -23,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Controller responsible for processing requests to EntitySchema-related operations
+ * Controller responsible for processing requests to Field-related operations
  */
 @Controller
 @RequestMapping("/entity")
@@ -34,11 +37,16 @@ public class FieldController {
     @Autowired
     private EntitySchemaDao entitySchemaDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @RequestMapping(value = "/{entitySchemaId}/field/list", method = RequestMethod.GET)
     public String getEntitySchemaFieldsList(@Nonnull @PathVariable Long entitySchemaId, Model model) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
+
         model.addAttribute("EntitySchema", entitySchema);
 
         return "entity-field-list";
@@ -49,7 +57,9 @@ public class FieldController {
                                              @PathVariable String fieldType) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
+
         model.addAttribute("EntitySchema", entitySchema);
 
         if (fieldType.equalsIgnoreCase("STRING")) {
@@ -90,7 +100,8 @@ public class FieldController {
                                          @PathVariable String fieldType) {
         Assert.notNull(entitySchemaId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
 
         Date currentDate = new Date();
 
@@ -220,10 +231,15 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchema", entitySchema);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
+
+        if(!entitySchema.getFields().contains(field))
+            return "error";
+
+        model.addAttribute("EntitySchema", entitySchema);
 
         if (field.getValueType() == ValueType.STRING) {
             model.addAttribute("modalTitle", "Edit Text Field");
@@ -279,19 +295,17 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
+
+        Field field = entitySchemaDao.getField(fieldId);
+
+        if(!entitySchema.getFields().contains(field))
+            return "error";
 
         Date currentDate = new Date();
 
         HttpSession session = request.getSession();
-
-        Field field = null;
-
-        for (Field tmpField : entitySchema.getFields()){
-            if (tmpField.getFieldId() == fieldId){
-                field = tmpField;
-            }
-        }
 
         field.setName(params.get("fieldName").get(0));
         if (params.get("active") != null) {
@@ -361,10 +375,15 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-        model.addAttribute("EntitySchema", entitySchema);
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
+
+        if(!entitySchema.getFields().contains(field))
+            return "error";
+
+        model.addAttribute("EntitySchema", entitySchema);
         model.addAttribute("field", field);
 
         return "delete-field";
@@ -375,16 +394,37 @@ public class FieldController {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
-        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
-
-        Date currentDate = new Date();
+        EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
+        if(entitySchema == null) return "error";
 
         Field field = entitySchemaDao.getField(fieldId);
+
+        if(!entitySchema.getFields().contains(field))
+            return "error";
+
         entitySchema.getFields().remove(field);
+
+        Date currentDate = new Date();
 
         entitySchema.setModifiedDate(currentDate);
         entitySchemaDao.saveOrUpdate(entitySchema);
 
         return "redirect:/entity/" + entitySchemaId + "/field/list";
+    }
+
+    private EntitySchema verifyComplianceEntitySchemaAndCompany(Long entitySchemaId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userDao.getUserByEmail(authentication.getName());
+
+        Company company = user.getCompany();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+
+        if(company.getEntitySchemas().contains(entitySchema))
+            return entitySchema;
+
+        return null;
     }
 }
