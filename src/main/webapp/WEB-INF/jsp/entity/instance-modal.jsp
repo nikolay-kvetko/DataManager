@@ -261,6 +261,77 @@
                                     });
                                 </script>
                             </c:when>
+                            <c:when test="${field.valueType eq 'GPS'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                               id="map${field.fieldId}"
+                                        <c:if test="${coincidence eq true}">
+                                               value="${coincidedValue.latitudeValue},${coincidedValue.longitudeValue}"
+                                        </c:if>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-4">
+                                        <div id="googleMap${field.fieldId}" style="height: 300px">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var id = "googleMap" + '${field.fieldId}';
+                                        var map;
+                                        var marker;
+
+                                        function initialize() {
+                                            var mapOptions = {
+                                                zoom: 12,
+                                                center: new google.maps.LatLng(53.930071, 27.501829),
+                                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                            };
+                                            map = new google.maps.Map(document.getElementById(id),
+                                                    mapOptions);
+
+                                            google.maps.event.addListener(map, 'click', function (event) {
+                                                placeMarker(event.latLng);
+                                            });
+
+                                            if (${coincidence}) {
+                                                var latlng = new google.maps.LatLng('${coincidedValue.latitudeValue}',
+                                                        '${coincidedValue.longitudeValue}');
+                                                marker = new google.maps.Marker({
+                                                    position: latlng,
+                                                    map: map
+                                                });
+                                            }
+                                        }
+
+                                        function placeMarker(location) {
+                                            if (marker == null) {
+                                                marker = new google.maps.Marker({
+                                                    position: location,
+                                                    map: map
+                                                });
+                                            } else {
+                                                marker.setPosition(location);
+                                            }
+                                            var mapValueId = "#map" + '${field.fieldId}';
+                                            $(mapValueId).val(location.lat() + ',' + location.lng());
+                                        }
+
+                                        google.maps.event.addDomListener(window, 'load', initialize);
+
+                                        $("#myModal").on("shown.bs.modal", function(e) {
+                                            google.maps.event.trigger(map, "resize");
+                                        });
+                                    });
+                                </script>
+                            </c:when>
                         </c:choose>
                     </c:forEach>
                 </form>

@@ -78,6 +78,10 @@
                                         <img src="data:image/png;base64,${coincidedValue.image}"
                                              style="max-height: 100px; max-width: 100px">
                                     </c:when>
+                                    <c:when test="${coincidedValue.field.valueType eq 'GPS'}">
+                                        <c:out value="${coincidedValue.latitudeValue}"/><br><c:out
+                                            value="${coincidedValue.longitudeValue}"/>
+                                    </c:when>
                                 </c:choose>
                             </a>
                         </td>

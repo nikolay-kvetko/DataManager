@@ -15,10 +15,12 @@
     <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="/js/date.format.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
         $(window).load(function(){
             $('#myModal').modal('show');
         });
+
     </script>
 </head>
 <body>
