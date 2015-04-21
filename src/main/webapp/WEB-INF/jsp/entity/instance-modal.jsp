@@ -43,8 +43,8 @@
                                                maxlength="<c:out value="${field.size}"/>"
                                                 <c:if test="${field.require}">
                                                     required="<c:out
-                                                        value="${field.require}"/>
-                                                </c:if>"
+                                                        value="${field.require}"/>"
+                                                </c:if>
                                                 <c:if test="${coincidence eq true}">
                                                     value="<c:out value="${coincidedValue.value}"/>"
                                                 </c:if>/>
@@ -69,8 +69,8 @@
                                                step="<c:out value="${step}"/>"
                                                 <c:if test="${field.require}">
                                                     required="<c:out
-                                                        value="${field.require}"/>
-                                                </c:if>"
+                                                        value="${field.require}"/>"
+                                                </c:if>
                                                 <c:if test="${coincidence eq true}">
                                                     value="<c:out value="${coincidedValue.numberValue}"/>"
                                                 </c:if>/>
@@ -174,8 +174,8 @@
                                                   name="<c:out value="${field.fieldId}"/>"
                                                   style="resize:none;"
                                                 <c:if test="${field.require}">
-                                                    required="<c:out value="${field.require}"/>
-                                                </c:if>"><c:if test="${coincidence eq true}"><c:out
+                                                    required="<c:out value="${field.require}"/>"
+                                                </c:if>><c:if test="${coincidence eq true}"><c:out
                                                 value="${coincidedValue.textAreaValue}"/></c:if></textarea>
                                     </div>
                                 </div>
@@ -189,7 +189,11 @@
                                     <div class="col-sm-8">
                                         <div class="input-group date" id="date${field.fieldId}">
                                             <input type="text" class="form-control"
-                                                   name="<c:out value="${field.fieldId}"/>">
+                                                   name="<c:out value="${field.fieldId}"/>"
+                                            <c:if test="${field.require}">
+                                                   required="<c:out
+                                                            value="${field.require}"/>"
+                                            </c:if>>
                                             <span class="input-group-addon add-on">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -226,6 +230,10 @@
                                                id="imageUrl${field.fieldId}"
                                         <c:if test="${coincidence eq true}">
                                                value="<c:out value="${coincidedValue.imageUrl}"/>"
+                                        </c:if>
+                                        <c:if test="${field.require}">
+                                               required="<c:out
+                                                        value="${field.require}"/>"
                                         </c:if>>
                                     </div>
                                 </div>
@@ -272,6 +280,10 @@
                                                id="map${field.fieldId}"
                                         <c:if test="${coincidence eq true}">
                                                value="${coincidedValue.latitudeValue},${coincidedValue.longitudeValue}"
+                                        </c:if>
+                                        <c:if test="${field.require}">
+                                               required="<c:out
+                                                        value="${field.require}"/>"
                                         </c:if>>
                                     </div>
                                 </div>
@@ -326,7 +338,7 @@
 
                                         google.maps.event.addDomListener(window, 'load', initialize);
 
-                                        $("#myModal").on("shown.bs.modal", function(e) {
+                                        $("#myModal").on("shown.bs.modal", function (e) {
                                             google.maps.event.trigger(map, "resize");
                                         });
                                     });
