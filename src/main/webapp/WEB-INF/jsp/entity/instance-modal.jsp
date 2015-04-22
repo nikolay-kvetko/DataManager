@@ -43,8 +43,8 @@
                                                maxlength="<c:out value="${field.size}"/>"
                                                 <c:if test="${field.require}">
                                                     required="<c:out
-                                                        value="${field.require}"/>
-                                                </c:if>"
+                                                        value="${field.require}"/>"
+                                                </c:if>
                                                 <c:if test="${coincidence eq true}">
                                                     value="<c:out value="${coincidedValue.value}"/>"
                                                 </c:if>/>
@@ -69,8 +69,8 @@
                                                step="<c:out value="${step}"/>"
                                                 <c:if test="${field.require}">
                                                     required="<c:out
-                                                        value="${field.require}"/>
-                                                </c:if>"
+                                                        value="${field.require}"/>"
+                                                </c:if>
                                                 <c:if test="${coincidence eq true}">
                                                     value="<c:out value="${coincidedValue.numberValue}"/>"
                                                 </c:if>/>
@@ -174,8 +174,8 @@
                                                   name="<c:out value="${field.fieldId}"/>"
                                                   style="resize:none;"
                                                 <c:if test="${field.require}">
-                                                    required="<c:out value="${field.require}"/>
-                                                </c:if>"><c:if test="${coincidence eq true}"><c:out
+                                                    required="<c:out value="${field.require}"/>"
+                                                </c:if>><c:if test="${coincidence eq true}"><c:out
                                                 value="${coincidedValue.textAreaValue}"/></c:if></textarea>
                                     </div>
                                 </div>
@@ -188,7 +188,12 @@
 
                                     <div class="col-sm-8">
                                         <div class="input-group date" id="date${field.fieldId}">
-                                            <input type="text" class="form-control" name="<c:out value="${field.fieldId}"/>">
+                                            <input type="text" class="form-control"
+                                                   name="<c:out value="${field.fieldId}"/>"
+                                            <c:if test="${field.require}">
+                                                   required="<c:out
+                                                            value="${field.require}"/>"
+                                            </c:if>>
                                             <span class="input-group-addon add-on">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -199,18 +204,143 @@
                                     $(function () {
                                         var idDateField = "#date" + '${field.fieldId}';
                                         <%--if (${field.fullDate}) {--%>
-                                            if (${coincidedValue.dateValue != null}){
-                                                var dateValue = new Date('${coincidedValue.dateValue}');
-                                                var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
-                                                $(idDateField).datetimepicker({
-                                                    defaultDate : newDate
-                                                });
-                                            } else {
-                                                $(idDateField).datetimepicker();
-                                            }
+                                        if (${coincidedValue.dateValue != null}) {
+                                            var dateValue = new Date('${coincidedValue.dateValue}');
+                                            var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
+                                            $(idDateField).datetimepicker({
+                                                defaultDate: newDate
+                                            });
+                                        } else {
+                                            $(idDateField).datetimepicker();
+                                        }
 //                                        } else {
 //                                            $(idDateField).datetimepicker();
 //                                        }
+                                    });
+                                </script>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'IMAGE'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                               id="imageUrl${field.fieldId}"
+                                        <c:if test="${coincidence eq true}">
+                                               value="<c:out value="${coincidedValue.imageUrl}"/>"
+                                        </c:if>
+                                        <c:if test="${field.require}">
+                                               required="<c:out
+                                                        value="${field.require}"/>"
+                                        </c:if>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-4">
+                                        <h6 class="col-sm-5">You should fill url your image</h6>
+
+                                        <div class="col-sm-3" id="imageBox${field.fieldId}">
+                                            <c:if test="${coincidence eq true}">
+                                                <img src="${coincidedValue.imageUrl}"
+                                                     style="max-width: 150px; max-height: 150px">
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        var imageUrlId = "#imageUrl" + '${field.fieldId}';
+                                        var imageBoxId = "#imageBox" + '${field.fieldId}';
+
+                                        $(imageUrlId).bind('input', function () {
+                                            var imageUrlValue = $(this)[0].value;
+
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '/ajax/getImageByUrl',
+                                                data: ({url: imageUrlValue}),
+                                                success: function (fieldList) {
+                                                    $(imageBoxId).html(fieldList);
+                                                }
+                                            });
+                                        })
+                                    });
+                                </script>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'GPS'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                               id="map${field.fieldId}"
+                                        <c:if test="${coincidence eq true}">
+                                               value="${coincidedValue.latitudeValue},${coincidedValue.longitudeValue}"
+                                        </c:if>
+                                        <c:if test="${field.require}">
+                                               required="<c:out
+                                                        value="${field.require}"/>"
+                                        </c:if>>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-4">
+                                        <div id="googleMap${field.fieldId}" style="height: 300px">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        var id = "googleMap" + '${field.fieldId}';
+                                        var map;
+                                        var marker;
+
+                                        function initialize() {
+                                            var mapOptions = {
+                                                zoom: 12,
+                                                center: new google.maps.LatLng(53.930071, 27.501829),
+                                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                            };
+                                            map = new google.maps.Map(document.getElementById(id),
+                                                    mapOptions);
+
+                                            google.maps.event.addListener(map, 'click', function (event) {
+                                                placeMarker(event.latLng);
+                                            });
+
+                                            if (${coincidence}) {
+                                                var latlng = new google.maps.LatLng('${coincidedValue.latitudeValue}',
+                                                        '${coincidedValue.longitudeValue}');
+                                                marker = new google.maps.Marker({
+                                                    position: latlng,
+                                                    map: map
+                                                });
+                                            }
+                                        }
+
+                                        function placeMarker(location) {
+                                            if (marker == null) {
+                                                marker = new google.maps.Marker({
+                                                    position: location,
+                                                    map: map
+                                                });
+                                            } else {
+                                                marker.setPosition(location);
+                                            }
+                                            var mapValueId = "#map" + '${field.fieldId}';
+                                            $(mapValueId).val(location.lat() + ',' + location.lng());
+                                        }
+
+                                        google.maps.event.addDomListener(window, 'load', initialize);
+
+                                        $("#myModal").on("shown.bs.modal", function (e) {
+                                            google.maps.event.trigger(map, "resize");
+                                        });
                                     });
                                 </script>
                             </c:when>
