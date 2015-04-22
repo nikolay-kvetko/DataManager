@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <role role_id="1"
+          name="Admin"/>
+
+    <users user_id="1"
+          first_name="Anton"
+          last_name="Chervyakovsky"
+          role_id="1"/>
+
+    <users user_id="2"
+           first_name="James"
+           last_name="Bond"
+           role_id="1"/>
+
+</dataset>
