@@ -8,13 +8,6 @@ import org.springframework.validation.Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created with IntelliJ IDEA.
- * Date: 22.04.2015
- * Time: 10:22
- *
- * @author n.kvetko
- */
 public class UserRegistrationValidator implements Validator {
 
     private Pattern pattern;
@@ -51,9 +44,9 @@ public class UserRegistrationValidator implements Validator {
 
         if (user.getLastName() != null && !(user.getLastName().isEmpty())) {
             pattern = Pattern.compile(STRING_PATTERN);
-            matcher = pattern.matcher(user.getFirstName());
+            matcher = pattern.matcher(user.getLastName());
             if (!matcher.matches()) {
-                errors.rejectValue("firstName", "validation.user.lastName.containNonChar",
+                errors.rejectValue("lastName", "validation.user.lastName.containNonChar",
                         "Enter a valid last name!");
             }
         }

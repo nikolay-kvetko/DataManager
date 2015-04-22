@@ -13,52 +13,133 @@
                     <form:form role="form" modelAttribute="user" action="/create_admin"
                                method="post">
                         <div class="row">
-                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">First Name:</label>
-                            <div class="col-xs-8 col-sm-8 col-md-8">
-                                <div class="form-group">
-                                    <form:input path="firstName" type="text"
-                                                cssClass="form-control input-sm"/>
-                                </div>
-                            </div>
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">First
+                                Name:</label>
+
+                            <spring:bind path="firstName">
+                                <c:if test="${status.error eq true}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group has-error">
+                                            <label class="control-label"><form:errors
+                                                    path="firstName"/></label>
+                                            <form:input path="firstName" type="text"
+                                                        cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${status.error eq false}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group">
+                                            <form:input path="firstName" type="text"
+                                                        cssClass="form-control input-sm"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </spring:bind>
                         </div>
                         <div class="row">
-                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">Last Name:</label>
-                            <div class="col-xs-8 col-sm-8 col-md-8">
-                                <div class="form-group">
-                                    <form:input path="lastName" type="text"
-                                                cssClass="form-control input-sm"/>
-                                </div>
-                            </div>
+
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">Last
+                                Name:</label>
+
+                            <spring:bind path="lastName">
+                                <c:if test="${status.error eq true}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group has-error">
+                                            <label class="control-label"><form:errors
+                                                    path="lastName"/></label>
+                                            <form:input path="lastName" type="text"
+                                                        cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${status.error eq false}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group">
+                                            <form:input path="lastName" type="text"
+                                                        cssClass="form-control input-sm"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </spring:bind>
+
                         </div>
 
                         <div class="row">
                             <label class="col-xs-3 col-sm-4 col-md-4 control-label">Email:</label>
-                            <div class="col-xs-8 col-sm-8 col-md-8">
-                                <div class="form-group">
-                                    <form:input path="email" type="text"
-                                                cssClass="form-control input-sm"/>
-                                </div>
-                            </div>
+
+                            <spring:bind path="email">
+                                <c:if test="${status.error eq true}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group has-error">
+                                            <label class="control-label"><form:errors
+                                                    path="email"/></label>
+                                            <form:input path="email" type="text"
+                                                        cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${status.error eq false}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group">
+                                            <form:input path="email" type="text"
+                                                        cssClass="form-control input-sm"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </spring:bind>
                         </div>
 
                         <div class="row">
                             <label class="col-xs-3 col-sm-4 col-md-4 control-label">Password:</label>
-                            <div class="col-xs-8 col-sm-8 col-md-8">
-                                <div class="form-group">
-                                    <form:input path="password" cssClass="form-control input-sm"/>
-                                </div>
-                            </div>
+
+                            <spring:bind path="password">
+                                <c:if test="${status.error eq true}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group has-error">
+                                            <label class="control-label"><form:errors
+                                                    path="password"/></label>
+                                            <form:input path="password" type="text"
+                                                        cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${status.error eq false}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group">
+                                            <form:input path="password" type="password"
+                                                        cssClass="form-control input-sm"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </spring:bind>
+
                         </div>
                         <div class="row">
-                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">Verify Password</label>
-                            <div class="col-xs-8 col-sm-8 col-md-8">
-                                <div class="form-group">
-                                    <form:input path="confirmPassword"
-                                                cssClass="form-control input-sm"/>
-                                </div>
-                            </div>
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label">Verify
+                                Password</label>
+
+                            <spring:bind path="confirmPassword">
+                                <c:if test="${status.error eq true}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group has-error">
+                                            <label class="control-label"><form:errors
+                                                    path="confirmPassword"/></label>
+                                            <form:input path="confirmPassword" type="text"
+                                                        cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${status.error eq false}">
+                                    <div class="col-xs-8 col-sm-8 col-md-8">
+                                        <div class="form-group">
+                                            <form:input path="confirmPassword" type="password"
+                                                        cssClass="form-control input-sm"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </spring:bind>
                         </div>
-                        <p class="bg-danger"><form:errors path="*"/></p>
                         <input type="submit" value="Register" class="btn btn-primary">
 
                     </form:form>
