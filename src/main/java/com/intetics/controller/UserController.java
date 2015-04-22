@@ -6,17 +6,18 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
+import com.intetics.validation.UserRegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -39,23 +40,34 @@ public class UserController {
     private CompanyDao companyDao;
 
     @RequestMapping(value = "/registration")
-    public String getRegistration() {
-
+    public String getRegistration(Model model) {
+        model.addAttribute("user", new User());
         return "admin-registration";
     }
 
     @RequestMapping(value = "/create_admin", method = RequestMethod.POST)
-    public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params) {
+    public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params,
+                                          @ModelAttribute("user") User user,
+                                          BindingResult bindingResult) {
 
         Role role = roleDao.getRoleByName("Admin");
 
-        User user = new User();
+        user = new User();
         user.setFirstName(params.get("firstName").get(0));
         user.setLastName(params.get("lastName").get(0));
         user.setEmail(params.get("email").get(0));
         user.setPassword(params.get("password").get(0));
+        user.setConfirmPassword(params.get("confirmPassword").get(0));
         user.setConfirmed(false);
         user.setRole(role);
+
+        UserRegistrationValidator validator = new UserRegistrationValidator();
+        validator.validate(user, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.resolveMessageCodes("errors.user.firstName");
+            return "admin-registration";
+        }
 
         //this will be confirm URL
         String emailMessage = "localhost:8080/registration/confirm/"+params.get("email").get(0).replace(".", "_");

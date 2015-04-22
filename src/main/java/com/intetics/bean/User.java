@@ -23,6 +23,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    private String confirmPassword;
+
     @Column(name = "confirmed")
     private Boolean confirmed;
 
@@ -72,6 +74,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public Role getRole() {

@@ -69,7 +69,7 @@
     </definition>
 
     <definition name="user-registration" extends="pageSkeleton">
-        <put-attribute name="user-registration" value="/WEB-INF/jsp/entity/user-registration.jsp"/>
+        <put-attribute name="user-registration" value="/WEB-INF/jsp/User/user-registration.jsp"/>
     </definition>
 
     <definition name="admin-registration" extends="pageSkeleton">
