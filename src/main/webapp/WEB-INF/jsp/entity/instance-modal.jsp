@@ -72,7 +72,8 @@
                                                         value="${field.require}"/>"
                                                 </c:if>
                                                 <c:if test="${coincidence eq true}">
-                                                    value="<c:out value="${coincidedValue.numberValue}"/>"
+                                                    value="<c:out
+                                                        value="${coincidedValue.numberValue}"/>"
                                                 </c:if>/>
                                     </div>
                                 </div>
@@ -204,7 +205,7 @@
                                     $(function () {
                                         var idDateField = "#date" + '${field.fieldId}';
                                         <%--if (${field.fullDate}) {--%>
-                                        if (${coincidedValue.dateValue != null}) {
+                                        if (${coincidence eq true}) {
                                             var dateValue = new Date('${coincidedValue.dateValue}');
                                             var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
                                             $(idDateField).datetimepicker({
@@ -226,7 +227,8 @@
                                     </label>
 
                                     <div class="col-sm-8">
-                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>"
+                                               class="form-control"
                                                id="imageUrl${field.fieldId}"
                                         <c:if test="${coincidence eq true}">
                                                value="<c:out value="${coincidedValue.imageUrl}"/>"
@@ -239,7 +241,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-8 col-sm-offset-4">
-                                        <h6 class="col-sm-5">You should fill url your image</h6>
+                                        <h6 class="col-sm-5"><spring:message
+                                                code="label.modal.image"/></h6>
 
                                         <div class="col-sm-3" id="imageBox${field.fieldId}">
                                             <c:if test="${coincidence eq true}">
@@ -276,7 +279,8 @@
                                     </label>
 
                                     <div class="col-sm-8">
-                                        <input type="text" name="<c:out value="${field.fieldId}"/>" class="form-control"
+                                        <input type="text" name="<c:out value="${field.fieldId}"/>"
+                                               class="form-control"
                                                id="map${field.fieldId}"
                                         <c:if test="${coincidence eq true}">
                                                value="${coincidedValue.latitudeValue},${coincidedValue.longitudeValue}"
@@ -341,6 +345,32 @@
                                         $("#myModal").on("shown.bs.modal", function (e) {
                                             google.maps.event.trigger(map, "resize");
                                         });
+                                    });
+                                </script>
+                            </c:when>
+                            <c:when test="${field.valueType eq 'LOOK_UP'}">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <c:out value="${field.name}"/>
+                                    </label>
+
+                                    <div class="col-sm-8">
+                                        <div id="lookUp${field.fieldId}">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(function(){
+                                        var lookUpId = "#lookUp" + '${field.fieldId}';
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '/ajax/showLookUpField',
+                                            data: 'idLookUp='+${field.fieldId},
+                                            success: function (lookUpList) {
+                                                $(lookUpId).html(lookUpList);
+                                            }
+                                        })
                                     });
                                 </script>
                             </c:when>

@@ -68,4 +68,6 @@
         <put-attribute name="user-registration" value="/WEB-INF/jsp/entity/user-registration.jsp"/>
     </definition>
 
+    <definition name="field.lookup.string" template="/WEB-INF/jsp/lookup/select.jsp"/>
+
 </tiles-definitions>

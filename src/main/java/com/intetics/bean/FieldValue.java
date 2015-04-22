@@ -29,4 +29,12 @@ public abstract class FieldValue {
     public Field getField() {
         return field;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
