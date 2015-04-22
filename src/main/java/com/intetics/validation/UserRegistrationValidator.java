@@ -39,7 +39,7 @@ public class UserRegistrationValidator implements Validator {
             }
         }
 
-        ValidationUtils.rejectIfEmpty(errors, "lastName", "validation.user.lastName.isEmpty",
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "validation.user.lastName.isEmpty",
                 "Last name must not be empty!");
 
         if (user.getLastName() != null && !(user.getLastName().isEmpty())) {
@@ -51,7 +51,7 @@ public class UserRegistrationValidator implements Validator {
             }
         }
 
-        ValidationUtils.rejectIfEmpty(errors, "email", "validation.user.email.isEmpty",
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "validation.user.email.isEmpty",
                 "Email must not be empty!");
 
         if (user.getEmail() != null && !(user.getEmail().isEmpty())) {
@@ -63,10 +63,10 @@ public class UserRegistrationValidator implements Validator {
             }
         }
 
-        ValidationUtils.rejectIfEmpty(errors, "password", "validation.user.password.isEmpty",
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "validation.user.password.isEmpty",
                 "Password must not be empty!");
 
-        if (user.getPassword() != null && !(user.getLastName().isEmpty())) {
+        if (user.getPassword() != null && !(user.getPassword().isEmpty())) {
             if (!(user.getPassword().equals(user.getConfirmPassword()))) {
                 errors.rejectValue("confirmPassword", "validation.user.password.mismatch",
                         "Password does not match!");

@@ -17,6 +17,7 @@
 
         <context:component-scan base-package="com.intetics.dao"/>
         <context:component-scan base-package="com.intetics.service"/>
+        <context:component-scan base-package="com.intetics.validation"/>
 
         <!--Spring connection to the database-->
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
