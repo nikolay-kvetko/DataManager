@@ -195,22 +195,28 @@
                                     <select class="form-control" name="numberDecimal">
                                         <option <c:if test="${field.numberDecimal == 0}">
                                             selected
-                                        </c:if> value="0">0</option>
+                                        </c:if> value="0">0
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 1}">
                                             selected
-                                        </c:if> value="1">1</option>
+                                        </c:if> value="1">1
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 2}">
                                             selected
-                                        </c:if> value="2">2</option>
+                                        </c:if> value="2">2
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 3}">
                                             selected
-                                        </c:if> value="3">3</option>
+                                        </c:if> value="3">3
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 4}">
                                             selected
-                                        </c:if> value="4">4</option>
+                                        </c:if> value="4">4
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 5}">
                                             selected
-                                        </c:if> value="5">5</option>
+                                        </c:if> value="5">5
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -221,6 +227,9 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate == null}">
+                                                        checked
+                                                    </c:if>
                                                     <c:if test="${field.fullDate eq true}">
                                                         checked
                                                     </c:if>/>
@@ -265,7 +274,8 @@
                                             <option <c:if
                                                     test="${fieldItem.fieldId == field.lookUpFieldId}">
                                                 selected
-                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                            </c:if> value="${fieldItem.fieldId}"><c:out
+                                                    value="${fieldItem.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -307,7 +317,7 @@
         $.ajax({
             type: 'POST',
             url: '/ajax/getNewFieldList',
-            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            data: ({entityId: entityId, currentEntityId: '${field.fieldId}'}),
             success: function (fieldList) {
                 $("#fieldList").html(fieldList);
             }

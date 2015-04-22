@@ -1,5 +1,7 @@
 package com.intetics.bean;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,8 @@ public class EntityInstance {
     @JoinColumn(name = "entity_schema_id")
     private EntitySchema entitySchema;
 
-    @Column(name = "create_date")
+    @CreationTimestamp
+    @Column(name = "create_date", updatable=false)
     private Date createDate;
 
     @Column(name = "modified_date")
@@ -63,5 +66,25 @@ public class EntityInstance {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EntityInstance that = (EntityInstance) o;
+
+        if (entitySchema != null ? !entitySchema.equals(that.entitySchema) : that.entitySchema != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (entitySchema != null ? entitySchema.hashCode() : 0);
+        return result;
     }
 }

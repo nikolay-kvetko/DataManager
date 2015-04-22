@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <role role_id="1"
+          name="Admin"/>
+
+    <company company_id="1"
+             name="Intetics"/>
+
+    <users user_id="1"
+          first_name="Anton"
+          last_name="Chervyakovsky"
+          role_id="1"
+          company_id="1"/>
+
+    <users user_id="2"
+           first_name="James"
+           last_name="Bond"
+           role_id="1"
+           company_id="1"/>
+
+    <entity_schema entity_schema_id="1"
+                   name="Schema1"
+                   company_id="1"/>
+
+    <entity_schema entity_schema_id="2"
+                   name="Schema2"
+                   company_id="1"/>
+
+</dataset>

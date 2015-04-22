@@ -3,6 +3,8 @@ package com.intetics.bean;
 import com.intetics.validation.DuplicateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 import javax.validation.GroupSequence;
@@ -34,7 +36,8 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "create_date")
+    @CreationTimestamp
+    @Column(name = "create_date", updatable=false)
     private Date createDate;
 
     @Column(name = "modified_date")
@@ -47,6 +50,10 @@ public class EntitySchema {
     @OneToMany(mappedBy = "entitySchema")
     @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
     private List<EntityInstance> entityInstances;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Long getId() {
         return id;
@@ -86,5 +93,41 @@ public class EntitySchema {
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<EntityInstance> getEntityInstances() {
+        return entityInstances;
+    }
+
+    public void setEntityInstances(List<EntityInstance> entityInstances) {
+        this.entityInstances = entityInstances;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EntitySchema that = (EntitySchema) o;
+
+        if (company != null ? !company.equals(that.company) : that.company != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        return result;
     }
 }
