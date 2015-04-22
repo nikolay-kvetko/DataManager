@@ -39,6 +39,7 @@ public class AjaxController {
 
         return result;
     }
+    
     @RequestMapping(value = "/getImageByUrl", method = RequestMethod.POST)
     public @ResponseBody String getImageByUrl(@RequestParam String url){
 

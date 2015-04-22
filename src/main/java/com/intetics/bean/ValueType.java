@@ -112,9 +112,8 @@ public enum ValueType {
                     value.setImage(Base64.encode(byteArrayOutputStream.toByteArray()));
                     value.setImageUrl(values.get(0));
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e){
                 }
             }
             return value;
