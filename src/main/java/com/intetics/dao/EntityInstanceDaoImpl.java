@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -39,5 +41,22 @@ public class EntityInstanceDaoImpl implements EntityInstanceDao {
         entityInstances = criteria.list();
 
         return entityInstances;
+    }
+
+    @Override
+    public void delete(EntityInstance entityInstance) {
+        sessionFactory.getCurrentSession().delete(entityInstance);
+    }
+
+    @Override
+    public EntityInstance getEntityInstance(@Nonnull Long id) {
+        Assert.notNull(id);
+
+        Session session = sessionFactory.getCurrentSession();
+
+        EntityInstance entityInstance;
+        entityInstance = (EntityInstance) session.get(EntityInstance.class, id);
+
+        return entityInstance;
     }
 }

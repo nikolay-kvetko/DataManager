@@ -1,6 +1,8 @@
 package com.intetics.bean;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "field")
@@ -24,6 +26,16 @@ public abstract class Field {
 
     @Column(name = "require")
     private boolean require;
+
+    @Column(name = "create_date")
+    private Date createDate;
+
+    @Column(name = "modified_date")
+    private Date modifiedDate;
+
+    @OneToMany(mappedBy = "field")
+    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
+    private List<FieldValue> fieldValues;
 
     public Long getFieldId() {
         return fieldId;
@@ -51,5 +63,53 @@ public abstract class Field {
 
     public void setRequire(boolean require) {
         this.require = require;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public List<FieldValue> getFieldValues() {
+        return fieldValues;
+    }
+
+    public void setFieldValues(List<FieldValue> fieldValues) {
+        this.fieldValues = fieldValues;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Field field = (Field) o;
+
+        if (require != field.require) return false;
+        if (fieldId != null ? !fieldId.equals(field.fieldId) : field.fieldId != null) return false;
+        if (!name.equals(field.name)) return false;
+        if (valueType != field.valueType) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = valueType != null ? valueType.hashCode() : 0;
+        result = 31 * result + (fieldId != null ? fieldId.hashCode() : 0);
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (require ? 1 : 0);
+        return result;
     }
 }

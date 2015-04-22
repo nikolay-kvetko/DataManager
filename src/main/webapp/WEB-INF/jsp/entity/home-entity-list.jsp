@@ -2,16 +2,16 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h2>Home Page</h2>
+        <h3><spring:message code="label.homepage"/></h3>
     </div>
     <div class="row"></div>
 
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Entities</th>
-            <th>Last Modified</th>
-            <th>Created</th>
+            <th><spring:message code="label.entities"/></th>
+            <th><spring:message code="label.lastmodified"/></th>
+            <th><spring:message code="label.created"/></th>
         </tr>
         </thead>
         <tbody>
@@ -24,10 +24,10 @@
                     </a>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${entity.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${entity.createDate}"/>
                 </td>
             </tr>
         </c:forEach>
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3">
             <ul class="pagination">
-                <li><a href="#">First page</a></li>
+                <li><a href="#"><spring:message code="label.firstpage"/></a></li>
                 <li>
                     <a href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -53,7 +53,7 @@
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
-                <li><a href="#">Last page</a></li>
+                <li><a href="#"><spring:message code="label.lastpage"/></a></li>
             </ul>
         </div>
     </div>

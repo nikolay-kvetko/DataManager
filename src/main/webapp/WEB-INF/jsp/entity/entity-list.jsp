@@ -2,20 +2,20 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h2>Data Structure</h2>
+        <h2><spring:message code="label.datastructure"/></h2>
     </div>
     <div class="row">
         <div class="col-xs-4 col-xs-offset-8 col-sm-2 col-sm-offset-10">
-            <button form="CreateEntitySchema" class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span> Create entity</button>
+            <button form="CreateEntitySchema" class="btn btn-success" data-toggle="modal" data-target="#entityModal"><span class="glyphicon glyphicon-plus-sign"></span> <spring:message code="button.createentity"/></button>
         </div>
     </div>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Entities</th>
-            <th>Last Modified</th>
-            <th>Created</th>
-            <th>Action</th>
+            <th><spring:message code="label.entities"/></th>
+            <th><spring:message code="label.lastmodified"/></th>
+            <th><spring:message code="label.created"/></th>
+            <th><spring:message code="label.action"/></th>
         </tr>
         </thead>
         <tbody>
@@ -28,13 +28,15 @@
                     </a>
                 </td>
                 <td>
-                    Modified
+                    <c:out value="${entity.modifiedDate}"/>
                 </td>
                 <td>
-                    Create
+                    <c:out value="${entity.createDate}"/>
                 </td>
                 <td>
-                    <a href="#">Delete</a>
+                    <a href="/entity/delete/<c:out value="${entity.id}"/>/confirm" title="<spring:message code="label.delete"/> <c:out value="${entity.name}"/>">
+                        <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                    </a>
                 </td>
             </tr>
         </c:forEach>
@@ -43,7 +45,7 @@
     <div class="row">
         <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3">
             <ul class="pagination">
-                <li><a href="#">First page</a></li>
+                <li><a href="#"><spring:message code="label.firstpage"/></a></li>
                 <li>
                     <a href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -59,7 +61,7 @@
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
-                <li><a href="#">Last page</a></li>
+                <li><a href="#"><spring:message code="label.lastpage"/></a></li>
             </ul>
         </div>
     </div>

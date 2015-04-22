@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                   name="Employee"/>
+
+    <field entity_schema_id="1"
+           field_id="1"
+           name="First name"
+           require="false"/>
+
+    <text_field field_id="1"
+                size="1"/>
+
+    <entity_instance entity_schema_id="1"/>
+
+</dataset>

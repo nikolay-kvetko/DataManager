@@ -17,10 +17,30 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/string'/>
                     </c:when>
-                    <c:otherwise>
+                    <c:when test="${fieldType eq 'multi_choice'}">
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/multi_choice'/>
-                    </c:otherwise>
+                    </c:when>
+                    <c:when test="${fieldType eq 'text_area'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/text_area'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'number'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/number'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'date'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/date'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'look_up'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/look_up'/>
+                    </c:when>
+                    <c:when test="${fieldType eq 'image'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/image'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -29,7 +49,9 @@
                         <div class="col-sm-8">
                             <input type="hidden" name="fieldId"/>
                             <input class="form-control" type="text" name="fieldName"
-                                   placeholder="Field Name" required="required"
+                                    <spring:message code="label.modal.fieldname"
+                                                    var="labelentityname"/>
+                                   placeholder="${labelentityname}" required="required"
                                     <c:if test="${field.name != null}">
                                         value="<c:out value="${field.name}"/>"
                                     </c:if>/>
@@ -37,18 +59,22 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <input type="checkbox" name="active" value="true" id="requireId"
-                                    <c:if test="${field.require eq true}">
-                                        checked
-                                    </c:if>/>
-                            <label for="requireId" style="font-weight: normal !important;"> Require
-                                that this column contains information</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="active" value="true" id="requireId"
+                                            <c:if test="${field.require eq true}">
+                                                checked
+                                            </c:if>/>
+                                    <spring:message code="label.modal.require"/>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <c:choose>
                         <c:when test="${fieldType eq 'string'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">String Size*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.stringsize"/></label>
 
                                 <div class="col-sm-3">
                                     <input class="form-control" type="number" name="size" min="1"
@@ -60,14 +86,14 @@
                                 </div>
                             </div>
                         </c:when>
-                        <c:otherwise>
+                        <c:when test="${fieldType eq 'multi_choice'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Type each choice on a separate
-                                    line*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.choicevalues"/></label>
 
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" rows="5" cols="20" name="choices"
-                                              required="required"><c:if
+                                    <textarea class="form-control" rows="5" name="choices"
+                                              required="required" style="resize:none;"><c:if
                                             test="${field.choices != null}"><c:forEach
                                             var="choiceValue" items="${field.choices}"><c:out
                                             value="${choiceValue.name}"/>&#13;&#10;</c:forEach></c:if
@@ -76,27 +102,175 @@
                             </div>
                             <div class="form-group">
 
-                                <label class="col-sm-4 control-label">Display choices using*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.choicetype"/></label>
 
                                 <div class="col-sm-8">
-                                    <input type="radio" name="display" value="radio" id="radioId"/>
-                                    <label for="radioId" style="font-weight: normal !important;">
-                                        Radio Buttons</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="radio"
+                                                    <c:if test="${field.choiceType == null}">
+                                                        checked
+                                                    </c:if>
+                                                    <c:if test="${field.choiceType eq 'radio'}">
+                                                        checked
+                                                    </c:if>/>
+                                            <spring:message code="label.modal.radio"/>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="checkbox"
-                                           id="checkboxId"/>
-                                    <label for="checkboxId" style="font-weight: normal !important;">
-                                        Checkboxes</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="checkbox"
+                                                    <c:if test="${field.choiceType eq 'checkbox'}">
+                                                        checked
+                                                    </c:if>/>
+                                            <spring:message code="label.modal.checkbox"/>
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
-                                    <input type="radio" name="display" value="dropdown"
-                                           id="dropdownId"/>
-                                    <label for="dropdownId" style="font-weight: normal !important;">
-                                        Dropdown Menu</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="display" value="dropdown"
+                                                    <c:if test="${field.choiceType eq 'dropdown'}">
+                                                        checked
+                                                    </c:if>/>
+                                            <spring:message code="label.modal.dropdown"/>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </c:otherwise>
+                        </c:when>
+                        <c:when test="${fieldType eq 'text_area'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.numberoflines"/></label>
+
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="number" name="countLine"
+                                           min="1"
+                                           max="5" required="required"
+                                            <c:if test="${field.countLine != null}">
+                                                value="<c:out value="${field.countLine}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                                <label class="col-sm-4"
+                                       style="font-weight: normal !important;"><spring:message
+                                        code="label.modal.numberoflinesadditional"/></label>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'number'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.min"/></label>
+
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="number" name="minValue"
+                                            <c:if test="${field.minValue != null}">
+                                                value="<c:out value="${field.minValue}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.max"/></label>
+
+                                <div class="col-sm-3">
+                                    <input class="form-control" type="number" name="maxValue"
+                                            <c:if test="${field.maxValue != null}">
+                                                value="<c:out value="${field.maxValue}"/>"
+                                            </c:if>
+                                            />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.number.decimalplaces"/></label>
+
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="numberDecimal">
+                                        <option <c:if test="${field.numberDecimal == 0}">
+                                            selected
+                                        </c:if> value="0">0</option>
+                                        <option <c:if test="${field.numberDecimal == 1}">
+                                            selected
+                                        </c:if> value="1">1</option>
+                                        <option <c:if test="${field.numberDecimal == 2}">
+                                            selected
+                                        </c:if> value="2">2</option>
+                                        <option <c:if test="${field.numberDecimal == 3}">
+                                            selected
+                                        </c:if> value="3">3</option>
+                                        <option <c:if test="${field.numberDecimal == 4}">
+                                            selected
+                                        </c:if> value="4">4</option>
+                                        <option <c:if test="${field.numberDecimal == 5}">
+                                            selected
+                                        </c:if> value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'date'}">
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate eq true}">
+                                                        checked
+                                                    </c:if>/>
+                                            Date and Time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="format" value="false"
+                                                    <c:if test="${field.fullDate eq false}">
+                                                        checked
+                                                    </c:if>/>
+                                            Only Date
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${fieldType eq 'look_up'}">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Get information from entity*</label>
+
+                                <div class="col-sm-8">
+                                    <select name="selectEntity" class="form-control" id="entityList">
+                                        <c:forEach var="entity" items="${listEntity}">
+                                            <option <c:if
+                                                    test="${entity.id == field.lookUpEntityId}">
+                                                selected
+                                            </c:if> value="${entity.id}"><c:out value="${entity.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">In this field*</label>
+
+                                <div class="col-sm-8" id="fieldList">
+                                    <select name="selectField" class="form-control" id="selectField">
+                                        <c:forEach var="fieldItem" items="${listField}">
+                                            <option <c:if
+                                                    test="${fieldItem.fieldId == field.lookUpFieldId}">
+                                                selected
+                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </form>
             </div>
@@ -106,7 +280,8 @@
                         <form id="Cancel"
                               action="/entity/<c:out value="${EntitySchema.id}"/>/field/list"
                               method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message
+                                code="button.cancel"/></button>
                         <button form="Field" type="submit" class="btn btn-primary"><c:out
                                 value="${modalSaveButton}"/></button>
                     </c:when>
@@ -114,7 +289,8 @@
                         <form id="Cancel"
                               action="/entity/<c:out value="${EntitySchema.id}"/>/field/list"
                               method="get"></form>
-                        <button form="Cancel" type="submit" class="btn btn-default">Cancel</button>
+                        <button form="Cancel" type="submit" class="btn btn-default"><spring:message
+                                code="button.cancel"/></button>
                         <button form="Field" type="submit" class="btn btn-primary"><c:out
                                 value="${modalSaveButton}"/></button>
                     </c:otherwise>
@@ -123,4 +299,19 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#entityList').change(function () {
+        var entityId = $('#entityList')[0].value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/getNewFieldList',
+            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            success: function (fieldList) {
+                $("#fieldList").html(fieldList);
+            }
+        });
+    })
+</script>
 

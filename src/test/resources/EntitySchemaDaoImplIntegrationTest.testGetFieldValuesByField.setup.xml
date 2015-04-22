@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <entity_schema entity_schema_id="1"
+                   name="TEST1"/>
+
+    <field entity_schema_id="1"
+           field_id="1"
+           require = "false"
+           name="name"/>
+
+    <text_field field_id="1"
+                size="10"/>
+
+    <field_value field_id="1"
+                 value_type = "STRING"
+                 string_value="Sergey"/>
+
+    <field_value field_id="1"
+                 value_type = "STRING"
+                 string_value="Andrey"/>
+
+    <field_value field_id="1"
+                 value_type = "STRING"
+                 string_value="Max"/>
+
+    <field_value field_id="1"
+                 value_type = "STRING"
+                 string_value="Ivan"/>
+
+</dataset>

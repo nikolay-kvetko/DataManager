@@ -44,4 +44,32 @@
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/instance-modal.jsp"/>
     </definition>
 
+    <definition name="edit-instance" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/instance-modal.jsp"/>
+    </definition>
+
+    <definition name="delete-entity" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+    </definition>
+
+    <definition name="delete-field" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+    </definition>
+
+    <definition name="delete-instance" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+    </definition>
+
+    <definition name="user-authorization" extends="pageSkeleton">
+        <put-attribute name="user-authorization" value="/WEB-INF/jsp/entity/user-authorization.jsp"/>
+    </definition>
+
+    <definition name="user-registration" extends="pageSkeleton">
+        <put-attribute name="user-registration" value="/WEB-INF/jsp/entity/user-registration.jsp"/>
+    </definition>
+
 </tiles-definitions>

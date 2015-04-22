@@ -4,6 +4,7 @@ import com.intetics.validation.DuplicateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Date;
 import javax.validation.GroupSequence;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -33,9 +34,19 @@ public class EntitySchema {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "create_date")
+    private Date createDate;
+
+    @Column(name = "modified_date")
+    private Date modifiedDate;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "entity_schema_id", nullable = false)
     private List<Field> fields;
+
+    @OneToMany(mappedBy = "entitySchema")
+    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
+    private List<EntityInstance> entityInstances;
 
     public Long getId() {
         return id;
@@ -59,5 +70,21 @@ public class EntitySchema {
 
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }

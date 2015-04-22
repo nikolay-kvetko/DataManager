@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,14 +39,9 @@ public class EntitySchemaController {
         List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
         model.addAttribute("entitySchemaList", entitySchemas);
 
-        EntitySchema entitySchema = new EntitySchema();
-        entitySchema.setName("");
-        model.addAttribute("EntitySchema", entitySchema);
-
         LOGGER.trace("The list of entities has been requested");
 
         return "entity-list";
-
     }
 
     @RequestMapping(value = "/create")
@@ -62,16 +60,18 @@ public class EntitySchemaController {
         LOGGER.trace("Create new EntitySchema");
 
         return "create-entity";
-
     }
 
     @RequestMapping(value = "/edit/{entitySchemaId}", method = RequestMethod.GET)
-    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId,
-                                          ModelMap model) {
+    public String startToEditEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                          HttpServletRequest request) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
         model.addAttribute("EntitySchema", entitySchema);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("entitySchemaCreateDate-" + entitySchemaId, entitySchema.getCreateDate());
 
         model.addAttribute("modalTitle", "Edit Entity");
         model.addAttribute("modalSaveButton", "Edit");
@@ -80,10 +80,13 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(@ModelAttribute
-                                   @Validated(value = EntitySchema.MvcValidationSequence.class)
-                                   EntitySchema entitySchema,
-                                   BindingResult bindingResult, ModelMap model) {
+    public String saveEntitySchema(@ModelAttribute 
+                                       @Validated(value = EntitySchema.MvcValidationSequence.class)
+                                       EntitySchema entitySchema,
+                                   BindingResult bindingResult, ModelMap model, HttpServletRequest request) {
+
+        Date currentDate = new Date();
+
         if (bindingResult.hasErrors()) {
             if (entitySchema.getId() == null) {
                 model.addAttribute("EntitySchema", entitySchema);
@@ -99,13 +102,42 @@ public class EntitySchemaController {
                 return "edit-entity";
             }
         }
-        if (entitySchema.getId() != null) {
+
+        if(entitySchema.getId() != null){
+            HttpSession session = request.getSession();
+            entitySchema.setCreateDate((Date) session.getAttribute("entitySchemaCreateDate-"+entitySchema.getId()));
+            entitySchema.setModifiedDate(currentDate);
             entitySchemaDao.saveOrUpdate(entitySchema);
             return "redirect:/entity/" + entitySchema.getId() + "/field/list";
         }
 
+        entitySchema.setCreateDate(currentDate);
+        entitySchema.setModifiedDate(currentDate);
+
         entitySchemaDao.saveOrUpdate(entitySchema);
         return "redirect:/entity/list";
+    }
 
+    @RequestMapping(value = "/delete/{entitySchemaId}/confirm", method = RequestMethod.GET)
+    public String startDeleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId, ModelMap model) {
+        Assert.notNull(entitySchemaId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+        model.addAttribute("entitySchemaList", entitySchemas);
+
+        return "delete-entity";
+    }
+
+    @RequestMapping(value = "/delete/{entitySchemaId}", method = RequestMethod.GET)
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId) {
+        Assert.notNull(entitySchemaId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        entitySchemaDao.delete(entitySchema);
+
+        return "redirect:/entity/list";
     }
 }

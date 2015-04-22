@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,30 +77,115 @@ public class EntityInstanceController {
         return "create-instance";
     }
 
+    @RequestMapping(value = "/{entitySchemaId}/instance/edit/{entityInstanceId}")
+    public String editEntitySchemaInstance(@Nonnull @PathVariable Long entitySchemaId,
+                                           @Nonnull @PathVariable Long entityInstanceId,
+                                           Model model) {
+        Assert.notNull(entitySchemaId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
+        model.addAttribute("entityInstance", entityInstance);
+
+        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        model.addAttribute("entityInstances", entityInstances);
+
+        model.addAttribute("modalSaveButton", "Edit");
+
+        return "edit-instance";
+    }
+
     @RequestMapping(value = "/{entitySchemaId}/instance/add", method = RequestMethod.POST)
-    public String addEntityInstance(@Nonnull @PathVariable Long entitySchemaId, @RequestParam MultiValueMap<String, String> params) {
+    public String addEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
+                                    @RequestParam MultiValueMap<String, String> params) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
 
+        Date currentDate = new Date();
+
         EntityInstance entityInstance = new EntityInstance();
         entityInstance.setEntitySchema(entitySchema);
+        entityInstance.setCreateDate(currentDate);
+        entityInstance.setModifiedDate(currentDate);
 
         List<FieldValue> fieldValues = new ArrayList<FieldValue>();
 
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
-            if (values != null) {
-                FieldValue fieldValue = field.getValueType().newValue(values, field);
-                fieldValue.setField(field);
-                fieldValues.add(fieldValue);
-            }
+
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            fieldValue.setField(field);
+            fieldValues.add(fieldValue);
         }
 
         entityInstance.setValues(fieldValues);
 
         entityInstanceDao.saveOrUpdate(entityInstance);
 
-        return "redirect:/home/entity/"+entitySchemaId+"/instance/list";
+        return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/instance/update/{entityInstanceId}", method = RequestMethod.POST)
+    public String editEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
+                                     @Nonnull @PathVariable Long entityInstanceId,
+                                     @RequestParam MultiValueMap<String, String> params) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(entityInstanceId);
+
+        Date currentDate = new Date();
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(entityInstanceId);
+        entityInstance.setEntitySchema(entitySchema);
+        entityInstance.setModifiedDate(currentDate);
+
+        List<FieldValue> fieldValues = new ArrayList<FieldValue>();
+
+        for (Field field : entitySchema.getFields()) {
+            List<String> values = params.get(field.getFieldId().toString());
+
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            fieldValue.setField(field);
+            fieldValues.add(fieldValue);
+        }
+
+        entityInstance.setValues(fieldValues);
+        entityInstanceDao.saveOrUpdate(entityInstance);
+
+        return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}/confirm", method = RequestMethod.GET)
+    public String startDeleteField(@Nonnull @PathVariable Long entitySchemaId, ModelMap model,
+                                   @Nonnull @PathVariable Long instanceId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(instanceId);
+
+        EntitySchema entitySchema = entitySchemaDao.getEntitySchema(entitySchemaId);
+        model.addAttribute("EntitySchema", entitySchema);
+
+        List<EntityInstance> entityInstances = entityInstanceDao.getEntityInstancesByEntitySchema(entitySchema);
+        model.addAttribute("entityInstances", entityInstances);
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+        model.addAttribute("entityInstance", entityInstance);
+
+        return "delete-instance";
+    }
+
+    @RequestMapping(value = "/{entitySchemaId}/instance/delete/{instanceId}", method = RequestMethod.GET)
+    public String deleteEntitySchema(@Nonnull @PathVariable Long entitySchemaId,
+                                     @Nonnull @PathVariable Long instanceId) {
+        Assert.notNull(entitySchemaId);
+        Assert.notNull(instanceId);
+
+        EntityInstance entityInstance = entityInstanceDao.getEntityInstance(instanceId);
+
+        entityInstanceDao.delete(entityInstance);
+
+        return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
     }
 }
