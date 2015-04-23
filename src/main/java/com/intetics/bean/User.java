@@ -1,7 +1,13 @@
 package com.intetics.bean;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
+//@PasswordMatching.List({
+//        @PasswordMatching(first = "password", second = "confirmPassword", message = "The password fields must match")
+//})
 @Entity
 @Table(name = "users")
 public class User {
@@ -11,18 +17,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @NotEmpty
     @Column(name = "first_name")
     private String firstName;
 
+    @NotEmpty
     @Column(name = "last_name")
     private String lastName;
 
+    @NotEmpty
+    @Email
     @Column(name = "email")
     private String email;
 
+    @NotEmpty
     @Column(name = "password")
     private String password;
 
+    @NotEmpty
     private String confirmPassword;
 
     @Column(name = "confirmed")

@@ -20,10 +20,10 @@
                                 <c:if test="${status.error eq true}">
                                     <div class="col-xs-8 col-sm-8 col-md-8">
                                         <div class="form-group has-error">
-                                            <label class="control-label"><form:errors
-                                                    path="firstName"/></label>
                                             <form:input path="firstName" type="text"
                                                         cssClass="form-control"/>
+                                            <label class="control-label"><form:errors
+                                                    path="firstName"/></label>
                                         </div>
                                     </div>
                                 </c:if>
@@ -46,10 +46,10 @@
                                 <c:if test="${status.error eq true}">
                                     <div class="col-xs-8 col-sm-8 col-md-8">
                                         <div class="form-group has-error">
-                                            <label class="control-label"><form:errors
-                                                    path="lastName"/></label>
                                             <form:input path="lastName" type="text"
                                                         cssClass="form-control"/>
+                                            <label class="control-label"><form:errors
+                                                    path="lastName"/></label>
                                         </div>
                                     </div>
                                 </c:if>
@@ -72,10 +72,10 @@
                                 <c:if test="${status.error eq true}">
                                     <div class="col-xs-8 col-sm-8 col-md-8">
                                         <div class="form-group has-error">
-                                            <label class="control-label"><form:errors
-                                                    path="email"/></label>
                                             <form:input path="email" type="text"
                                                         cssClass="form-control"/>
+                                            <label class="control-label"><form:errors
+                                                    path="email"/></label>
                                         </div>
                                     </div>
                                 </c:if>
@@ -97,10 +97,10 @@
                                 <c:if test="${status.error eq true}">
                                     <div class="col-xs-8 col-sm-8 col-md-8">
                                         <div class="form-group has-error">
-                                            <label class="control-label"><form:errors
-                                                    path="password"/></label>
                                             <form:input path="password" type="text"
                                                         cssClass="form-control"/>
+                                            <label class="control-label"><form:errors
+                                                    path="password"/></label>
                                         </div>
                                     </div>
                                 </c:if>
@@ -123,10 +123,10 @@
                                 <c:if test="${status.error eq true}">
                                     <div class="col-xs-8 col-sm-8 col-md-8">
                                         <div class="form-group has-error">
-                                            <label class="control-label"><form:errors
-                                                    path="confirmPassword"/></label>
                                             <form:input path="confirmPassword" type="text"
                                                         cssClass="form-control"/>
+                                            <label class="control-label"><form:errors
+                                                    path="confirmPassword"/></label>
                                         </div>
                                     </div>
                                 </c:if>
