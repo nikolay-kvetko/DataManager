@@ -82,6 +82,11 @@
                                         <c:out value="${coincidedValue.latitudeValue}"/><br><c:out
                                             value="${coincidedValue.longitudeValue}"/>
                                     </c:when>
+                                    <c:when test="${coincidedValue.field.valueType eq 'LOOK_UP'}">
+                                        <jsp:include page="/WEB-INF/jsp/instance/list/look-up.jsp">
+                                            <jsp:param name="lookUp" value="${coincidedValue.lookUpValue}"/>
+                                        </jsp:include>
+                                    </c:when>
                                 </c:choose>
                             </a>
                         </td>

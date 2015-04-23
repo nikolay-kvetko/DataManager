@@ -2,6 +2,8 @@ package com.intetics.controller;
 
 import com.intetics.bean.Field;
 import com.intetics.bean.LookUpField;
+import com.intetics.bean.TextAreaField;
+import com.intetics.bean.ValueType;
 import com.intetics.dao.EntitySchemaDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,62 +64,30 @@ public class AjaxController {
     }
 
     @RequestMapping(value = "/showLookUpField", method = RequestMethod.GET)
-    public
-//    @ResponseBody
-    String showLookUpField(@RequestParam Long idLookUp, Model model) {
+    public String showLookUpField(@RequestParam Long idLookUp, Model model) {
+
+        String result = "";
 
         LookUpField lookUpField = (LookUpField) entitySchemaDao.getField(idLookUp);
         Field field = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+
         model.addAttribute("fieldId", lookUpField.getFieldId());
         model.addAttribute("fieldValues", field.getFieldValues());
 
-       /* String result = "";
-
         if (field.getValueType() == ValueType.STRING) {
-            result = "<select name=" + lookUpField.getFieldId() + " class=\"form-control\">";
-            for (FieldValue fieldValue : field.getFieldValues()) {
-                StringValue stringValue = (StringValue) fieldValue;
-                result += "<option value=" + stringValue.getId() + ">" + stringValue.getValue() + "</option>";
-            }
-            result += "</select>";
+            result = "field.lookup.string";
         } else if (field.getValueType() == ValueType.TEXT_AREA) {
-            for (FieldValue fieldValue : field.getFieldValues()) {
-                TextAreaValue textAreaValue = (TextAreaValue) fieldValue;
-                TextAreaField textAreaField = (TextAreaField) field;
-                result += "<div class=\"radio\"><label>" +
-                        "<input type=\"radio\" name=" + lookUpField.getFieldId() +
-                        " value=\"" + textAreaValue.getId() + "\"><textarea " +
-                        "style=\"resize: none; border: none; background: none\" readonly " +
-                        "rows = \"" + textAreaField.getCountLine() + "\">" +
-                        textAreaValue.getTextAreaValue() + "</textarea></label></div>";
-            }
-        } else if (field.getValueType() == ValueType.MULTI_CHOICE) {
+            TextAreaField textAreaField = (TextAreaField) field;
+            model.addAttribute("rowsCount", textAreaField.getCountLine());
+            result = "field.lookup.text-area";
         } else if (field.getValueType() == ValueType.NUMBER) {
-            result = "<select name=" + lookUpField.getFieldId() + " class=\"form-control\">";
-            for (FieldValue fieldValue : field.getFieldValues()) {
-                NumberValue numberValue = (NumberValue) fieldValue;
-                result += "<option value=" + numberValue.getId() + ">" + numberValue.getNumberValue() + "</option>";
-            }
-            result += "</select>";
+            result = "field.lookup.number";
         } else if (field.getValueType() == ValueType.DATE) {
-            result = "<select name=" + lookUpField.getFieldId() + " class=\"form-control\">";
-            for (FieldValue fieldValue : field.getFieldValues()) {
-                DateValue dateValue = (DateValue)fieldValue;
-                result += "<option value=" + dateValue.getId() + ">" + dateValue.getDateValue() + "</option>";
-            }
-            result += "</select>";
-        } else if (field.getValueType() == ValueType.LOOK_UP){
-        } else if (field.getValueType() == ValueType.IMAGE){
-            for (FieldValue fieldValue : field.getFieldValues()) {
-                ImageValue imageValue = (ImageValue) fieldValue;
-                result += "<div class=\"radio\"><label>" +
-                        "<input type=\"radio\" name=" + lookUpField.getFieldId() +
-                        " value=\"" + imageValue.getId() + "\"><img src=\"data:image/png;base64," +
-                        imageValue.getImage() + "\" style=\"max-height: 100px; max-width: 100px\">" +
-                        "</label></div>";
-            }
-        }*/
+            result = "field.lookup.date";
+        } else if (field.getValueType() == ValueType.IMAGE) {
+            result = "field.lookup.image";
+        }
 
-        return "field.lookup.string";
+        return result;
     }
 }

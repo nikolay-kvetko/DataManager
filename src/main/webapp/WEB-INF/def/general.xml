@@ -69,5 +69,9 @@
     </definition>
 
     <definition name="field.lookup.string" template="/WEB-INF/jsp/lookup/select.jsp"/>
+    <definition name="field.lookup.text-area" template="/WEB-INF/jsp/lookup/text-area.jsp"/>
+    <definition name="field.lookup.number" template="/WEB-INF/jsp/lookup/number.jsp"/>
+    <definition name="field.lookup.date" template="/WEB-INF/jsp/lookup/date.jsp"/>
+    <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
 
 </tiles-definitions>

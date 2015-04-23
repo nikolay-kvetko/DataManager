@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * todo[a.chervyakovsky] leave meaningful description here.
- */
 public enum ValueType {
     STRING {
         public FieldValue newValue(List<String> values, Field field) {
@@ -91,7 +88,30 @@ public enum ValueType {
     },
     LOOK_UP{
         public FieldValue newValue(List<String> values, Field field) {
-            return null;
+            LookUpValue lookUpValue = new LookUpValue();
+
+            if (values != null){
+                LookUpField lookUpField = (LookUpField)field;
+                Field selectField = null;//entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+                if (selectField.getValueType() == ValueType.STRING){
+                    StringValue fieldValue = (StringValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpValue(fieldValue.getValue());
+                } else if (selectField.getValueType() == ValueType.TEXT_AREA){
+                    TextAreaValue fieldValue = (TextAreaValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpValue(fieldValue.getTextAreaValue());
+                } else if (selectField.getValueType() == ValueType.NUMBER){
+                    NumberValue fieldValue = (NumberValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpValue(String.valueOf(fieldValue.getNumberValue()));
+                } else if (selectField.getValueType() == ValueType.IMAGE){
+                    ImageValue fieldValue = (ImageValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpValue(fieldValue.getImage());
+                } else if (selectField.getValueType() == ValueType.DATE){
+                    DateValue fieldValue = (DateValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpValue(fieldValue.getDateValue().toString());
+                }
+            }
+
+            return lookUpValue;
         }
     },
     IMAGE{
