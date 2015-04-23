@@ -7,17 +7,29 @@ import javax.persistence.Lob;
 
 @Entity
 @DiscriminatorValue("IMAGE")
-public class ImageValue extends FieldValue{
+public class ImageValue extends FieldValue {
 
     @Column(name = "image_value")
     @Lob()
-    private byte[] image;
+    private String image;
 
-    public byte[] getImage() {
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getImageUrl() {
+
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -15,6 +15,7 @@
                 <li><a href="/home/entity/list"><spring:message code="label.homepage"/></a></li>
                 <li><a href="#"><spring:message code="label.users"/></a></li>
                 <li><a href="/entity/list"><spring:message code="label.datastructure"/></a></li>
+                <li><a href="/j_spring_security_logout">LogOut</a></li>
             </ul>
         </div>
     </div>
