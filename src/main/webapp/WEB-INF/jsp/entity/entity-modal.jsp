@@ -16,6 +16,7 @@
                             <s:hidden path="id"/>
                             <spring:message code="label.modal.fieldname" var="labelentityname"/>
                             <s:input class="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required"/>
+                            <s:errors path="name" cssStyle="color: red"/>
                         </div>
                     </div>
                 </s:form>

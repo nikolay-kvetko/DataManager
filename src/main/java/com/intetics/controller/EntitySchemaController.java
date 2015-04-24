@@ -86,7 +86,7 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(@ModelAttribute
+    public String saveEntitySchema(@ModelAttribute("EntitySchema")
                                        @Validated(value = EntitySchema.MvcValidationSequence.class)
                                        EntitySchema entitySchema,
                                    BindingResult bindingResult, ModelMap model, Principal principal) {
@@ -100,7 +100,6 @@ public class EntitySchemaController {
 
         if (bindingResult.hasErrors()) {
             if (entitySchema.getId() == null) {
-                model.addAttribute("EntitySchema", entitySchema);
                 List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
                 model.addAttribute("entitySchemaList", entitySchemas);
                 model.addAttribute("modalTitle", "Create Entity");
