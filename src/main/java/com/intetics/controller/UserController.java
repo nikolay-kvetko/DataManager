@@ -1,6 +1,7 @@
 package com.intetics.controller;
 
 import com.intetics.bean.Company;
+import com.intetics.bean.NewUser;
 import com.intetics.bean.Role;
 import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
@@ -63,7 +64,7 @@ public class UserController {
         }
 
         //this will be confirm URL
-        String emailMessage = "localhost:8080/registration/confirm/"+params.get("email").get(0).replace(".", "_");
+        String emailMessage = "localhost:8080/registration/confirm/" + params.get("email").get(0).replace(".", "_");
 
         userDao.saveOrUpdate(user);
 
@@ -128,15 +129,24 @@ public class UserController {
     public String login(ModelMap model, Integer login_error) {
         int error;
 
-        if (login_error==null){
-            error=0;
+        if (login_error == null) {
+            error = 0;
         } else
             error = login_error;
 
-        if(error==1) {
+        if (error == 1) {
             model.put("Error", "Incorrect username or password");
         }
 
         return "logIn";
+    }
+
+    @RequestMapping(value = "/new")
+    public String newUser(@ModelAttribute("user") @Valid NewUser user, BindingResult bindingResult) {
+        System.out.println();
+        if (bindingResult.hasErrors()) {
+            System.out.println();
+        }
+        return "admin-registration";
     }
 }

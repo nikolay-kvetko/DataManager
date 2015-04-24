@@ -1,13 +1,12 @@
 package com.intetics.bean;
 
+import com.intetics.validation.FieldMatch;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
-//@PasswordMatching.List({
-//        @PasswordMatching(first = "password", second = "confirmPassword", message = "The password fields must match")
-//})
+@FieldMatch(first = "password", second = "confirmPassword")
 @Entity
 @Table(name = "users")
 public class User {
