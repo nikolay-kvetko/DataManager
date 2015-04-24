@@ -61,4 +61,17 @@ public class UserDaoImpl implements UserDao {
         Session session = sessionFactory.getCurrentSession();
         session.delete(user);
     }
+
+    @Override
+    public User getUserByConfirmingURL(String confirmingURL) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        User user;
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("confirmingURL", confirmingURL));
+        user = (User) criteria.uniqueResult();
+
+        return user;
+    }
 }

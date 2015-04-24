@@ -26,6 +26,9 @@ public class User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
+    @Column(name = "confirming_url")
+    private String confirmingURL;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
@@ -96,5 +99,13 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public String getConfirmingURL() {
+        return confirmingURL;
+    }
+
+    public void setConfirmingURL(String confirmingURL) {
+        this.confirmingURL = confirmingURL;
     }
 }
