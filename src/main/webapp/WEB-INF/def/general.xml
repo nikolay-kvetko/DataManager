@@ -64,4 +64,26 @@
         <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
     </definition>
 
+    <definition name="admin-registration" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-registration.jsp"/>
+    </definition>
+
+    <definition name="new-company" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
+    </definition>
+
+    <definition name="logIn" template="/WEB-INF/jsp/user/login.jsp">
+    </definition>
+
+    <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
+    </definition>
+
+    <definition name="field.lookup.string" template="/WEB-INF/jsp/lookup/select.jsp"/>
+    <definition name="field.lookup.text-area" template="/WEB-INF/jsp/lookup/text-area.jsp"/>
+    <definition name="field.lookup.number" template="/WEB-INF/jsp/lookup/number.jsp"/>
+    <definition name="field.lookup.date" template="/WEB-INF/jsp/lookup/date.jsp"/>
+    <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
+
 </tiles-definitions>

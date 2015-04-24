@@ -134,7 +134,15 @@ public class EntityInstanceController {
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
 
-            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            FieldValue fieldValue;
+
+            if (field.getValueType() == ValueType.LOOK_UP){
+                LookUpField lookUpField = (LookUpField)field;
+                Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+                fieldValue = field.getValueType().newValue(values, selectField);
+            } else {
+                 fieldValue = field.getValueType().newValue(values, field);
+            }
             fieldValue.setField(field);
             fieldValues.add(fieldValue);
         }
@@ -172,7 +180,22 @@ public class EntityInstanceController {
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
 
-            FieldValue fieldValue = field.getValueType().newValue(values, field);
+            FieldValue fieldValue;
+
+            if (field.getValueType() == ValueType.LOOK_UP){
+                LookUpField lookUpField = (LookUpField)field;
+                Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+                fieldValue = field.getValueType().newValue(values, selectField);
+            } else {
+                fieldValue = field.getValueType().newValue(values, field);
+            }
+
+            for (FieldValue instanceFieldValue : entityInstance.getValues()){
+                if (field.getFieldId() == instanceFieldValue.getField().getFieldId()){
+                    fieldValue.setId(instanceFieldValue.getId());
+                }
+            }
+
             fieldValue.setField(field);
             fieldValues.add(fieldValue);
         }

@@ -63,10 +63,9 @@
                                         </c:forEach>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'TEXT_AREA'}">
-                                <textarea style="resize: none; border: none; background: none"
-                                          readonly
-                                          rows="<c:out value="${coincidedValue.field.countLine}"/>"><c:out
-                                        value="${coincidedValue.textAreaValue}"/></textarea>
+                                        <jsp:include page="/WEB-INF/jsp/instance/list/text-area.jsp">
+                                            <jsp:param name="fieldValue" value="${coincidedValue.textAreaValue}"/>
+                                        </jsp:include>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'NUMBER'}">
                                         <c:out value="${coincidedValue.numberValue}"/>
@@ -75,12 +74,19 @@
                                         <c:out value="${coincidedValue.dateValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'IMAGE'}">
-                                        <img src="data:image/png;base64,${coincidedValue.image}"
-                                             style="max-height: 100px; max-width: 100px">
+                                        <jsp:include page="/WEB-INF/jsp/instance/list/image.jsp">
+                                            <jsp:param name="fieldValue" value="${coincidedValue.image}"/>
+                                        </jsp:include>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'GPS'}">
                                         <c:out value="${coincidedValue.latitudeValue}"/><br><c:out
                                             value="${coincidedValue.longitudeValue}"/>
+                                    </c:when>
+                                    <c:when test="${coincidedValue.field.valueType eq 'LOOK_UP'}">
+                                        <jsp:include page="/WEB-INF/jsp/instance/list/look-up.jsp">
+                                            <jsp:param name="lookUpValue" value="${coincidedValue.lookUpValue}"/>
+                                            <jsp:param name="lookUpType" value="${coincidedValue.lookUpType}"/>
+                                        </jsp:include>
                                     </c:when>
                                 </c:choose>
                             </a>
