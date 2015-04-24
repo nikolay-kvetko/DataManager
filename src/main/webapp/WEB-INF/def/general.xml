@@ -66,7 +66,7 @@
 
     <definition name="admin-registration" extends="pageSkeleton">
         <put-attribute name="header" value=""/>
-        <put-attribute name="content" value="/WEB-INF/jsp/user/user-registration.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/admin-registration.jsp"/>
     </definition>
 
     <definition name="new-company" extends="pageSkeleton">
@@ -90,8 +90,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
     </definition>
     
-    <definition name="user-authorization" extends="pageSkeleton">
-        <put-attribute name="user-authorization" value="/WEB-INF/jsp/entity/user-authorization.jsp"/>
+    <definition name="login" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-authorization.jsp"/>
     </definition>
 
 </tiles-definitions>
