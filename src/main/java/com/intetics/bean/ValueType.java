@@ -91,23 +91,34 @@ public enum ValueType {
             LookUpValue lookUpValue = new LookUpValue();
 
             if (values != null){
-                LookUpField lookUpField = (LookUpField)field;
-                Field selectField = null;//entitySchemaDao.getField(lookUpField.getLookUpFieldId());
-                if (selectField.getValueType() == ValueType.STRING){
-                    StringValue fieldValue = (StringValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+
+                FieldValue selectFieldValue = null;
+                for (FieldValue fieldValue : field.getFieldValues()){
+                    if (fieldValue.getId() == Integer.parseInt(values.get(0))){
+                        selectFieldValue = fieldValue;
+                    }
+                }
+
+                if (field.getValueType() == ValueType.STRING){
+                    StringValue fieldValue = (StringValue) selectFieldValue;
                     lookUpValue.setLookUpValue(fieldValue.getValue());
-                } else if (selectField.getValueType() == ValueType.TEXT_AREA){
-                    TextAreaValue fieldValue = (TextAreaValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpType(ValueType.STRING.name());
+                } else if (field.getValueType() == ValueType.TEXT_AREA){
+                    TextAreaValue fieldValue = (TextAreaValue) selectFieldValue;
                     lookUpValue.setLookUpValue(fieldValue.getTextAreaValue());
-                } else if (selectField.getValueType() == ValueType.NUMBER){
-                    NumberValue fieldValue = (NumberValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpType(ValueType.TEXT_AREA.name());
+                } else if (field.getValueType() == ValueType.NUMBER){
+                    NumberValue fieldValue = (NumberValue) selectFieldValue;
                     lookUpValue.setLookUpValue(String.valueOf(fieldValue.getNumberValue()));
-                } else if (selectField.getValueType() == ValueType.IMAGE){
-                    ImageValue fieldValue = (ImageValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpType(ValueType.NUMBER.name());
+                } else if (field.getValueType() == ValueType.IMAGE){
+                    ImageValue fieldValue = (ImageValue) selectFieldValue;
                     lookUpValue.setLookUpValue(fieldValue.getImage());
-                } else if (selectField.getValueType() == ValueType.DATE){
-                    DateValue fieldValue = (DateValue) selectField.getFieldValues().get(Integer.parseInt(values.get(0)));
+                    lookUpValue.setLookUpType(ValueType.IMAGE.name());
+                } else if (field.getValueType() == ValueType.DATE){
+                    DateValue fieldValue = (DateValue) selectFieldValue;
                     lookUpValue.setLookUpValue(fieldValue.getDateValue().toString());
+                    lookUpValue.setLookUpType(ValueType.DATE.name());
                 }
             }
 
