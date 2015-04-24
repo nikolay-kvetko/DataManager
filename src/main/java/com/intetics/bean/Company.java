@@ -25,7 +25,8 @@ public class Company {
     private String theme;
 
     @Column(name = "logo")
-    private byte[] logo;
+    @Lob()
+    private String logo;
 
     @OneToMany(mappedBy = "company", fetch=FetchType.LAZY, orphanRemoval=true, cascade = {CascadeType.ALL})
     private List<User> users;
@@ -73,11 +74,11 @@ public class Company {
         this.theme = theme;
     }
 
-    public byte[] getLogo() {
+    public String getLogo() {
         return logo;
     }
 
-    public void setLogo(byte[] logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 

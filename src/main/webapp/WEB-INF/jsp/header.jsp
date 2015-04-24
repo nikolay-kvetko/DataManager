@@ -15,7 +15,18 @@
                 <li><a href="/home/entity/list"><spring:message code="label.homepage"/></a></li>
                 <li><a href="#"><spring:message code="label.users"/></a></li>
                 <li><a href="/entity/list"><spring:message code="label.datastructure"/></a></li>
-                <li><a href="/j_spring_security_logout">LogOut</a></li>
+                </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#"><spring:message code="label.edituser"/></a></li>
+                        <li><a href="#"><spring:message code="label.editcompany"/></a></li>
+                        <li class="divider"></li>
+                        <li><a href="/j_spring_security_logout"><spring:message code="label.logout"/></a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

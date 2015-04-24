@@ -6,6 +6,7 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -105,7 +106,7 @@ public class UserController {
 
         try {
             byte[] bytes = image.getBytes();
-            company.setLogo(bytes);
+            company.setLogo(Base64.encode(bytes));
         } catch (IOException e) {
             e.printStackTrace();
         }
