@@ -86,4 +86,8 @@
     <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
     </definition>
 
+    <definition name="user-edit" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/User/user-modal.jsp"/>
+    </definition>
+
 </tiles-definitions>
