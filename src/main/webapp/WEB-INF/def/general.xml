@@ -74,11 +74,27 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
     </definition>
 
-    <definition name="logIn" template="/WEB-INF/jsp/user/login.jsp">
+    <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
     </definition>
 
+    <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
+    </definition>
+
+    <definition name="user-edit" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
+    </definition>
+
+    <definition name="login" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-authorization.jsp"/>
+    </definition>
+
+
+    <definition name="logIn" template="/WEB-INF/jsp/user/login.jsp">
+    </definition>
     <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
     </definition>
+
 
     <definition name="field.lookup.string" template="/WEB-INF/jsp/lookup/select.jsp"/>
     <definition name="field.lookup.text-area" template="/WEB-INF/jsp/lookup/text-area.jsp"/>

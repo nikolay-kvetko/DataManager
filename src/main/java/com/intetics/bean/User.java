@@ -23,8 +23,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    private String confirmPassword;
+
     @Column(name = "confirmed")
     private Boolean confirmed;
+
+    @Column(name = "confirming_url")
+    private String confirmingURL;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -74,6 +79,14 @@ public class User {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -96,5 +109,13 @@ public class User {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public String getConfirmingURL() {
+        return confirmingURL;
+    }
+
+    public void setConfirmingURL(String confirmingURL) {
+        this.confirmingURL = confirmingURL;
     }
 }

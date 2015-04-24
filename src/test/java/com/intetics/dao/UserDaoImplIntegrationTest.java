@@ -77,4 +77,13 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
         assertNotNull(role);
         assertTrue(role.getUsers().size() == 2);
     }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetUserByConfirmingURL.setup.xml")
+    public void testGetUserByConfirmingURL() throws Exception {
+
+        User user = userDao.getUserByConfirmingURL("1234_a123");
+        assertTrue("Admin".equals(user.getRole().getName()));
+        assertTrue("Anton".equals(user.getFirstName()));
+    }
 }
