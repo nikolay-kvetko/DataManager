@@ -74,10 +74,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
     </definition>
 
-    <definition name="after-registration-page" template="/WEB-INF/jsp/after-registration-page.jsp">
+    <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
     </definition>
 
-    <definition name="after-confirm-page" template="/WEB-INF/jsp/after-confirm-page.jsp">
+    <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
     </definition>
 
     <definition name="logIn" template="/WEB-INF/jsp/user/login.jsp">
