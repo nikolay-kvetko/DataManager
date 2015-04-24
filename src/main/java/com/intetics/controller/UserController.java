@@ -8,15 +8,16 @@ import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -135,4 +136,33 @@ public class UserController {
 
         return "logIn";
     }
+
+    @RequestMapping(value = "/users/edit/{userId}")
+    public String editUser(@Nonnull @PathVariable Long userId, Model model, HttpServletRequest request) {
+        User user = userDao.getUserById(userId);
+        model.addAttribute("user", user);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("userId", userId);
+
+        return "user-edit";
+    }
+
+    @RequestMapping(value = "/user/save")
+    public String saveUser(User user, Model model, HttpServletRequest request) {
+        if (user != null) {
+            HttpSession session = request.getSession();
+            long userId = (Long) session.getAttribute("userId");
+            User currentEditingUser = userDao.getUserById(userId);
+            user.setUserId(currentEditingUser.getUserId());
+            user.setPassword(currentEditingUser.getPassword());
+            user.setCompany(currentEditingUser.getCompany());
+            user.setRole(currentEditingUser.getRole());
+            user.setConfirmed(currentEditingUser.getConfirmed());
+            userDao.saveOrUpdate(user);
+        }
+        model.addAttribute("user", user);
+        return "user-edit";
+    }
+
 }
