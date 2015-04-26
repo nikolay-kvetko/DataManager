@@ -132,6 +132,9 @@ public class UserController {
 
             if(authenticationToken.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if(!"ADMIN".equalsIgnoreCase(user.getRole().getName())){
+                    return "redirect:/registration/password/create";
+                }
                 return "after-confirm-page";
             }
 
@@ -142,7 +145,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration/company/create")
-    public String createNewCompany(Model model) {
+    public String createCompany(Model model) {
 
         Company company = new Company();
         model.addAttribute("company", company);
@@ -151,7 +154,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
-    public String createCompany(Company company, Principal principal,
+    public String addCompany(Company company, Principal principal,
                                 @RequestParam("image") MultipartFile image) {
 
         User user = userDao.getUserByEmail(principal.getName());
@@ -177,6 +180,26 @@ public class UserController {
         company.setUsers(users);
         user.setCompany(company);
         companyDao.saveOrUpdate(company);
+
+        return "redirect:/home/entity/list";
+    }
+
+    @RequestMapping(value = "/registration/password/create")
+    public String createPassword() {
+        return "create-password";
+    }
+
+    @RequestMapping(value = "/registration/password/add", method = RequestMethod.POST)
+    public String addPassword(Principal principal,
+                              @Nonnull @RequestParam("newPassword") String password) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        user.setPassword(password);
+
+        Date date = new Date();
+        user.setModifiedDate(date);
+
+        userDao.saveOrUpdate(user);
 
         return "redirect:/home/entity/list";
     }
@@ -246,18 +269,50 @@ public class UserController {
         List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
         model.addAttribute("usersList", users);
 
+        List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+        model.addAttribute("rolesList", roles);
+
         return "create-user";
     }
 
     @RequestMapping(value = "/manage_users/add")
-    public String addUser(User user, Principal principal) {
+    public String addUser(User user, Principal principal, HttpServletRequest request, @RequestParam("userRole") String role) {
+
+        user.setRole(roleDao.getRoleByName(role));
 
         Company company = userDao.getUserByEmail(principal.getName()).getCompany();
-
         user.setCompany(company);
 
         Date date = new Date();
         user.setModifiedDate(date);
+
+        UUID uid = UUID.randomUUID();
+        String stringUid = String.valueOf(uid).replace("-", "_");
+        user.setConfirmingURL(stringUid);
+        user.setConfirmed(false);
+
+        String confirmURL = "http://" +
+                request.getServerName() +                   // "host"
+                ":" +                                       // ":"
+                request.getServerPort() +                   // "8080"
+                "/registration/confirm/" +                  // "/registration/confirm/"
+                stringUid;                                  // "uid"
+
+        /*MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);*/
+
+        user.setPassword("");
 
         userDao.saveOrUpdate(user);
 

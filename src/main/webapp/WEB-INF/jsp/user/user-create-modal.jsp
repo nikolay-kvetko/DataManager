@@ -39,6 +39,19 @@
                             <s:input class="form-control" type="email"  placeholder="${labelEmail}" path="email" required="required"/>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">
+                            <spring:message code="label.modal.user.role"/>*
+                        </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="userRole" required="required">
+                                <c:forEach var="currentRole" items="${rolesList}">
+                                    <option value="${currentRole.name}"> ${currentRole.name} </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
                 </s:form>
             </div>
             <div class="modal-footer">

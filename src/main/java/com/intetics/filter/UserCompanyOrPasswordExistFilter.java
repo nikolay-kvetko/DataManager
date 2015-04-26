@@ -10,7 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UserCompanyExistFilter implements Filter {
+public class UserCompanyOrPasswordExistFilter implements Filter {
 
     private ServletContext context;
 
@@ -38,7 +38,11 @@ public class UserCompanyExistFilter implements Filter {
                     chain.doFilter(req, resp);
                 }
             } else {
-                chain.doFilter(req, resp);
+                if(user.getPassword().isEmpty()){
+                    response.sendRedirect("/registration/password/create");
+                } else {
+                    chain.doFilter(req, resp);
+                }
             }
         } else response.sendRedirect("/");
     }

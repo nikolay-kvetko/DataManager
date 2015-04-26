@@ -32,6 +32,7 @@
         <filter-name>companyFilter</filter-name>
         <url-pattern>/home/*</url-pattern>
         <url-pattern>/entity/*</url-pattern>
+        <url-pattern>/manage_users/*</url-pattern>
     </filter-mapping>
 
     <listener>
