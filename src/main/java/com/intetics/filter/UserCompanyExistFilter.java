@@ -40,7 +40,7 @@ public class UserCompanyExistFilter implements Filter {
             } else {
                 chain.doFilter(req, resp);
             }
-        } else response.sendRedirect("/login");
+        } else response.sendRedirect("/");
     }
 
     public void destroy() {

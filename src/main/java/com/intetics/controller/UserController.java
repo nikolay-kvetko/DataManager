@@ -9,7 +9,6 @@ import com.intetics.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,13 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,7 +92,7 @@ public class UserController {
         user.setConfirmed(false);
         user.setRole(role);
 
-        MimeMessage message = mailSender.createMimeMessage();
+        /*MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper;
 
@@ -106,7 +104,10 @@ public class UserController {
             e.printStackTrace();
         }
 
-        mailSender.send(message);
+        mailSender.send(message);*/
+
+        Date date = new Date();
+        user.setModifiedDate(date);
 
         userDao.saveOrUpdate(user);
         model.addAttribute("email", user.getEmail());
@@ -197,7 +198,7 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = "/users/edit/{userId}")
+    @RequestMapping(value = "/manage_users/edit/{userId}")
     public String editUser(@Nonnull @PathVariable Long userId, Model model, HttpServletRequest request) {
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
@@ -208,7 +209,7 @@ public class UserController {
         return "user-edit";
     }
 
-    @RequestMapping(value = "/user/save")
+    @RequestMapping(value = "/manage_users/save")
     public String saveUser(User user, Model model, HttpServletRequest request) {
         if (user != null) {
             HttpSession session = request.getSession();
@@ -222,7 +223,45 @@ public class UserController {
             userDao.saveOrUpdate(user);
         }
         model.addAttribute("user", user);
-        return "user-edit";
+
+        return "redirect:/manage_users/list";
+    }
+
+    @RequestMapping(value = "/manage_users/list")
+    public String getUserList(ModelMap model, Principal principal) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        List<User> users = user.getCompany().getUsers();
+        model.addAttribute("usersList", users);
+
+        return "user-list";
+    }
+
+    @RequestMapping(value = "/manage_users/create")
+    public String createUser(ModelMap model, Principal principal) {
+
+        User user = new User();
+        model.addAttribute("user", user);
+
+        List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+        model.addAttribute("usersList", users);
+
+        return "create-user";
+    }
+
+    @RequestMapping(value = "/manage_users/add")
+    public String addUser(User user, Principal principal) {
+
+        Company company = userDao.getUserByEmail(principal.getName()).getCompany();
+
+        user.setCompany(company);
+
+        Date date = new Date();
+        user.setModifiedDate(date);
+
+        userDao.saveOrUpdate(user);
+
+        return "redirect:/manage_users/list";
     }
 
 }

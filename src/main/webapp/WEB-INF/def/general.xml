@@ -84,9 +84,17 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
     </definition>
 
-    <definition name="login" extends="pageSkeleton">
-        <put-attribute name="header" value=""/>
-        <put-attribute name="content" value="/WEB-INF/jsp/user/user-authorization.jsp"/>
+    <definition name="login" template="/WEB-INF/jsp/user/user-authorization.jsp">
+    </definition>
+
+
+    <definition name="user-list" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+    </definition>
+
+    <definition name="create-user" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/user/user-create-modal.jsp"/>
     </definition>
 
 

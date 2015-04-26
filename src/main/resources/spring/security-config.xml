@@ -16,6 +16,7 @@
         <intercept-url pattern="/entity/**" access="hasRole('Admin')" />
         <intercept-url pattern="/home/**" access="hasRole('Admin')" />
         <intercept-url pattern="/registration/company/**" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/**" access="hasRole('Admin')" />
 
         <form-login default-target-url="/home/entity/list"
                     login-page="/"
