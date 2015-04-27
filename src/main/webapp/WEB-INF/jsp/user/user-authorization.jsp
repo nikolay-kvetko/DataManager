@@ -41,12 +41,12 @@
                             </div>
                         </div>
                     </form>
-                        <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3">
-                                <input form="loginForm" type="submit" value="<spring:message code="button.login"/>" class="btn btn-primary">
-                            </div>
-                            <input type="submit" form="registrationForm" value="<spring:message code="button.registration"/>" class="btn btn-info">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <input form="loginForm" type="submit" value="<spring:message code="button.login"/>" class="btn btn-primary">
                         </div>
+                        <input type="submit" form="registrationForm" value="<spring:message code="button.registration"/>" class="btn btn-info">
+                    </div>
                 </div>
             </div>
         </div>

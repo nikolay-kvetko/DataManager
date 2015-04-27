@@ -77,7 +77,6 @@
     <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
     </definition>
 
-    <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
     <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
     </definition>
 

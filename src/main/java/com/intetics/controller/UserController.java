@@ -61,7 +61,6 @@ public class UserController {
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
 
-
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
         model.addAttribute("user", new User());
@@ -72,7 +71,8 @@ public class UserController {
     public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params,
                                           @ModelAttribute("user") @Valid User user,
                                           BindingResult bindingResult,
-                                          HttpServletRequest request) {
+                                          HttpServletRequest request,
+                                          Model model) {
 
         Role role = roleDao.getRoleByName("Admin");
 
@@ -86,7 +86,6 @@ public class UserController {
                 "/registration/confirm/" +                  // "/registration/confirm/"
                 stringUid;                                  // "uid"
 
-        
         user.setConfirmingURL(stringUid);
         user.setConfirmed(false);
         user.setRole(role);
@@ -126,7 +125,7 @@ public class UserController {
 
         User user = userDao.getUserByConfirmingURL(uid);
 
-        if(user != null) {
+        if (user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
 
@@ -139,9 +138,9 @@ public class UserController {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
             authenticationManager.authenticate(authenticationToken);
 
-            if(authenticationToken.isAuthenticated()) {
+            if (authenticationToken.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                if(!"ADMIN".equalsIgnoreCase(user.getRole().getName())){
+                if (!"ADMIN".equalsIgnoreCase(user.getRole().getName())) {
                     return "redirect:/registration/password/create";
                 }
                 return "after-confirm-page";
@@ -164,7 +163,7 @@ public class UserController {
 
     @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
     public String addCompany(Company company, Principal principal,
-                                @RequestParam("image") MultipartFile image) {
+                             @RequestParam("image") MultipartFile image) {
 
         User user = userDao.getUserByEmail(principal.getName());
         List<User> users = new ArrayList<User>();
@@ -214,16 +213,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = {RequestMethod.POST, RequestMethod.GET})
-    public String login(ModelMap model, Integer login_error)
-    {
+    public String login(ModelMap model, Integer login_error) {
         int error;
 
-        if (login_error==null){
-            error=0;
+        if (login_error == null) {
+            error = 0;
         } else
             error = login_error;
 
-        if(error==1) {
+        if (error == 1) {
             model.put("error", "Incorrect username or password");
         }
 
@@ -231,7 +229,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/edit/{userId}")
-    public String editUser(@Nonnull @PathVariable Long userId, Model model, HttpServletRequest request) {
+    public String editUser(@Nonnull @PathVariable Long userId, Model model, HttpServletRequest request, Principal principal) {
+        User authenticatedUser = userDao.getUserByEmail(principal.getName());
+        Company company = authenticatedUser.getCompany();
+        User editingUser = userDao.getUserById(userId);
+        if (!company.getUsers().contains(editingUser))
+            return "error";
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
 
@@ -330,7 +333,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}/confirm")
-    public String startDeleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
+    public String startDeleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model) {
         Assert.notNull(userId);
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
@@ -338,7 +341,7 @@ public class UserController {
 
         User userForDelete = userDao.getUserById(userId);
 
-        if(!company.getUsers().contains(userForDelete))
+        if (!company.getUsers().contains(userForDelete))
             return "error";
 
         List<User> users = company.getUsers();
@@ -350,7 +353,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}")
-    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model) {
         Assert.notNull(userId);
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
@@ -358,7 +361,7 @@ public class UserController {
 
         User deletingUser = userDao.getUserById(userId);
 
-        if(!company.getUsers().contains(deletingUser))
+        if (!company.getUsers().contains(deletingUser))
             return "error";
 
         userDao.delete(deletingUser);
