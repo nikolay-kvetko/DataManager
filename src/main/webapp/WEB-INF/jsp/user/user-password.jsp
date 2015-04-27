@@ -34,11 +34,13 @@
                         </div>
                     </form>
                         <div class="row">
-                            <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="col-xs-4 col-sm-4 col-md-4">
                                 <input form="passwordForm" type="submit" value="<spring:message code="button.set"/>" class="btn btn-primary">
                             </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4">
                             <form id="logout" action="/j_spring_security_logout"></form>
                             <input type="submit" form="logout" value="<spring:message code="button.logout"/>" class="btn btn-default">
+                            </div>
                         </div>
                 </div>
             </div>

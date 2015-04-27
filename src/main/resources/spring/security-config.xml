@@ -16,16 +16,17 @@
 
     <http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
 
-        <intercept-url pattern="/entity/**" access="hasAnyRole('Admin', 'ReadOnly')" />
-        <intercept-url pattern="/home/**" access="hasAnyRole('Admin', 'ReadOnly')" />
+        <intercept-url pattern="/entity/**" access="isAuthenticated()" />
+        <intercept-url pattern="/home/**" access="isAuthenticated()" />
+        <intercept-url pattern="/manage_users/**" access="isAuthenticated()" />
         <intercept-url pattern="/registration/company/**" access="hasRole('Admin')" />
-        <intercept-url pattern="/manage_users/**" access="hasAnyRole('Admin', 'ReadOnly')" />
 
         <form-login default-target-url="/home/entity/list"
                     login-page="/"
                     authentication-failure-url="/?login_error=1"/>
 
         <logout logout-success-url="/" invalidate-session="true"/>
+
     </http>
 
     <beans:bean id="companyFilter" class="com.intetics.filter.UserCompanyOrPasswordExistFilter"/>

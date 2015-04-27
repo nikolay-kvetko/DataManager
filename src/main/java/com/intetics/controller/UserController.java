@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -261,6 +262,7 @@ public class UserController {
         return "user-list";
     }
 
+    @RolesAllowed("Admin")
     @RequestMapping(value = "/manage_users/create")
     public String createUser(ModelMap model, Principal principal) {
 
