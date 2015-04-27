@@ -1,31 +1,34 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3><spring:message code="header.admin.panel"/></h3>
+                    <h3 class="text-center"><spring:message code="header.admin.panel"/></h3>
                     <h4 class="text-center"><spring:message code="header.create.company"/></h4>
                 </div>
                 <div class="panel-body">
-                    <form id="createCompany" role="form" action="/registration/company/add" enctype="multipart/form-data" method="post">
+                    <s:form id="createCompany" role="form" action="/registration/company/add"
+                            enctype="multipart/form-data" method="post" modelAttribute="company">
                         <div class="row">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
+
+                            <div class="col-md-8">
                                 <div class="form-group">
-                                    <input type="text" name="name" id="name"
+                                    <label class="control-label"><spring:message code="placeholder.company.name"/></label>
+                                    <s:input type="text" name="name" id="name" path="name"
                                            class="form-control input-sm"
-                                           placeholder="<spring:message code="placeholder.company.name"/>"
-                                           required="required">
+                                           required="required"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
+                            <div class="col-md-8">
                                 <div class="form-group">
-                                    <input type="text" name="address" id="address"
-                                           class="form-control input-sm"
-                                           placeholder="<spring:message code="placeholder.company.address"/>">
+                                    <label class="control-label"><spring:message code="placeholder.company.address"/></label>
+                                    <s:input type="text" name="address" id="address" path="address"
+                                           class="form-control input-sm"/>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </s:form>
                 </div>
                 <div class="panel-footer">
                     <form id="logout" action="/j_spring_security_logout"></form>

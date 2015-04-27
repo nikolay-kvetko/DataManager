@@ -1,6 +1,9 @@
 package com.intetics.bean;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -23,8 +26,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    private String confirmPassword;
+
     @Column(name = "confirmed")
     private Boolean confirmed;
+
+    @Column(name = "confirming_url")
+    private String confirmingURL;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -33,6 +41,13 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @CreationTimestamp
+    @Column(name = "create_date", updatable=false)
+    private Date createDate;
+
+    @Column(name = "modified_date")
+    private Date modifiedDate;
 
     public Long getUserId() {
         return userId;
@@ -74,6 +89,14 @@ public class User {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -97,4 +120,29 @@ public class User {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+    public String getConfirmingURL() {
+        return confirmingURL;
+    }
+
+    public void setConfirmingURL(String confirmingURL) {
+        this.confirmingURL = confirmingURL;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 }
+

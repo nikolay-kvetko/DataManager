@@ -15,4 +15,6 @@ public interface UserDao {
     User getUserByEmail(String email);
 
     void delete(User user);
+
+    User getUserByConfirmingURL(String confirmingURL);
 }
