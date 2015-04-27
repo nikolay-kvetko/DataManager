@@ -74,6 +74,10 @@
         <put-attribute name="content" value="/WEB-INF/jsp/User/new-company.jsp"/>
     </definition>
 
+    <definition name="edit-company" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/User/new-company.jsp"/>
+    </definition>
+
     <definition name="logIn" template="/WEB-INF/jsp/User/login.jsp">
     </definition>
 
@@ -85,5 +89,7 @@
     <definition name="field.lookup.number" template="/WEB-INF/jsp/lookup/number.jsp"/>
     <definition name="field.lookup.date" template="/WEB-INF/jsp/lookup/date.jsp"/>
     <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
+
+    <definition name="company.logo" template="/WEB-INF/jsp/User/logo.jsp"/>
 
 </tiles-definitions>

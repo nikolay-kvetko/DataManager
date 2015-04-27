@@ -1,10 +1,10 @@
 package com.intetics.controller;
 
-import com.intetics.bean.Field;
-import com.intetics.bean.LookUpField;
-import com.intetics.bean.TextAreaField;
-import com.intetics.bean.ValueType;
+import com.intetics.bean.*;
+import com.intetics.dao.CompanyDao;
 import com.intetics.dao.EntitySchemaDao;
+import com.intetics.dao.UserDao;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,6 +26,9 @@ public class AjaxController {
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @RequestMapping(value = "/getNewFieldList", method = RequestMethod.POST)
     public
@@ -89,5 +95,22 @@ public class AjaxController {
         }
 
         return result;
+    }
+
+    @RequestMapping(value = "/showLogo", method = RequestMethod.GET)
+    public String showLogo(Model model, @RequestParam("image") MultipartFile image) {
+
+        String imageValue = "";
+
+        try {
+            byte[] bytes = image.getBytes();
+            imageValue = Base64.encode(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("logoValue", imageValue);
+
+        return "company.logo";
     }
 }

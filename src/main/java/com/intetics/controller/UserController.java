@@ -9,6 +9,7 @@ import com.intetics.dao.UserDao;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -80,27 +83,33 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration/company/create")
-    public String createNewCompany() {
+    public String createNewCompany(Model model) {
+
+        model.addAttribute("title","Create Company");
+        model.addAttribute("saveButton", "Create");
+        model.addAttribute("type", "create");
 
         return "new-company";
     }
 
+    @RequestMapping(value = "/registration/company/edit")
+    public String editCompany(Model model) {
+
+        model.addAttribute("title","Edit Company");
+        model.addAttribute("saveButton", "Edit");
+        model.addAttribute("type", "edit");
+
+        return "edit-company";
+    }
+
     @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
     public String createCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
-                                @RequestParam("image") MultipartFile image) {
+                                @RequestParam("image") MultipartFile image,
+                                HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
         List<User> users = new ArrayList<User>();
         users.add(user);
-
-        /*BufferedImage image2 = null;
-        try {
-            image2 = ImageIO.read(image.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Integer width = image2.getWidth();
-        Integer height = image2.getHeight();*/
 
         Company company = new Company();
 
@@ -116,6 +125,34 @@ public class UserController {
         company.setUsers(users);
         user.setCompany(company);
         companyDao.saveOrUpdate(company);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+
+        return "redirect:/home/entity/list";
+    }
+
+    @RequestMapping(value = "/registration/company/change", method = RequestMethod.POST)
+    public String editCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
+                                @RequestParam("image") MultipartFile image,
+                                HttpServletRequest request) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        Company company = user.getCompany();
+
+        try {
+            byte[] bytes = image.getBytes();
+            company.setLogo(Base64.encode(bytes));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        company.setName(params.get("name").get(0));
+        company.setAddress(params.get("address").get(0));
+        companyDao.saveOrUpdate(company);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
 
         return "redirect:/home/entity/list";
     }

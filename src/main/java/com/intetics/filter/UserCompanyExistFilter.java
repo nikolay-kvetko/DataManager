@@ -7,7 +7,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class UserCompanyExistFilter implements Filter {
@@ -31,6 +33,11 @@ public class UserCompanyExistFilter implements Filter {
         User user = userDao.getUserByEmail(authentication.getName());
 
         if(user != null){
+
+            HttpServletRequest request = (HttpServletRequest)req;
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
             if("ADMIN".equalsIgnoreCase(user.getRole().getName())){
                 if(user.getCompany() == null){
                     response.sendRedirect("/registration/company/create");
