@@ -65,7 +65,8 @@
     </definition>
 
     <definition name="user-authorization" extends="pageSkeleton">
-        <put-attribute name="user-authorization" value="/WEB-INF/jsp/User/user-authorization.jsp"/>
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/User/user-authorization.jsp"/>
     </definition>
 
     <definition name="user-registration" extends="pageSkeleton">

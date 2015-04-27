@@ -1,7 +1,6 @@
 package com.intetics.controller;
 
 import com.intetics.bean.Company;
-import com.intetics.bean.NewUser;
 import com.intetics.bean.Role;
 import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
@@ -139,14 +138,5 @@ public class UserController {
         }
 
         return "logIn";
-    }
-
-    @RequestMapping(value = "/new")
-    public String newUser(@ModelAttribute("user") @Valid NewUser user, BindingResult bindingResult) {
-        System.out.println();
-        if (bindingResult.hasErrors()) {
-            System.out.println();
-        }
-        return "admin-registration";
     }
 }
