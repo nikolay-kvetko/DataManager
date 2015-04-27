@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * @see com.intetics.dao.RoleDao
  */
 
 @Repository

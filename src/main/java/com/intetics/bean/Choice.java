@@ -3,7 +3,7 @@ package com.intetics.bean;
 import javax.persistence.*;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * The class stores all the values of choice
  */
 @Entity
 @Table(name = "choice")

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * An instance of the EntityScheme with its own set of values EntityScheme fields
  */
 @Entity
 @Table(name = "entity_instance")

@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Nonnull;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * @see com.intetics.dao.CompanyDao
  */
 
 @Repository

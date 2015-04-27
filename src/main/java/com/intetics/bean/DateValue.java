@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Class stores a date value
  */
 
 @Entity

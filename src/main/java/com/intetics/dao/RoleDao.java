@@ -5,7 +5,7 @@ import com.intetics.bean.Role;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Operates over {@link com.intetics.bean.Role}
  */
 
 public interface RoleDao {

@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * @see com.intetics.dao.EntityInstanceDao
  */
 @Repository
 @Transactional
