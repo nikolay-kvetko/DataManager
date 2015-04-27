@@ -41,6 +41,10 @@
                         <spring:url var="action"
                                     value='/entity/${EntitySchema.id}/field/add/image'/>
                     </c:when>
+                    <c:when test="${fieldType eq 'gps'}">
+                        <spring:url var="action"
+                                    value='/entity/${EntitySchema.id}/field/add/gps'/>
+                    </c:when>
                 </c:choose>
                 <form id="Field" name="Field" action="${action}" method="post">
                     <div class="form-group">
@@ -195,22 +199,28 @@
                                     <select class="form-control" name="numberDecimal">
                                         <option <c:if test="${field.numberDecimal == 0}">
                                             selected
-                                        </c:if> value="0">0</option>
+                                        </c:if> value="0">0
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 1}">
                                             selected
-                                        </c:if> value="1">1</option>
+                                        </c:if> value="1">1
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 2}">
                                             selected
-                                        </c:if> value="2">2</option>
+                                        </c:if> value="2">2
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 3}">
                                             selected
-                                        </c:if> value="3">3</option>
+                                        </c:if> value="3">3
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 4}">
                                             selected
-                                        </c:if> value="4">4</option>
+                                        </c:if> value="4">4
+                                        </option>
                                         <option <c:if test="${field.numberDecimal == 5}">
                                             selected
-                                        </c:if> value="5">5</option>
+                                        </c:if> value="5">5
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -221,10 +231,13 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="format" value="true"
+                                                    <c:if test="${field.fullDate == null}">
+                                                        checked
+                                                    </c:if>
                                                     <c:if test="${field.fullDate eq true}">
                                                         checked
                                                     </c:if>/>
-                                            Date and Time
+                                            <spring:message code="label.modal.date.fullDate"/>
                                         </label>
                                     </div>
                                 </div>
@@ -235,7 +248,7 @@
                                                     <c:if test="${field.fullDate eq false}">
                                                         checked
                                                     </c:if>/>
-                                            Only Date
+                                            <spring:message code="label.modal.date.shortDate"/>
                                         </label>
                                     </div>
                                 </div>
@@ -243,7 +256,8 @@
                         </c:when>
                         <c:when test="${fieldType eq 'look_up'}">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Get information from entity*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.lookUp.entity"/></label>
 
                                 <div class="col-sm-8">
                                     <select name="selectEntity" class="form-control" id="entityList">
@@ -257,7 +271,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">In this field*</label>
+                                <label class="col-sm-4 control-label"><spring:message
+                                        code="label.modal.lookUp.field"/></label>
 
                                 <div class="col-sm-8" id="fieldList">
                                     <select name="selectField" class="form-control" id="selectField">
@@ -265,7 +280,8 @@
                                             <option <c:if
                                                     test="${fieldItem.fieldId == field.lookUpFieldId}">
                                                 selected
-                                            </c:if> value="${fieldItem.fieldId}"><c:out value="${fieldItem.name}"/></option>
+                                            </c:if> value="${fieldItem.fieldId}"><c:out
+                                                    value="${fieldItem.name}"/></option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -307,7 +323,7 @@
         $.ajax({
             type: 'POST',
             url: '/ajax/getNewFieldList',
-            data: ({entityId: entityId, currentEntityId : '${field.fieldId}'}),
+            data: ({entityId: entityId, currentEntityId: '${field.fieldId}'}),
             success: function (fieldList) {
                 $("#fieldList").html(fieldList);
             }
