@@ -111,7 +111,7 @@ public class UserController {
         userDao.saveOrUpdate(user);
         model.addAttribute("email", user.getEmail());
 
-        return "after-registration-page";
+        return "email-confirmation-sent";
     }
 
     @RequestMapping(value = "/registration/confirm/{uid}")

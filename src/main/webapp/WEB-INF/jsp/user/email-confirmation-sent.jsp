@@ -5,7 +5,12 @@
 <div class="container">
     <div class="jumbotron">
         <h2><spring:message code="email.confirmation"/></h2>
-        <p><spring:message code="email.confirmation.sent.message"/></p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button"><spring:message code="button.tologin"/></a></p>
+
+        <p><spring:message code="email.confirmation.sent.message.first"/> <c:out
+                value="${email}"/><spring:message
+                code="email.confirmation.sent.message.second"/></p>
+
+        <p><a class="btn btn-primary btn-lg" href="#" role="button"><spring:message
+                code="button.tologin"/></a></p>
     </div>
 </div>
