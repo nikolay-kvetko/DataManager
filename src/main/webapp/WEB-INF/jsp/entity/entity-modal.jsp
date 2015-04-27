@@ -12,11 +12,16 @@
                 <s:form id="EntitySchema" name="EntitySchema" action="${action}" modelAttribute="EntitySchema" method="post">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Entity Name*</label>
+                        <spring:bind path="name">
                         <div class="col-sm-8">
                             <s:hidden path="id"/>
                             <spring:message code="label.modal.fieldname" var="labelentityname"/>
-                            <s:input class="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required"/>
+                            <div class="${status.error ? 'form-group has-error col-lg-12' : ''} ">
+                                <s:input cssClass="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required"/>
+                                <label class="control-label"><s:errors path="name"/></label>
+                            </div>
                         </div>
+                        </spring:bind>
                     </div>
                 </s:form>
             </div>

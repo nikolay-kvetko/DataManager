@@ -13,6 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -83,7 +86,10 @@ public class EntitySchemaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveEntitySchema(EntitySchema entitySchema, Principal principal) {
+    public String saveEntitySchema(@ModelAttribute("EntitySchema")
+                                       @Validated(value = EntitySchema.MvcValidationSequence.class)
+                                       EntitySchema entitySchema,
+                                   BindingResult bindingResult, ModelMap model, Principal principal) {
 
         Date currentDate = new Date();
 
@@ -92,13 +98,28 @@ public class EntitySchemaController {
         Company company = user.getCompany();
         entitySchema.setCompany(company);
 
+        if (bindingResult.hasErrors()) {
+            if (entitySchema.getId() == null) {
+                List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
+                model.addAttribute("entitySchemaList", entitySchemas);
+                model.addAttribute("modalTitle", "Create Entity");
+                model.addAttribute("modalSaveButton", "Create");
+                return "create-entity";
+            } else {
+                model.addAttribute("EntitySchema", entitySchema);
+                model.addAttribute("modalTitle", "Edit Entity");
+                model.addAttribute("modalSaveButton", "Edit");
+                return "edit-entity";
+            }
+        }
+
         if(entitySchema.getId() != null){
             if(verifyComplianceEntitySchemaAndCompany(entitySchema.getId()) == null)
                 return "error";
 
             entitySchema.setModifiedDate(currentDate);
             entitySchemaDao.saveOrUpdate(entitySchema);
-            return "redirect:/entity/"+entitySchema.getId()+"/field/list";
+            return "redirect:/entity/" + entitySchema.getId() + "/field/list";
         }
 
         entitySchema.setModifiedDate(currentDate);

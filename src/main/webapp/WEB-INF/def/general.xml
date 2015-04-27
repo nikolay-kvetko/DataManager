@@ -63,7 +63,7 @@
         <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/delete-modal.jsp"/>
     </definition>
-
+    
     <definition name="admin-registration" extends="pageSkeleton">
         <put-attribute name="header" value=""/>
         <put-attribute name="content" value="/WEB-INF/jsp/user/admin-registration.jsp"/>
@@ -77,6 +77,7 @@
     <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
     </definition>
 
+    <definition name="error" template="/WEB-INF/jsp/error-page.jsp">
     <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
     </definition>
 

@@ -19,13 +19,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,13 +63,16 @@ public class UserController {
 
 
     @RequestMapping(value = "/registration")
-    public String getRegistration() {
-
+    public String getRegistration(Model model) {
+        model.addAttribute("user", new User());
         return "admin-registration";
     }
 
     @RequestMapping(value = "/create_admin", method = RequestMethod.POST)
-    public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params, HttpServletRequest request, Model model) {
+    public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params,
+                                          @ModelAttribute("user") @Valid User user,
+                                          BindingResult bindingResult,
+                                          HttpServletRequest request) {
 
         Role role = roleDao.getRoleByName("Admin");
 
@@ -84,17 +86,19 @@ public class UserController {
                 "/registration/confirm/" +                  // "/registration/confirm/"
                 stringUid;                                  // "uid"
 
-
-        User user = new User();
-        user.setFirstName(params.get("firstName").get(0));
-        user.setLastName(params.get("lastName").get(0));
-        user.setEmail(params.get("email").get(0));
-        user.setPassword(params.get("password").get(0));
+        
         user.setConfirmingURL(stringUid);
         user.setConfirmed(false);
         user.setRole(role);
 
+        if (bindingResult.hasErrors()) {
+            bindingResult.resolveMessageCodes("errors.user.firstName");
+            return "admin-registration";
+        }
         /*MimeMessage message = mailSender.createMimeMessage();
+
+        //this will be confirm URL
+        String emailMessage = "localhost:8080/registration/confirm/" + params.get("email").get(0).replace(".", "_");
 
         MimeMessageHelper helper;
 

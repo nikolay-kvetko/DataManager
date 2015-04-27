@@ -1,66 +1,91 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Data Manager - Admin Panel</h3>
-                    <h4 class="text-center">Registration</h4>
+                    <h3><spring:message code="header.admin.panel"/></h3>
+                    <h4 class="text-center"><spring:message code="label.registration"/></h4>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/create_admin" method="post">
+                    <form:form role="form" modelAttribute="user" action="/create_admin"
+                               method="post">
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="firstName" id="first_name"
-                                           class="form-control input-sm" placeholder="First Name"
-                                           required="required">
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
+                                    code="label.firstName"/></label>
+                            <spring:bind path="firstName">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <form:input path="firstName" type="text"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><form:errors
+                                                path="firstName"/></label>
+                                    </div>
                                 </div>
-                            </div>
+                            </spring:bind>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="lastName" id="last_name"
-                                           class="form-control input-sm" placeholder="Last Name"
-                                           required="required">
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
+                                    code="label.lastName"/></label>
+                            <spring:bind path="lastName">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <form:input path="lastName" type="text"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><form:errors
+                                                path="lastName"/></label>
+                                    </div>
                                 </div>
-                            </div>
+                            </spring:bind>
                         </div>
+                        <div class="row">
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
+                                    code="label.email"/></label>
+                            <spring:bind path="email">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <form:input path="email" type="text"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><form:errors
+                                                path="email"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
+                        </div>
+                        <div class="row">
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
+                                    code="label.password"/></label>
+                            <spring:bind path="password">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <form:input path="password" type="password"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><form:errors
+                                                path="password"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
+                        </div>
+                        <div class="row">
+                            <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
+                                    code="label.confirmPassword"/></label>
+                            <spring:bind path="confirmPassword">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <form:input path="confirmPassword" type="password"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><form:errors
+                                                path="confirmPassword"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
+                        </div>
+                        <input type="submit" value="<spring:message code="label.registration"/>"
+                               class="btn btn-primary">
 
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="email" name="email" id="email"
-                                           class="form-control input-sm" placeholder="Email Address"
-                                           required="required">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="password" name="password" id="password"
-                                           class="form-control input-sm" placeholder="Password"
-                                           required="required">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="password" name="password_confirmation"
-                                           id="password_confirmation" class="form-control input-sm"
-                                           placeholder="Verify Password" required="required">
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="submit" value="Register" class="btn btn-primary">
-
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
