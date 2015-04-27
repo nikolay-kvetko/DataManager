@@ -6,7 +6,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Date class determines the completeness of the date display
  */
 
 @Entity

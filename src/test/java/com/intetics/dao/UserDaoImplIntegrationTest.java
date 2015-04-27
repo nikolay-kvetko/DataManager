@@ -10,6 +10,8 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -85,5 +87,14 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
         User user = userDao.getUserByConfirmingURL("1234_a123");
         assertTrue("Admin".equals(user.getRole().getName()));
         assertTrue("Anton".equals(user.getFirstName()));
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetRoleNamesExcludingAdmin.setup.xml")
+    public void testGetRoleNamesExcludingAdmin() throws Exception {
+
+        List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+
+        assertTrue(roles.size() == 2);
     }
 }

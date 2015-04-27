@@ -3,7 +3,7 @@ package com.intetics.bean;
 import javax.persistence.*;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Abstract class for all fields
  */
 @Entity
 @Table(name = "field_value")
