@@ -59,10 +59,12 @@
                     </c:choose>
                 </td>
                 <td>
-                    <a href="/manage_users/delete/<c:out value="${user.userId}"/>/confirm"
-                       title="<spring:message code="label.delete"/> <c:out value="${user.firstName}"/> <c:out value="${user.lastName}"/>">
-                        <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
-                    </a>
+                    <c:if test="${user.role.name != 'Admin'}">
+                        <a href="/manage_users/delete/<c:out value="${user.userId}"/>/confirm"
+                           title="<spring:message code="label.delete"/> <c:out value="${user.firstName}"/> <c:out value="${user.lastName}"/>">
+                            <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                        </a>
+                    </c:if>
                 </td>
             </tr>
         </c:forEach>

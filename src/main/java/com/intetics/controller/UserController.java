@@ -329,10 +329,13 @@ public class UserController {
     public String startDeleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
         Assert.notNull(userId);
 
+        User userForDelete = userDao.getUserById(userId);
+
+        if("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
+            return "error";
+
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
-
-        User userForDelete = userDao.getUserById(userId);
 
         if(!company.getUsers().contains(userForDelete))
             return "error";
@@ -349,10 +352,13 @@ public class UserController {
     public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
         Assert.notNull(userId);
 
+        User deletingUser = userDao.getUserById(userId);
+
+        if("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
+            return "error";
+
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
-
-        User deletingUser = userDao.getUserById(userId);
 
         if(!company.getUsers().contains(deletingUser))
             return "error";

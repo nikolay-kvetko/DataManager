@@ -97,4 +97,14 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
 
         assertTrue(roles.size() == 2);
     }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetUsersExcludingAdmin.setup.xml")
+    public void testGetUsersExcludingAdmin() throws Exception {
+
+        Role role = roleDao.getRoleByName("Admin");
+        List<User> roles = userDao.getUsersExcludingAdmin(role);
+
+        assertTrue(roles.size() == 2);
+    }
 }
