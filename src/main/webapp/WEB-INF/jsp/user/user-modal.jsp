@@ -9,12 +9,10 @@
                     <h4 class="modal-title">Edit User</h4>
                 </div>
                 <div class="panel-body">
-                    <form:form role="form" modelAttribute="user" action="/manage_users/save"
-                <div class="modal-body form-horizontal">
-                    <spring:url var="action" value='/entity/save'/>
-                    <form:form id="userEdit" role="form" modelAttribute="user" action="/user/save"
-                               method="post">
-                    <div class="form-group">
+                    <form:form id="userEdit" role="form" modelAttribute="user"
+                               action="/manage_users/save">
+                    <div class="modal-body form-horizontal">
+                        <spring:url var="action" value='/entity/save'/>
                         <label class="col-xs-3 col-sm-4 col-md-4 control-label">
                             <spring:message code="label.firstName"/></label>
                         <spring:bind path="firstName">
