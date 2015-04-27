@@ -3,7 +3,7 @@ package com.intetics.dao;
 import com.intetics.bean.Company;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Operates over {@link com.intetics.bean.Company}
  */
 
 public interface CompanyDao {

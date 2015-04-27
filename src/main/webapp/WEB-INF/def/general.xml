@@ -51,17 +51,17 @@
 
     <definition name="delete-entity" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-list.jsp"/>
-        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/delete-modal.jsp"/>
     </definition>
 
     <definition name="delete-field" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/entity-fields-list.jsp"/>
-        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/delete-modal.jsp"/>
     </definition>
 
     <definition name="delete-instance" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/entity/home-entity-instance-list.jsp"/>
-        <put-attribute name="modal" value="/WEB-INF/jsp/entity/delete-modal.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/delete-modal.jsp"/>
     </definition>
 
     <definition name="admin-registration" extends="pageSkeleton">
@@ -84,9 +84,27 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
     </definition>
 
-    <definition name="login" extends="pageSkeleton">
+    <definition name="login" template="/WEB-INF/jsp/user/user-authorization.jsp">
+    </definition>
+
+
+    <definition name="user-list" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+    </definition>
+
+    <definition name="create-user" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/user/user-create-modal.jsp"/>
+    </definition>
+
+    <definition name="create-password" extends="pageSkeleton">
         <put-attribute name="header" value=""/>
-        <put-attribute name="content" value="/WEB-INF/jsp/user/user-authorization.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-password.jsp"/>
+    </definition>
+
+    <definition name="delete-user" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/delete-modal.jsp"/>
     </definition>
 
 

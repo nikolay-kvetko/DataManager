@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Class stores a collection of values choice of a specific instance
  */
 @Entity
 @DiscriminatorValue("MULTI_CHOICE")

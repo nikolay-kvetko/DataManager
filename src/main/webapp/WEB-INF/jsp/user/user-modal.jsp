@@ -9,7 +9,7 @@
                     <h2>Edit user</h2>
                 </div>
                 <div class="panel-body">
-                    <form:form role="form" modelAttribute="user" action="/user/save"
+                    <form:form role="form" modelAttribute="user" action="/manage_users/save"
                                method="post">
                         <div class="row">
                             <label class="col-xs-3 col-sm-4 col-md-4 control-label">First

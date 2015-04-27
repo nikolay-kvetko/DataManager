@@ -3,7 +3,7 @@ package com.intetics.dao;
 import com.intetics.bean.User;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Operates over {@link com.intetics.bean.User}
  */
 
 public interface UserDao {

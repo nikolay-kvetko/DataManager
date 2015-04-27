@@ -6,7 +6,7 @@ import com.intetics.bean.EntitySchema;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Operates over {@link com.intetics.bean.EntityInstance}
  */
 public interface EntityInstanceDao {
 

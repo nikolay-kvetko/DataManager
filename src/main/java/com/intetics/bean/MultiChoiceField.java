@@ -1,16 +1,10 @@
 package com.intetics.bean;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Class stores a collection of values of user-defined choice
  */
 @Entity
 @Table(name = "multi_choice_field")

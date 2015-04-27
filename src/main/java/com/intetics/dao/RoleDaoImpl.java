@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * @see com.intetics.dao.RoleDao
  */
 
 @Repository
@@ -31,5 +33,18 @@ public class RoleDaoImpl implements RoleDao {
         role = (Role) criteria.uniqueResult();
 
         return role;
+    }
+
+    @Override
+    public List<Role> getRoleNamesExcludingAdmin() {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Role> roles;
+
+        Criteria criteria = session.createCriteria(Role.class);
+        criteria.add(Restrictions.ne("name", "Admin"));
+        roles = criteria.list();
+
+        return roles;
     }
 }

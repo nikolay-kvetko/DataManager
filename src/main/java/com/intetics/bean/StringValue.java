@@ -5,7 +5,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
- * todo[a.chervyakovsky] place meaningful javadoc here
+ * Class stores string values
  */
 @Entity
 @DiscriminatorValue("STRING")
