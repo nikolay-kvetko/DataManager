@@ -126,6 +126,9 @@ public class UserController {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
 
+            Date date = new Date();
+            user.setModifiedDate(date);
+
             userDao.saveOrUpdate(user);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
