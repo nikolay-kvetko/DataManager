@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -319,4 +320,40 @@ public class UserController {
         return "redirect:/manage_users/list";
     }
 
+    @RequestMapping(value = "/manage_users/delete/{userId}/confirm")
+    public String startDeleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
+        Assert.notNull(userId);
+
+        User authenticatedUser = userDao.getUserByEmail(principal.getName());
+        Company company = authenticatedUser.getCompany();
+
+        User userForDelete = userDao.getUserById(userId);
+
+        if(!company.getUsers().contains(userForDelete))
+            return "error";
+
+        List<User> users = company.getUsers();
+
+        model.addAttribute("usersList", users);
+        model.addAttribute("user", userForDelete);
+
+        return "delete-user";
+    }
+
+    @RequestMapping(value = "/manage_users/delete/{userId}")
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
+        Assert.notNull(userId);
+
+        User authenticatedUser = userDao.getUserByEmail(principal.getName());
+        Company company = authenticatedUser.getCompany();
+
+        User deletingUser = userDao.getUserById(userId);
+
+        if(!company.getUsers().contains(deletingUser))
+            return "error";
+
+        userDao.delete(deletingUser);
+
+        return "redirect:/manage_users/list";
+    }
 }
