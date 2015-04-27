@@ -63,7 +63,7 @@
                                         </c:forEach>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'TEXT_AREA'}">
-                                        <jsp:include page="/WEB-INF/jsp/instance/list/text-area.jsp">
+                                        <jsp:include page="/WEB-INF/jsp/instance/text-area.jsp">
                                             <jsp:param name="fieldValue" value="${coincidedValue.textAreaValue}"/>
                                         </jsp:include>
                                     </c:when>
@@ -74,7 +74,7 @@
                                         <c:out value="${coincidedValue.dateValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'IMAGE'}">
-                                        <jsp:include page="/WEB-INF/jsp/instance/list/image.jsp">
+                                        <jsp:include page="/WEB-INF/jsp/instance/image.jsp">
                                             <jsp:param name="fieldValue" value="${coincidedValue.image}"/>
                                         </jsp:include>
                                     </c:when>
@@ -83,10 +83,21 @@
                                             value="${coincidedValue.longitudeValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'LOOK_UP'}">
-                                        <jsp:include page="/WEB-INF/jsp/instance/list/look-up.jsp">
-                                            <jsp:param name="lookUpValue" value="${coincidedValue.lookUpValue}"/>
-                                            <jsp:param name="lookUpType" value="${coincidedValue.lookUpType}"/>
-                                        </jsp:include>
+                                        <div id="div${coincidedValue.field.fieldId}">
+                                        </div>
+                                        <script type="">
+                                            $(function(){
+                                                var lookUpId = "#div" + ${coincidedValue.field.fieldId};
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: '/ajax/showLookUpInstance',
+                                                    data: 'lookUpFieldId=${coincidedValue.field.fieldId}&lookUpInstanceId=${coincidedValue.lookUpValue}',
+                                                    success: function(lookUpInstance){
+                                                        $(lookUpId).html(lookUpInstance);
+                                                    }
+                                                })
+                                            })
+                                        </script>
                                     </c:when>
                                 </c:choose>
                             </a>

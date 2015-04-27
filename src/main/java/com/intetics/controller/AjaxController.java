@@ -1,10 +1,8 @@
 package com.intetics.controller;
 
 import com.intetics.bean.*;
-import com.intetics.dao.CompanyDao;
 import com.intetics.dao.EntitySchemaDao;
 import com.intetics.dao.UserDao;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,12 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -97,20 +92,43 @@ public class AjaxController {
         return result;
     }
 
-    @RequestMapping(value = "/showLogo", method = RequestMethod.GET)
-    public String showLogo(Model model, @RequestParam("image") MultipartFile image) {
+    @RequestMapping(value = "/showLookUpInstance", method = RequestMethod.GET)
+    public String showLookUpInstance(@RequestParam Long lookUpFieldId,
+                                     @RequestParam Long lookUpInstanceId,
+                                     Model model) {
 
-        String imageValue = "";
+        LookUpField lookUpField = (LookUpField) entitySchemaDao.getField(lookUpFieldId);
+        Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
 
-        try {
-            byte[] bytes = image.getBytes();
-            imageValue = Base64.encode(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        FieldValue selectFieldValue = null;
+        for (FieldValue fieldValue : selectField.getFieldValues()) {
+            if (fieldValue.getId() == Integer.parseInt(lookUpInstanceId.toString())) {
+                selectFieldValue = fieldValue;
+            }
         }
 
-        model.addAttribute("logoValue", imageValue);
+        if (selectField.getValueType() == ValueType.STRING) {
+            StringValue fieldValue = (StringValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getValue());
+            model.addAttribute("lookUpType", ValueType.STRING.name());
+        } else if (selectField.getValueType() == ValueType.TEXT_AREA) {
+            TextAreaValue fieldValue = (TextAreaValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getTextAreaValue());
+            model.addAttribute("lookUpType", ValueType.TEXT_AREA.name());
+        } else if (selectField.getValueType() == ValueType.NUMBER) {
+            NumberValue fieldValue = (NumberValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getNumberValue());
+            model.addAttribute("lookUpType", ValueType.NUMBER.name());
+        } else if (selectField.getValueType() == ValueType.IMAGE) {
+            ImageValue fieldValue = (ImageValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getImage());
+            model.addAttribute("lookUpType", ValueType.IMAGE.name());
+        } else if (selectField.getValueType() == ValueType.DATE) {
+            DateValue fieldValue = (DateValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getDateValue().toString());
+            model.addAttribute("lookUpType", ValueType.DATE.name());
+        }
 
-        return "company.logo";
+        return "instance.lookup";
     }
 }

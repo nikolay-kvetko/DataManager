@@ -140,11 +140,13 @@ public class UserController {
         User user = userDao.getUserByEmail(principal.getName());
         Company company = user.getCompany();
 
-        try {
-            byte[] bytes = image.getBytes();
-            company.setLogo(Base64.encode(bytes));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (image.getSize() > 0) {
+            try {
+                byte[] bytes = image.getBytes();
+                company.setLogo(Base64.encode(bytes));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         company.setName(params.get("name").get(0));

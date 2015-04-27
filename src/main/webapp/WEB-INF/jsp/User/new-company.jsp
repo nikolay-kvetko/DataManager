@@ -77,17 +77,3 @@
         </div>
     </div>
 </div>
-<%--<script type="text/javascript">--%>
-    <%--$("document").ready(function(){--%>
-        <%--$('#image').change(function(){--%>
-            <%--$.ajax({--%>
-                <%--type: 'GET',--%>
-                <%--url: '/ajax/showLogo',--%>
-                <%--success: function(logo){--%>
-                    <%--$('#boxLogo').html(logo);--%>
-                <%--}--%>
-            <%--})--%>
-        <%--})--%>
-
-    <%--})--%>
-<%--</script>--%>

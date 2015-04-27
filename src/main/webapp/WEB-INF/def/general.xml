@@ -90,6 +90,6 @@
     <definition name="field.lookup.date" template="/WEB-INF/jsp/lookup/date.jsp"/>
     <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
 
-    <definition name="company.logo" template="/WEB-INF/jsp/User/logo.jsp"/>
+    <definition name="instance.lookup" template="/WEB-INF/jsp/instance/look-up.jsp"/>
 
 </tiles-definitions>
