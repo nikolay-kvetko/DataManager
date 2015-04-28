@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <input type="password" name="newPassword" id="newPassword"
                                            class="form-control input-sm" placeholder="Password"
-                                           required="required">
+                                           required="required" autofocus="true">
                                 </div>
                             </div>
                         </div>

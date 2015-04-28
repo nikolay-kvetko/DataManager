@@ -9,14 +9,14 @@
             </div>
             <div class="modal-body form-horizontal">
                 <spring:url var = "action" value='/manage_users/add'/>
-                <s:form id="user" name="user" action="${action}" modelAttribute="user" method="post">
+                <s:form id="user" name="user" action="${action}" modelAttribute="newUser" method="post">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">
                             <spring:message code="label.modal.user.fn"/>*
                         </label>
                         <div class="col-sm-8">
                             <spring:message code="label.modal.user.fn" var="labelFn"/>
-                            <s:input class="form-control" type="text"  placeholder="${labelFn}" path="firstName" required="required"/>
+                            <s:input class="form-control" type="text"  placeholder="${labelFn}" path="firstName" required="required" autofocus="true"/>
                         </div>
                     </div>
 

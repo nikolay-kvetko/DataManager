@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><spring:message code="error.unknown"/></title>
+    <title>404</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/main.min.css">
@@ -19,8 +19,9 @@
 <div class="container">
     <div class="col-lg-8 col-lg-offset-2 text-center">
         <div class="logo">
-            <h1><spring:message code="error.unknown"/>.</h1>
+            <h1>404</h1>
         </div>
+        <p class="lead text-muted"><spring:message code="error.404"/></p>
         <div class="clearfix"></div>
         <br>
         <div class="col-lg-6 col-lg-offset-3">

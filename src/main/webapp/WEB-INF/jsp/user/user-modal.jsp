@@ -19,7 +19,7 @@
                             <div class="col-xs-8 col-sm-8 col-md-8">
                                 <div class="${status.error ? 'form-group has-error' : ''}">
                                     <form:input path="firstName" type="text"
-                                                cssClass="form-control"/>
+                                                cssClass="form-control" autofocus="true"/>
                                     <label class="control-label"><form:errors
                                             path="firstName"/></label>
                                 </div>

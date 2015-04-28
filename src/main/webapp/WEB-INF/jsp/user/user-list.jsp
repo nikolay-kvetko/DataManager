@@ -26,6 +26,7 @@
         <tr>
             <th><spring:message code="label.user"/></th>
             <th><spring:message code="label.email"/></th>
+            <th><spring:message code="label.role"/></th>
             <th><spring:message code="label.lastmodified"/></th>
             <th><spring:message code="label.created"/></th>
             <th><spring:message code="label.confirmed"/></th>
@@ -48,6 +49,9 @@
                 </td>
                 <td>
                     <c:out value="${user.email}"/>
+                </td>
+                <td>
+                    <c:out value="${user.role.name}"/>
                 </td>
                 <td>
                     <c:out value="${user.modifiedDate}"/>

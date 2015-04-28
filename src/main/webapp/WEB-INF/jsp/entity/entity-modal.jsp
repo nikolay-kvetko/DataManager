@@ -17,7 +17,7 @@
                             <s:hidden path="id"/>
                             <spring:message code="label.modal.fieldname" var="labelentityname"/>
                             <div class="${status.error ? 'form-group has-error col-lg-12' : ''} ">
-                                <s:input cssClass="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required"/>
+                                <s:input cssClass="form-control" type="text"  placeholder="${labelentityname}" path="name" required="required" autofocus="true"/>
                                 <label class="control-label"><s:errors path="name"/></label>
                             </div>
                         </div>

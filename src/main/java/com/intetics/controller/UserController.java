@@ -322,7 +322,7 @@ public class UserController {
     public String createUser(ModelMap model, Principal principal) {
 
         User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("newUser", user);
 
         List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
         model.addAttribute("usersList", users);

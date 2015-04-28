@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @TestExecutionListeners(listeners = {
         DependencyInjectionTestExecutionListener.class,
         TransactionDbUnitTestExecutionListener.class} )
-@DbUnitConfiguration(databaseConnection = "dbUnitDatabaseConnection")
+@DbUnitConfiguration(databaseConnection = "dbUnitDatabaseConnection", dataSetLoader = ColumnSensingReplacementDataSetLoader.class)
 abstract public class AbstractDaoImplIntegrationTest {
     @Autowired
     protected SessionFactory sessionFactory;

@@ -29,7 +29,7 @@
                                     <label class="control-label"><spring:message code="placeholder.company.name"/></label>
                                     <s:input type="text" name="name" id="name" path="name"
                                            class="form-control input-sm"
-                                           required="required" />
+                                           required="required" autofocus="true"/>
                                 </div>
                             </div>
                         </div>

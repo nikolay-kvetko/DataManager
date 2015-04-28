@@ -52,7 +52,7 @@
 
                         <div class="col-sm-8">
                             <input type="hidden" name="fieldId"/>
-                            <input class="form-control" type="text" name="fieldName"
+                            <input class="form-control" type="text" name="fieldName" autofocus="true"
                                     <spring:message code="label.modal.fieldname"
                                                     var="labelentityname"/>
                                    placeholder="${labelentityname}" required="required"
