@@ -115,6 +115,7 @@ public class FieldController {
             textField.setModifiedDate(currentDate);
             textField.setName(params.get("fieldName").get(0));
             textField.setSize(Integer.valueOf(params.get("size").get(0)));
+            textField.setCountLookUp(0L);
 
             if (params.get("active") != null) {
                 textField.setRequire(true);
@@ -128,6 +129,7 @@ public class FieldController {
             textAreaField.setModifiedDate(currentDate);
             textAreaField.setName(params.get("fieldName").get(0));
             textAreaField.setCountLine(Integer.valueOf(params.get("countLine").get(0)));
+            textAreaField.setCountLookUp(0L);
 
             if (params.get("active") != null) {
                 textAreaField.setRequire(true);
@@ -141,6 +143,7 @@ public class FieldController {
             multiChoiceField.setModifiedDate(currentDate);
             multiChoiceField.setName(params.get("fieldName").get(0));
             multiChoiceField.setChoiceType(params.get("display").get(0));
+            multiChoiceField.setCountLookUp(0L);
 
             String[] choices = params.get("choices").get(0).trim().split("\\r?\\n");
             List<Choice> choiceList = new ArrayList<Choice>();
@@ -163,6 +166,7 @@ public class FieldController {
 
             numberField.setModifiedDate(currentDate);
             numberField.setName(params.get("fieldName").get(0));
+            numberField.setCountLookUp(0L);
 
             numberField.setMinValue(Integer.valueOf(params.get("minValue").get(0)));
             numberField.setMaxValue(Integer.valueOf(params.get("maxValue").get(0)));
@@ -178,6 +182,7 @@ public class FieldController {
 
             dateField.setModifiedDate(currentDate);
             dateField.setName(params.get("fieldName").get(0));
+            dateField.setCountLookUp(0L);
 
             dateField.setFullDate(Boolean.valueOf(params.get("format").get(0)));
 
@@ -191,6 +196,7 @@ public class FieldController {
 
             imageField.setModifiedDate(currentDate);
             imageField.setName(params.get("fieldName").get(0));
+            imageField.setCountLookUp(0L);
 
             if (params.get("active") != null) {
                 imageField.setRequire(true);
@@ -204,6 +210,7 @@ public class FieldController {
             gpsField.setCreateDate(currentDate);
             gpsField.setModifiedDate(currentDate);
             gpsField.setName(params.get("fieldName").get(0));
+            gpsField.setCountLookUp(0L);
 
             if (params.get("active") != null) {
                 gpsField.setRequire(true);
@@ -216,9 +223,18 @@ public class FieldController {
 
             lookUpField.setModifiedDate(currentDate);
             lookUpField.setName(params.get("fieldName").get(0));
+            lookUpField.setCountLookUp(0L);
 
             lookUpField.setLookUpEntityId(Long.valueOf(Integer.valueOf(params.get("selectEntity").get(0))));
             lookUpField.setLookUpFieldId(Long.valueOf(Integer.valueOf(params.get("selectField").get(0))));
+
+            EntitySchema tmpEntitySchema = entitySchemaDao.getEntitySchema(lookUpField.getLookUpEntityId());
+            for (Field tmpField : tmpEntitySchema.getFields()){
+                if (tmpField.getFieldId() == lookUpField.getLookUpFieldId()){
+                    tmpField.setCountLookUp(tmpField.getCountLookUp() + 1);
+                }
+            }
+            entitySchemaDao.saveOrUpdate(tmpEntitySchema);
 
             if (params.get("active") != null) {
                 lookUpField.setRequire(true);
@@ -310,7 +326,12 @@ public class FieldController {
         if(entitySchema == null)
             return "error";
 
-        Field field = entitySchemaDao.getField(fieldId);
+        Field field = null;
+        for (Field tmpField : entitySchema.getFields()){
+            if (tmpField.getFieldId() == fieldId){
+                field = tmpField;
+            }
+        }
 
         if(!entitySchema.getFields().contains(field))
             return "error";
@@ -366,8 +387,24 @@ public class FieldController {
         } else if (field.getValueType() == ValueType.LOOK_UP){
             LookUpField lookUpField = (LookUpField)field;
 
+            EntitySchema tmpEntitySchema = entitySchemaDao.getEntitySchema(lookUpField.getLookUpEntityId());
+            for (Field tmpField : tmpEntitySchema.getFields()){
+                if (tmpField.getFieldId() == lookUpField.getLookUpFieldId()){
+                    tmpField.setCountLookUp(tmpField.getCountLookUp() - 1);
+                }
+            }
+            entitySchemaDao.saveOrUpdate(tmpEntitySchema);
+
             lookUpField.setLookUpEntityId(Long.valueOf(Integer.valueOf(params.get("selectEntity").get(0))));
             lookUpField.setLookUpFieldId(Long.valueOf(Integer.valueOf(params.get("selectField").get(0))));
+
+            tmpEntitySchema = entitySchemaDao.getEntitySchema(lookUpField.getLookUpEntityId());
+            for (Field tmpField : tmpEntitySchema.getFields()){
+                if (tmpField.getFieldId() == lookUpField.getLookUpFieldId()){
+                    tmpField.setCountLookUp(tmpField.getCountLookUp() + 1);
+                }
+            }
+            entitySchemaDao.saveOrUpdate(tmpEntitySchema);
         }
 
         entitySchema.setModifiedDate(currentDate);
@@ -412,6 +449,17 @@ public class FieldController {
 
         if(!entitySchema.getFields().contains(field))
             return "error";
+
+        if (field.getValueType() == ValueType.LOOK_UP){
+            LookUpField lookUpField = (LookUpField)field;
+            EntitySchema tmpEntitySchema = entitySchemaDao.getEntitySchema(lookUpField.getLookUpEntityId());
+            for (Field tmpField : tmpEntitySchema.getFields()){
+                if (tmpField.getFieldId() == lookUpField.getLookUpFieldId()){
+                    tmpField.setCountLookUp(tmpField.getCountLookUp() - 1);
+                }
+            }
+            entitySchemaDao.saveOrUpdate(tmpEntitySchema);
+        }
 
         entitySchema.getFields().remove(field);
 
