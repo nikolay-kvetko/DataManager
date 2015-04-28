@@ -94,7 +94,7 @@
     <definition name="edit-company" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
     </definition>
-    
+
     <definition name="create-user" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/user/user-create-modal.jsp"/>

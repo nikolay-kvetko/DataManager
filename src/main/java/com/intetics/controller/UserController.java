@@ -21,14 +21,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
-import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -166,8 +170,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration/company/edit")
-    public String editCompany(Model model) {
+    public String editCompany(Model model, Principal principal) {
 
+        Company company = userDao.getUserByEmail(principal.getName()).getCompany();
+        model.addAttribute("company", company);
         model.addAttribute("title","Edit Company");
         model.addAttribute("saveButton", "Edit");
         model.addAttribute("type", "edit");
