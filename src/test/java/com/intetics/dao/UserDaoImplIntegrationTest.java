@@ -43,6 +43,9 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
         User user = new User();
         user.setFirstName("Anton");
         user.setLastName("Chervyakovsky");
+        user.setEmail("anton@mail.ru");
+        user.setPassword("1");
+        user.setConfirmPassword("1");
         user.setRole(role);
 
         userDao.saveOrUpdate(user);

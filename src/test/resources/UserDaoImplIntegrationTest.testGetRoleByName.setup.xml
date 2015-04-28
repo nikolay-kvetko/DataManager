@@ -7,11 +7,15 @@
     <users user_id="1"
           first_name="Anton"
           last_name="Chervyakovsky"
+          email="anton@tut.by"
+          password="1"
           role_id="1"/>
 
     <users user_id="2"
            first_name="James"
            last_name="Bond"
+           email="james@tut.by"
+           password="1"
            role_id="1"/>
 
 </dataset>

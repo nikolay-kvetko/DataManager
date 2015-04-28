@@ -1,12 +1,19 @@
 package com.intetics.bean;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.intetics.validation.FieldMatch;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @FieldMatch(first = "password", second = "confirmPassword")
@@ -37,6 +44,7 @@ public class User {
     private String password;
 
     @NotEmpty
+    @Transient
     private String confirmPassword;
 
     @Column(name = "confirmed")
