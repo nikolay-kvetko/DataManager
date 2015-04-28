@@ -22,6 +22,12 @@
                     <form role="form" id="loginForm" action='/j_spring_security_check' method='POST'>
 
                         <div class="row">
+                            <label class="col-xs-12 col-sm-12 col-md-12 text-center text-danger">
+                                <c:out value="${error}"/>
+                            </label>
+                        </div>
+
+                        <div class="row">
                             <div class="col-xs-8 col-sm-8 col-md-8">
                                 <div class="form-group">
                                     <input type="email" name="j_username" id="email"

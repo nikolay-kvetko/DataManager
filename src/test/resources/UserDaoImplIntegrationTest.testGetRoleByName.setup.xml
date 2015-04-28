@@ -9,6 +9,7 @@
           last_name="Chervyakovsky"
           email="anton@tut.by"
           password="1"
+          confirmPassword = "1"
           role_id="1"/>
 
     <users user_id="2"
@@ -16,6 +17,7 @@
            last_name="Bond"
            email="james@tut.by"
            password="1"
+           confirmPassword = "1"
            role_id="1"/>
 
 </dataset>

@@ -21,11 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
@@ -129,6 +125,7 @@ public class UserController {
         if(user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
+            //user.setConfirmPassword(user.getPassword());
 
             Date date = new Date();
             user.setModifiedDate(date);
@@ -250,6 +247,8 @@ public class UserController {
 
         User user = userDao.getUserByEmail(principal.getName());
         user.setPassword(password);
+        //edit validation
+        user.setConfirmPassword(password);
 
         Date date = new Date();
         user.setModifiedDate(date);
@@ -371,7 +370,8 @@ public class UserController {
 
         mailSender.send(message);*/
 
-        user.setPassword("");
+        user.setPassword("1234");
+        user.setConfirmPassword("1234");
 
         userDao.saveOrUpdate(user);
 
