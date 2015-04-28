@@ -16,10 +16,39 @@
 
     <http auto-config="true" use-expressions="true" authentication-manager-ref="authenticationManager">
 
+        <!--Protect operations over com.intetics.bean.EntitySchema-->
+        <intercept-url pattern="/entity/create" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/edit/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/save" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/delete/**" access="hasAnyRole('Admin','ReadWrite')" />
+
+        <!--Protect operations over com.intetics.bean.EntityInstance-->
+        <intercept-url pattern="/home/entity/**/instance/create" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/home/entity/**/instance/add" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/home/entity/**/instance/edit/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/home/entity/**/instance/update/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/home/entity/**/instance/delete/**" access="hasAnyRole('Admin','ReadWrite')" />
+
+        <!--Protect operations over com.intetics.bean.Field-->
+        <intercept-url pattern="/entity/**/field/create/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/**/field/add/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/**/field/edit/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/**/field/change/**" access="hasAnyRole('Admin','ReadWrite')" />
+        <intercept-url pattern="/entity/**/field/delete/**" access="hasAnyRole('Admin','ReadWrite')" />
+
+        <!--Protect operations over com.intetics.bean.User-->
+        <intercept-url pattern="/manage_users/edit/**" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/save/" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/create/" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/add/" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/delete/" access="hasRole('Admin')" />
+
+        <!--Base protection-->
         <intercept-url pattern="/entity/**" access="isAuthenticated()" />
         <intercept-url pattern="/home/**" access="isAuthenticated()" />
         <intercept-url pattern="/manage_users/**" access="isAuthenticated()" />
         <intercept-url pattern="/registration/company/**" access="hasRole('Admin')" />
+        <intercept-url pattern="/registration/password/**" access="hasAnyRole('ReadOnly','ReadWrite')" />
 
         <form-login default-target-url="/home/entity/list"
                     login-page="/"
