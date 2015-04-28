@@ -1,6 +1,38 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags/form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<style>
+    .error{
+        color: #ff2f33;
+        font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    }
+</style>
+<script>
+    $(function() {
+        // Setup form validation on the #passwordForm element
+        $("#passwordForm").validate({
+
+            rules: {
+                newPassword: {
+                    required: true,
+                    minlength: 4
+                },
+                confirmPassword: {
+                    required: true,
+                    equalTo: "#newPassword"
+                }
+            },
+            // Specify the validation error messages
+            messages: {
+                newPassword: {
+                    required: "Please, enter a password",
+                    minlength: "Password must be at least 4 characters"
+                },
+                confirmPassword: " Enter Confirm Password Same as Password"
+            }
+        });
+    });
+</script>
 
 <div class="container">
     <div class="row">

@@ -11,6 +11,7 @@
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/datepicker.css">
     <script type="text/javascript" src="/js/moment.js"></script>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="/js/bootstrap-datepicker.min.js"></script>

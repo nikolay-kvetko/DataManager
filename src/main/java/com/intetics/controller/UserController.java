@@ -100,9 +100,6 @@ public class UserController {
         }
         /*MimeMessage message = mailSender.createMimeMessage();
 
-        //this will be confirm URL
-        String emailMessage = "localhost:8080/registration/confirm/" + params.get("email").get(0).replace(".", "_");
-
         MimeMessageHelper helper;
 
         try {
@@ -129,7 +126,7 @@ public class UserController {
 
         User user = userDao.getUserByConfirmingURL(uid);
 
-        if (user != null) {
+        if(user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
 
@@ -142,9 +139,9 @@ public class UserController {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
             authenticationManager.authenticate(authenticationToken);
 
-            if (authenticationToken.isAuthenticated()) {
+            if(authenticationToken.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                if (!"ADMIN".equalsIgnoreCase(user.getRole().getName())) {
+                if(!"ADMIN".equalsIgnoreCase(user.getRole().getName())){
                     return "redirect:/registration/password/create";
                 }
                 return "after-confirm-page";
@@ -188,6 +185,15 @@ public class UserController {
         User user = userDao.getUserByEmail(principal.getName());
         List<User> users = new ArrayList<User>();
         users.add(user);
+
+        /*BufferedImage image2 = null;
+        try {
+            image2 = ImageIO.read(image.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Integer width = image2.getWidth();
+        Integer height = image2.getHeight();*/
 
         try {
             byte[] bytes = image.getBytes();
@@ -312,7 +318,7 @@ public class UserController {
 
         return "user-list";
     }
-
+    
     @RequestMapping(value = "/manage_users/create")
     public String createUser(ModelMap model, Principal principal) {
 
@@ -376,12 +382,15 @@ public class UserController {
     public String startDeleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model) {
         Assert.notNull(userId);
 
+        User userForDelete = userDao.getUserById(userId);
+
+        if("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
+            return "error";
+
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        User userForDelete = userDao.getUserById(userId);
-
-        if (!company.getUsers().contains(userForDelete))
+        if(!company.getUsers().contains(userForDelete))
             return "error";
 
         List<User> users = company.getUsers();
@@ -393,15 +402,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}")
-    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model) {
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
         Assert.notNull(userId);
+
+        User deletingUser = userDao.getUserById(userId);
+
+        if("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
+            return "error";
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        User deletingUser = userDao.getUserById(userId);
-
-        if (!company.getUsers().contains(deletingUser))
+        if(!company.getUsers().contains(deletingUser))
             return "error";
 
         userDao.delete(deletingUser);

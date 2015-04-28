@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <role role_id="1"
+          name="Admin"/>
+
+    <role role_id="2"
+          name="ReadOnly"/>
+
+    <role role_id="3"
+          name="ReadWrite"/>
+
+    <users user_id="1"
+          first_name="Anton"
+          last_name="Chervyakovsky"
+          role_id="1"/>
+
+    <users user_id="2"
+           first_name="James"
+           last_name="Bond"
+           role_id="2"/>
+
+    <users user_id="3"
+           first_name="Rocky"
+           last_name="Balboa"
+           role_id="3"/>
+
+</dataset>

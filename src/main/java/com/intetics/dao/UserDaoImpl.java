@@ -1,5 +1,6 @@
 package com.intetics.dao;
 
+import com.intetics.bean.Role;
 import com.intetics.bean.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @see com.intetics.dao.UserDao
@@ -73,5 +75,18 @@ public class UserDaoImpl implements UserDao {
         user = (User) criteria.uniqueResult();
 
         return user;
+    }
+
+    @Override
+    public List<User> getUsersExcludingAdmin(Role role) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        List<User> users;
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.ne("role", role));
+        users = criteria.list();
+
+        return users;
     }
 }
