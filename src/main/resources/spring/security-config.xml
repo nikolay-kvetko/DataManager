@@ -38,10 +38,10 @@
 
         <!--Protect operations over com.intetics.bean.User-->
         <intercept-url pattern="/manage_users/edit/**" access="hasRole('Admin')" />
-        <intercept-url pattern="/manage_users/save/" access="hasRole('Admin')" />
-        <intercept-url pattern="/manage_users/create/" access="hasRole('Admin')" />
-        <intercept-url pattern="/manage_users/add/" access="hasRole('Admin')" />
-        <intercept-url pattern="/manage_users/delete/" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/save" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/create" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/add" access="hasRole('Admin')" />
+        <intercept-url pattern="/manage_users/delete/**" access="hasRole('Admin')" />
 
         <!--Base protection-->
         <intercept-url pattern="/entity/**" access="isAuthenticated()" />
