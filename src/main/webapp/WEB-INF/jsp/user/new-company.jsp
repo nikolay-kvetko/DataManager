@@ -10,7 +10,17 @@
                     <h4 class="text-center"><spring:message code="header.create.company"/></h4>
                 </div>
                 <div class="panel-body">
-                    <s:form id="createCompany" role="form" action="/registration/company/add"
+                    <c:choose>
+                        <c:when test="${type eq 'create'}">
+                            <spring:url var="action"
+                                        value='/registration/company/add'/>
+                        </c:when>
+                        <c:otherwise>
+                            <spring:url var="action"
+                                        value='/registration/company/change'/>
+                        </c:otherwise>
+                    </c:choose>
+                    <s:form id="createCompany" role="form" action="${action}"
                             enctype="multipart/form-data" method="post" modelAttribute="company">
                         <div class="row">
 
@@ -19,7 +29,7 @@
                                     <label class="control-label"><spring:message code="placeholder.company.name"/></label>
                                     <s:input type="text" name="name" id="name" path="name"
                                            class="form-control input-sm"
-                                           required="required"/>
+                                           required="required" />
                                 </div>
                             </div>
                         </div>
@@ -28,7 +38,7 @@
                                 <div class="form-group">
                                     <label class="control-label"><spring:message code="placeholder.company.address"/></label>
                                     <s:input type="text" name="address" id="address" path="address"
-                                           class="form-control input-sm"/>
+                                           class="form-control input-sm" />
                                 </div>
                             </div>
                         </div>
@@ -41,14 +51,23 @@
                                            data-input="false"
                                            data-buttonText="<spring:message code="placeholder.company.image"/>">
                                 </div>
+                                <div class="col-sm-4" id="boxLogo">
+                                    <c:if test="${type eq 'edit'}">
+                                        <jsp:include page="/WEB-INF/jsp/user/logo.jsp">
+                                            <jsp:param name="logoValue" value="${user.company.logo}"/>
+                                        </jsp:include>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                     </s:form>
                 </div>
                 <div class="panel-footer">
                     <form id="logout" action="/j_spring_security_logout"></form>
-                    <input type="submit" form="logout" value="<spring:message code="button.logout"/>" class="btn btn-default">
-                    <input type="submit" form="createCompany" value="<spring:message code="button.create"/>" class="btn btn-primary">
+                    <input type="submit" form="logout" value="<spring:message code="button.logout"/>"
+                           class="btn btn-default">
+                    <input type="submit" form="createCompany" value="<c:out value="${saveButton}"/>"
+                           class="btn btn-primary">
                 </div>
             </div>
         </div>

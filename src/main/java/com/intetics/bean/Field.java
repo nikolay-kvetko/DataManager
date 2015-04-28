@@ -36,6 +36,9 @@ public abstract class Field {
     @Column(name = "modified_date")
     private Date modifiedDate;
 
+    @Column(name = "count_look_up")
+    private Long countLookUp;
+
     @OneToMany(mappedBy = "field")
     @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.DELETE})
     private List<FieldValue> fieldValues;
@@ -90,6 +93,14 @@ public abstract class Field {
 
     public void setFieldValues(List<FieldValue> fieldValues) {
         this.fieldValues = fieldValues;
+    }
+
+    public Long getCountLookUp() {
+        return countLookUp;
+    }
+
+    public void setCountLookUp(Long countLookUp) {
+        this.countLookUp = countLookUp;
     }
 
     @Override

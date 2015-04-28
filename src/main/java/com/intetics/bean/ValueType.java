@@ -91,35 +91,7 @@ public enum ValueType {
             LookUpValue lookUpValue = new LookUpValue();
 
             if (values != null){
-
-                FieldValue selectFieldValue = null;
-                for (FieldValue fieldValue : field.getFieldValues()){
-                    if (fieldValue.getId() == Integer.parseInt(values.get(0))){
-                        selectFieldValue = fieldValue;
-                    }
-                }
-
-                if (field.getValueType() == ValueType.STRING){
-                    StringValue fieldValue = (StringValue) selectFieldValue;
-                    lookUpValue.setLookUpValue(fieldValue.getValue());
-                    lookUpValue.setLookUpType(ValueType.STRING.name());
-                } else if (field.getValueType() == ValueType.TEXT_AREA){
-                    TextAreaValue fieldValue = (TextAreaValue) selectFieldValue;
-                    lookUpValue.setLookUpValue(fieldValue.getTextAreaValue());
-                    lookUpValue.setLookUpType(ValueType.TEXT_AREA.name());
-                } else if (field.getValueType() == ValueType.NUMBER){
-                    NumberValue fieldValue = (NumberValue) selectFieldValue;
-                    lookUpValue.setLookUpValue(String.valueOf(fieldValue.getNumberValue()));
-                    lookUpValue.setLookUpType(ValueType.NUMBER.name());
-                } else if (field.getValueType() == ValueType.IMAGE){
-                    ImageValue fieldValue = (ImageValue) selectFieldValue;
-                    lookUpValue.setLookUpValue(fieldValue.getImage());
-                    lookUpValue.setLookUpType(ValueType.IMAGE.name());
-                } else if (field.getValueType() == ValueType.DATE){
-                    DateValue fieldValue = (DateValue) selectFieldValue;
-                    lookUpValue.setLookUpValue(fieldValue.getDateValue().toString());
-                    lookUpValue.setLookUpType(ValueType.DATE.name());
-                }
+                lookUpValue.setLookUpValue(Long.valueOf(values.get(0)));
             }
 
             return lookUpValue;

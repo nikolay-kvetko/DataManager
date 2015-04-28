@@ -1,10 +1,8 @@
 package com.intetics.controller;
 
-import com.intetics.bean.Field;
-import com.intetics.bean.LookUpField;
-import com.intetics.bean.TextAreaField;
-import com.intetics.bean.ValueType;
+import com.intetics.bean.*;
 import com.intetics.dao.EntitySchemaDao;
+import com.intetics.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +21,9 @@ public class AjaxController {
 
     @Autowired
     private EntitySchemaDao entitySchemaDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @RequestMapping(value = "/getNewFieldList", method = RequestMethod.POST)
     public
@@ -89,5 +90,45 @@ public class AjaxController {
         }
 
         return result;
+    }
+
+    @RequestMapping(value = "/showLookUpInstance", method = RequestMethod.GET)
+    public String showLookUpInstance(@RequestParam Long lookUpFieldId,
+                                     @RequestParam Long lookUpInstanceId,
+                                     Model model) {
+
+        LookUpField lookUpField = (LookUpField) entitySchemaDao.getField(lookUpFieldId);
+        Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+
+        FieldValue selectFieldValue = null;
+        for (FieldValue fieldValue : selectField.getFieldValues()) {
+            if (fieldValue.getId() == Integer.parseInt(lookUpInstanceId.toString())) {
+                selectFieldValue = fieldValue;
+            }
+        }
+
+        if (selectField.getValueType() == ValueType.STRING) {
+            StringValue fieldValue = (StringValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getValue());
+            model.addAttribute("lookUpType", ValueType.STRING.name());
+        } else if (selectField.getValueType() == ValueType.TEXT_AREA) {
+            TextAreaValue fieldValue = (TextAreaValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getTextAreaValue());
+            model.addAttribute("lookUpType", ValueType.TEXT_AREA.name());
+        } else if (selectField.getValueType() == ValueType.NUMBER) {
+            NumberValue fieldValue = (NumberValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getNumberValue());
+            model.addAttribute("lookUpType", ValueType.NUMBER.name());
+        } else if (selectField.getValueType() == ValueType.IMAGE) {
+            ImageValue fieldValue = (ImageValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getImage());
+            model.addAttribute("lookUpType", ValueType.IMAGE.name());
+        } else if (selectField.getValueType() == ValueType.DATE) {
+            DateValue fieldValue = (DateValue) selectFieldValue;
+            model.addAttribute("lookUpValue", fieldValue.getDateValue().toString());
+            model.addAttribute("lookUpType", ValueType.DATE.name());
+        }
+
+        return "instance.lookup";
     }
 }

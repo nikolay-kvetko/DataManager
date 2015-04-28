@@ -6,6 +6,7 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -157,30 +158,35 @@ public class UserController {
 
         Company company = new Company();
         model.addAttribute("company", company);
+        model.addAttribute("title","Create Company");
+        model.addAttribute("saveButton", "Create");
+        model.addAttribute("type", "create");
 
         return "new-company";
     }
 
+    @RequestMapping(value = "/registration/company/edit")
+    public String editCompany(Model model) {
+
+        model.addAttribute("title","Edit Company");
+        model.addAttribute("saveButton", "Edit");
+        model.addAttribute("type", "edit");
+
+        return "edit-company";
+    }
+
     @RequestMapping(value = "/registration/company/add", method = RequestMethod.POST)
     public String addCompany(Company company, Principal principal,
-                             @RequestParam("image") MultipartFile image) {
+                             @RequestParam("image") MultipartFile image,
+                             HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
         List<User> users = new ArrayList<User>();
         users.add(user);
 
-        /*BufferedImage image2 = null;
-        try {
-            image2 = ImageIO.read(image.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Integer width = image2.getWidth();
-        Integer height = image2.getHeight();*/
-
         try {
             byte[] bytes = image.getBytes();
-            company.setLogo(bytes);
+            company.setLogo(Base64.encode(bytes));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,6 +194,36 @@ public class UserController {
         company.setUsers(users);
         user.setCompany(company);
         companyDao.saveOrUpdate(company);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+
+        return "redirect:/home/entity/list";
+    }
+
+    @RequestMapping(value = "/registration/company/change", method = RequestMethod.POST)
+    public String editCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
+                                @RequestParam("image") MultipartFile image,
+                                HttpServletRequest request) {
+
+        User user = userDao.getUserByEmail(principal.getName());
+        Company company = user.getCompany();
+
+        if (image.getSize() > 0) {
+            try {
+                byte[] bytes = image.getBytes();
+                company.setLogo(Base64.encode(bytes));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        company.setName(params.get("name").get(0));
+        company.setAddress(params.get("address").get(0));
+        companyDao.saveOrUpdate(company);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
 
         return "redirect:/home/entity/list";
     }

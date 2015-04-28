@@ -87,11 +87,14 @@
     <definition name="login" template="/WEB-INF/jsp/user/user-authorization.jsp">
     </definition>
 
-
     <definition name="user-list" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
     </definition>
 
+    <definition name="edit-company" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
+    </definition>
+    
     <definition name="create-user" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/user/user-create-modal.jsp"/>
@@ -117,5 +120,7 @@
     <definition name="field.lookup.number" template="/WEB-INF/jsp/lookup/number.jsp"/>
     <definition name="field.lookup.date" template="/WEB-INF/jsp/lookup/date.jsp"/>
     <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
+
+    <definition name="instance.lookup" template="/WEB-INF/jsp/instance/look-up.jsp"/>
 
 </tiles-definitions>

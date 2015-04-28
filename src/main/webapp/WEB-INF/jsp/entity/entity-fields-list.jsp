@@ -2,8 +2,10 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <div class="container">
     <div class="page-header">
-        <h3><a href="/entity/list"><spring:message code="header.datastructure"/></a> > <c:out value="${EntitySchema.name}"/>
-            <a href="/entity/edit/<c:out value="${EntitySchema.id}"/>" title="<spring:message code="label.edit"/> <c:out value="${EntitySchema.name}"/>">
+        <h3><a href="/entity/list"><spring:message code="header.datastructure"/></a> > <c:out
+                value="${EntitySchema.name}"/>
+            <a href="/entity/edit/<c:out value="${EntitySchema.id}"/>"
+               title="<spring:message code="label.edit"/> <c:out value="${EntitySchema.name}"/>">
                 <span class="glyphicon glyphicon-edit" style="font-size: 0.8em"></span>
             </a>
         </h3>
@@ -17,14 +19,22 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/string"><spring:message code="dropdown.textfield"/></a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/text_area"><spring:message code="dropdown.textarea"/></a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/multi_choice"><spring:message code="dropdown.choicefield"/></a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/number"><spring:message code="dropdown.numberfield"/></a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/date">Date Field</a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/look_up">Look Up</a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/image">Image Field</a></li>
-                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/gps">GPS Field</a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/string"><spring:message
+                            code="dropdown.textfield"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/text_area"><spring:message
+                            code="dropdown.textarea"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/multi_choice"><spring:message
+                            code="dropdown.choicefield"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/number"><spring:message
+                            code="dropdown.numberfield"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/date"><spring:message
+                            code="dropdown.datefield"/> </a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/look_up"><spring:message
+                            code="dropdown.lookup"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/image"><spring:message
+                            code="dropdown.imagefield"/></a></li>
+                    <li><a href="/entity/<c:out value="${EntitySchema.id}"/>/field/create/gps"><spring:message
+                            code="dropdown.gpsfield"/></a></li>
                 </ul>
             </div>
         </div>
@@ -67,8 +77,18 @@
                 </td>
                 <td>
                     <a href="/entity/<c:out value="${EntitySchema.id}"/>/field/delete/<c:out value="${field.fieldId}"/>/confirm"
-                       title="Delete <c:out value="${field.name}"/>">
-                        <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                       title="Delete <c:out value="${field.name}"/>"
+                            <c:if test="${field.countLookUp > 0}">
+                                style="pointer-events: none;"
+                            </c:if>>
+                        <c:choose>
+                            <c:when test="${field.countLookUp > 0}">
+                                <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #888888"></span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="glyphicon glyphicon-trash" style="font-size: 1.1em; color: #ff8018"></span>
+                            </c:otherwise>
+                        </c:choose>
                     </a>
                 </td>
             </tr>

@@ -1,6 +1,11 @@
 package com.intetics.controller;
 
-import com.intetics.bean.*;
+import com.intetics.bean.Company;
+import com.intetics.bean.EntityInstance;
+import com.intetics.bean.EntitySchema;
+import com.intetics.bean.Field;
+import com.intetics.bean.FieldValue;
+import com.intetics.bean.User;
 import com.intetics.dao.EntityInstanceDao;
 import com.intetics.dao.EntitySchemaDao;
 import com.intetics.dao.UserDao;
@@ -134,15 +139,8 @@ public class EntityInstanceController {
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
 
-            FieldValue fieldValue;
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
 
-            if (field.getValueType() == ValueType.LOOK_UP){
-                LookUpField lookUpField = (LookUpField)field;
-                Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
-                fieldValue = field.getValueType().newValue(values, selectField);
-            } else {
-                 fieldValue = field.getValueType().newValue(values, field);
-            }
             fieldValue.setField(field);
             fieldValues.add(fieldValue);
         }
@@ -180,15 +178,7 @@ public class EntityInstanceController {
         for (Field field : entitySchema.getFields()) {
             List<String> values = params.get(field.getFieldId().toString());
 
-            FieldValue fieldValue;
-
-            if (field.getValueType() == ValueType.LOOK_UP){
-                LookUpField lookUpField = (LookUpField)field;
-                Field selectField = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
-                fieldValue = field.getValueType().newValue(values, selectField);
-            } else {
-                fieldValue = field.getValueType().newValue(values, field);
-            }
+            FieldValue fieldValue = field.getValueType().newValue(values, field);
 
             for (FieldValue instanceFieldValue : entityInstance.getValues()){
                 if (field.getFieldId() == instanceFieldValue.getField().getFieldId()){
