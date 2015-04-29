@@ -11,6 +11,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -112,7 +115,7 @@ public class UserController {
             return "admin-registration";
         }
 
-        /*MimeMessage message = mailSender.createMimeMessage();
+        MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper;
 
@@ -124,7 +127,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        mailSender.send(message);*/
+        mailSender.send(message);
 
         Date date = new Date();
         user.setModifiedDate(date);
@@ -295,13 +298,16 @@ public class UserController {
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
         User editingUser = userDao.getUserById(userId);
+
         if (!company.getUsers().contains(editingUser) || editingUser.getRole().getName().equalsIgnoreCase("Admin"))
             return "error";
+
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
 
         List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
         model.addAttribute("usersList", users);
+
         List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
         model.addAttribute("rolesList", roles);
 
@@ -316,12 +322,16 @@ public class UserController {
         if (user != null) {
             HttpSession session = request.getSession();
             long userId = (Long) session.getAttribute("userId");
+
             User currentEditingUser = userDao.getUserById(userId);
+
             user.setUserId(currentEditingUser.getUserId());
             user.setPassword(currentEditingUser.getPassword());
             user.setConfirmPassword(currentEditingUser.getPassword());
             user.setCompany(currentEditingUser.getCompany());
+
             if (!currentEditingUser.getConfirmed()) {
+
                 UUID uid = UUID.randomUUID();
                 String stringUid = String.valueOf(uid).replace("-", "_");
                 user.setConfirmingURL(stringUid);
@@ -334,26 +344,29 @@ public class UserController {
                         "/registration/confirm/" +                  // "/registration/confirm/"
                         stringUid;                                  // "uid"
 
-        /*MimeMessage message = mailSender.createMimeMessage();
+                MimeMessage message = mailSender.createMimeMessage();
 
-        MimeMessageHelper helper;
+                MimeMessageHelper helper;
 
-        try {
-            helper = new MimeMessageHelper(message, true);
-            helper.setTo(user.getEmail());
-            helper.setText(confirmURL, true);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+                try {
+                    helper = new MimeMessageHelper(message, true);
+                    helper.setTo(user.getEmail());
+                    helper.setText(confirmURL, true);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
 
-        mailSender.send(message);*/
+                mailSender.send(message);
             }
+
             Role userRole = roleDao.getRoleByName(roleName);
             if (userRole != null) {
                 user.setRole(userRole);
             }
+
             user.setConfirmed(currentEditingUser.getConfirmed());
             user.setModifiedDate(new Date());
+
             userDao.saveOrUpdate(user);
         }
         model.addAttribute("user", user);
@@ -409,7 +422,7 @@ public class UserController {
                 "/registration/confirm/" +                  // "/registration/confirm/"
                 stringUid;                                  // "uid"
 
-        /*MimeMessage message = mailSender.createMimeMessage();
+        MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper;
 
@@ -421,7 +434,8 @@ public class UserController {
             e.printStackTrace();
         }
 
-        mailSender.send(message);*/
+        mailSender.send(message);
+
         Random random = new Random();
         user.setPassword(Integer.toString(random.nextInt(1234567)));
         user.setConfirmPassword(user.getPassword());
