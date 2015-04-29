@@ -6,6 +6,7 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
+import com.intetics.validation.UserExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -61,6 +62,9 @@ public class UserController {
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserExistValidator userExistValidator;
+
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
         model.addAttribute("user", new User());
@@ -90,8 +94,9 @@ public class UserController {
         user.setConfirmed(false);
         user.setRole(role);
 
+        userExistValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            bindingResult.resolveMessageCodes("errors.user.firstName");
+//            bindingResult.resolveMessageCodes("errors.user.firstName");
             return "admin-registration";
         }
         /*MimeMessage message = mailSender.createMimeMessage();
@@ -325,7 +330,8 @@ public class UserController {
 
         mailSender.send(message);*/
 
-        user.setPassword("");
+        user.setPassword("123");
+        user.setConfirmPassword("123");
 
         userDao.saveOrUpdate(user);
 

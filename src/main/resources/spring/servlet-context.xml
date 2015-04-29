@@ -20,6 +20,7 @@
     <mvc:resources mapping="/Page/fonts/*" location="WEB-INF/fonts/"/>
 
     <context:component-scan base-package="com.intetics.controller"/>
+    <context:component-scan base-package="com.intetics.validation"/>
 
     <!-- Resolves views selected for rendering by @Controllers to Tiles templates -->
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
