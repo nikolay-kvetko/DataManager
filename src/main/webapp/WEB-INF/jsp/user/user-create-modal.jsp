@@ -14,37 +14,59 @@
                         <label class="col-sm-4 control-label">
                             <spring:message code="label.modal.user.fn"/>*
                         </label>
-                        <div class="col-sm-8">
-                            <spring:message code="label.modal.user.fn" var="labelFn"/>
-                            <s:input class="form-control" type="text"  placeholder="${labelFn}" path="firstName" required="required" autofocus="true"/>
-                        </div>
+                            <spring:bind path="firstName">
+                                <div class="col-sm-7">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <s:input path="firstName" type="text"
+                                                    cssClass="form-control" autofocus="true" required="required"/>
+                                        <label class="control-label"><s:errors
+                                                path="firstName"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-4 control-label">
                             <spring:message code="label.modal.user.ln"/>*
                         </label>
-                        <div class="col-sm-8">
-                            <spring:message code="label.modal.user.ln" var="labelLn"/>
-                            <s:input class="form-control" type="text"  placeholder="${labelLn}" path="lastName" required="required"/>
-                        </div>
+
+                            <spring:bind path="lastName">
+                                <div class="col-sm-7">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <s:input path="lastName" type="text"
+                                                    cssClass="form-control" required="required"/>
+                                        <label class="control-label"><s:errors
+                                                path="lastName"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
+
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-4 control-label">
                             <spring:message code="label.modal.user.email"/>*
                         </label>
-                        <div class="col-sm-8">
-                            <spring:message code="label.modal.user.email" var="labelEmail"/>
-                            <s:input class="form-control" type="email"  placeholder="${labelEmail}" path="email" required="required"/>
-                        </div>
+
+                            <spring:bind path="email">
+                                <div class="col-sm-7">
+                                    <div class="${status.error ? 'form-group has-error' : ''}">
+                                        <s:input path="email" type="text"
+                                                    cssClass="form-control"/>
+                                        <label class="control-label"><s:errors
+                                                path="email"/></label>
+                                    </div>
+                                </div>
+                            </spring:bind>
+
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-4 control-label">
                             <spring:message code="label.modal.user.role"/>*
                         </label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             <select class="form-control" name="userRole" required="required">
                                 <c:forEach var="currentRole" items="${rolesList}">
                                     <option value="${currentRole.name}"> ${currentRole.name} </option>
@@ -52,6 +74,8 @@
                             </select>
                         </div>
                     </div>
+                    <s:input path="password" type="hidden" value="1234"/>
+                    <s:input path="confirmPassword" type="hidden" value="1234"/>
                 </s:form>
             </div>
             <div class="modal-footer">
