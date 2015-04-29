@@ -6,8 +6,8 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.intetics.validation.UserExistValidator;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
-import javax.validation.Valid;
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -66,19 +64,19 @@ public class UserController {
 
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
-        if(roleDao.getRoleByName("Admin") == null) {
+        if (roleDao.getRoleByName("Admin") == null) {
             Role role = new Role();
             role.setName("Admin");
             roleDao.saveOrUpdate(role);
         }
 
-        if(roleDao.getRoleByName("ReadOnly") == null) {
+        if (roleDao.getRoleByName("ReadOnly") == null) {
             Role role = new Role();
             role.setName("ReadOnly");
             roleDao.saveOrUpdate(role);
         }
 
-        if(roleDao.getRoleByName("ReadWrite") == null) {
+        if (roleDao.getRoleByName("ReadWrite") == null) {
             Role role = new Role();
             role.setName("ReadWrite");
             roleDao.saveOrUpdate(role);
@@ -174,7 +172,7 @@ public class UserController {
 
         Company company = new Company();
         model.addAttribute("company", company);
-        model.addAttribute("title","Create Company");
+        model.addAttribute("title", "Create Company");
         model.addAttribute("saveButton", "Create");
         model.addAttribute("type", "create");
 
@@ -186,7 +184,7 @@ public class UserController {
 
         Company company = userDao.getUserByEmail(principal.getName()).getCompany();
         model.addAttribute("company", company);
-        model.addAttribute("title","Edit Company");
+        model.addAttribute("title", "Edit Company");
         model.addAttribute("saveButton", "Edit");
         model.addAttribute("type", "edit");
 
@@ -231,8 +229,8 @@ public class UserController {
 
     @RequestMapping(value = "/registration/company/change", method = RequestMethod.POST)
     public String editCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
-                                @RequestParam("image") MultipartFile image,
-                                HttpServletRequest request) {
+                              @RequestParam("image") MultipartFile image,
+                              HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
         Company company = user.getCompany();
@@ -297,7 +295,7 @@ public class UserController {
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
         User editingUser = userDao.getUserById(userId);
-        if (!company.getUsers().contains(editingUser))
+        if (!company.getUsers().contains(editingUser) || editingUser.getRole().getName().equalsIgnoreCase("Admin"))
             return "error";
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
@@ -323,11 +321,39 @@ public class UserController {
             user.setPassword(currentEditingUser.getPassword());
             user.setConfirmPassword(currentEditingUser.getPassword());
             user.setCompany(currentEditingUser.getCompany());
+            if (!currentEditingUser.getConfirmed()) {
+                UUID uid = UUID.randomUUID();
+                String stringUid = String.valueOf(uid).replace("-", "_");
+                user.setConfirmingURL(stringUid);
+                user.setConfirmed(false);
+
+                String confirmURL = "http://" +
+                        request.getServerName() +                   // "host"
+                        ":" +                                       // ":"
+                        request.getServerPort() +                   // "8080"
+                        "/registration/confirm/" +                  // "/registration/confirm/"
+                        stringUid;                                  // "uid"
+
+        /*MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);*/
+            }
             Role userRole = roleDao.getRoleByName(roleName);
             if (userRole != null) {
                 user.setRole(userRole);
             }
             user.setConfirmed(currentEditingUser.getConfirmed());
+            user.setModifiedDate(new Date());
             userDao.saveOrUpdate(user);
         }
         model.addAttribute("user", user);
@@ -344,7 +370,7 @@ public class UserController {
 
         return "user-list";
     }
-    
+
     @RequestMapping(value = "/manage_users/create")
     public String createUser(ModelMap model, Principal principal) {
 
@@ -411,13 +437,13 @@ public class UserController {
 
         User userForDelete = userDao.getUserById(userId);
 
-        if("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
+        if ("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
             return "error";
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        if(!company.getUsers().contains(userForDelete))
+        if (!company.getUsers().contains(userForDelete))
             return "error";
 
         List<User> users = company.getUsers();
@@ -429,18 +455,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}")
-    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal){
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal) {
         Assert.notNull(userId);
 
         User deletingUser = userDao.getUserById(userId);
 
-        if("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
+        if ("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
             return "error";
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        if(!company.getUsers().contains(deletingUser))
+        if (!company.getUsers().contains(deletingUser))
             return "error";
 
         userDao.delete(deletingUser);

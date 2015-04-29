@@ -16,7 +16,6 @@
           email="stas@tut.by"
           confirming_url="1234_a123"
           password="1"
-          confirmPassword = "1"
           role_id="1"/>
 
     <users user_id="2"
@@ -25,7 +24,6 @@
            email="ant@tut.by"
            confirming_url="1234_a123"
            password="1"
-           confirmPassword = "1"
            role_id="2"/>
 
     <users user_id="3"
@@ -34,7 +32,6 @@
            email="wolf@tut.by"
            confirming_url="1234_a123"
            password="1"
-           confirmPassword = "1"
            role_id="3"/>
 
 </dataset>

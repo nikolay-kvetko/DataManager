@@ -10,7 +10,6 @@
           email="anton@tut.by"
           confirming_url="1234_a123"
           password="1"
-          confirmPassword = "1"
           role_id="1"/>
 
 </dataset>
