@@ -21,7 +21,7 @@
         <div class="logo">
             <h1>403</h1>
         </div>
-        <p class="lead text-muted"><spring:message code="error.403"/></p>
+        <p class="lead text-muted">Oops, forbidden! You aren't allowed for this action.</p>
         <div class="clearfix"></div>
         <br>
         <div class="col-lg-6 col-lg-offset-3">

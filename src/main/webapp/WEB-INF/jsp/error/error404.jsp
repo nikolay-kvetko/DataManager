@@ -21,7 +21,7 @@
         <div class="logo">
             <h1>404</h1>
         </div>
-        <p class="lead text-muted"><spring:message code="error.404"/></p>
+        <p class="lead text-muted"><spring:message code="code.404"/></p>
         <div class="clearfix"></div>
         <br>
         <div class="col-lg-6 col-lg-offset-3">

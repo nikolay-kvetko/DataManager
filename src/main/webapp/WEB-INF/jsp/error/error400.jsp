@@ -21,7 +21,7 @@
         <div class="logo">
             <h1>400</h1>
         </div>
-        <p class="lead text-muted"><spring:message code="error.400"/></p>
+        <p class="lead text-muted"><spring:message code="code.400"/></p>
         <div class="clearfix"></div>
         <br>
         <div class="col-lg-6 col-lg-offset-3">
