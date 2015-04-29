@@ -6,6 +6,7 @@ import com.intetics.bean.User;
 import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
+import com.intetics.validation.UserExistValidator;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,11 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
@@ -34,10 +31,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Controller responsible for processing requests to User-related operations
@@ -65,21 +59,24 @@ public class UserController {
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserExistValidator userExistValidator;
+
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
-        if(roleDao.getRoleByName("Admin") == null) {
+        if (roleDao.getRoleByName("Admin") == null) {
             Role role = new Role();
             role.setName("Admin");
             roleDao.saveOrUpdate(role);
         }
 
-        if(roleDao.getRoleByName("ReadOnly") == null) {
+        if (roleDao.getRoleByName("ReadOnly") == null) {
             Role role = new Role();
             role.setName("ReadOnly");
             roleDao.saveOrUpdate(role);
         }
 
-        if(roleDao.getRoleByName("ReadWrite") == null) {
+        if (roleDao.getRoleByName("ReadWrite") == null) {
             Role role = new Role();
             role.setName("ReadWrite");
             roleDao.saveOrUpdate(role);
@@ -110,8 +107,8 @@ public class UserController {
         user.setConfirmed(false);
         user.setRole(role);
 
+        userExistValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            bindingResult.resolveMessageCodes("errors.user.firstName");
             return "admin-registration";
         }
 
@@ -135,7 +132,7 @@ public class UserController {
         userDao.saveOrUpdate(user);
         model.addAttribute("email", user.getEmail());
 
-        return "after-registration-page";
+        return "email-confirmation-sent";
     }
 
     @RequestMapping(value = "/registration/confirm/{uid}")
@@ -143,11 +140,10 @@ public class UserController {
 
         User user = userDao.getUserByConfirmingURL(uid);
 
-        if(user != null) {
+        if (user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
-            //user.setConfirmPassword(user.getPassword());
-
+            user.setConfirmPassword(user.getPassword());
             Date date = new Date();
             user.setModifiedDate(date);
 
@@ -157,12 +153,12 @@ public class UserController {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
             authenticationManager.authenticate(authenticationToken);
 
-            if(authenticationToken.isAuthenticated()) {
+            if (authenticationToken.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                if(!"ADMIN".equalsIgnoreCase(user.getRole().getName())){
+                if (!"ADMIN".equalsIgnoreCase(user.getRole().getName())) {
                     return "redirect:/registration/password/create";
                 }
-                return "after-confirm-page";
+                return "email-confirmed";
             }
 
             return "error";     //user is not authenticated
@@ -176,7 +172,7 @@ public class UserController {
 
         Company company = new Company();
         model.addAttribute("company", company);
-        model.addAttribute("title","Create Company");
+        model.addAttribute("title", "Create Company");
         model.addAttribute("saveButton", "Create");
         model.addAttribute("type", "create");
 
@@ -188,7 +184,7 @@ public class UserController {
 
         Company company = userDao.getUserByEmail(principal.getName()).getCompany();
         model.addAttribute("company", company);
-        model.addAttribute("title","Edit Company");
+        model.addAttribute("title", "Edit Company");
         model.addAttribute("saveButton", "Edit");
         model.addAttribute("type", "edit");
 
@@ -201,6 +197,7 @@ public class UserController {
                              HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
+        user.setConfirmPassword(user.getPassword());
         List<User> users = new ArrayList<User>();
         users.add(user);
 
@@ -232,8 +229,8 @@ public class UserController {
 
     @RequestMapping(value = "/registration/company/change", method = RequestMethod.POST)
     public String editCompany(@RequestParam MultiValueMap<String, String> params, Principal principal,
-                                @RequestParam("image") MultipartFile image,
-                                HttpServletRequest request) {
+                              @RequestParam("image") MultipartFile image,
+                              HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
         Company company = user.getCompany();
@@ -268,9 +265,7 @@ public class UserController {
 
         User user = userDao.getUserByEmail(principal.getName());
         user.setPassword(password);
-        //edit validation
-        user.setConfirmPassword(password);
-
+        user.setConfirmPassword(user.getPassword());
         Date date = new Date();
         user.setModifiedDate(date);
 
@@ -300,10 +295,15 @@ public class UserController {
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
         User editingUser = userDao.getUserById(userId);
-        if (!company.getUsers().contains(editingUser))
+        if (!company.getUsers().contains(editingUser) || editingUser.getRole().getName().equalsIgnoreCase("Admin"))
             return "error";
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
+
+        List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+        model.addAttribute("usersList", users);
+        List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+        model.addAttribute("rolesList", roles);
 
         HttpSession session = request.getSession();
         session.setAttribute("userId", userId);
@@ -312,16 +312,48 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/save")
-    public String saveUser(User user, Model model, HttpServletRequest request) {
+    public String saveUser(User user, Model model, HttpServletRequest request, @RequestParam("userRole") String roleName) {
         if (user != null) {
             HttpSession session = request.getSession();
             long userId = (Long) session.getAttribute("userId");
             User currentEditingUser = userDao.getUserById(userId);
             user.setUserId(currentEditingUser.getUserId());
             user.setPassword(currentEditingUser.getPassword());
+            user.setConfirmPassword(currentEditingUser.getPassword());
             user.setCompany(currentEditingUser.getCompany());
-            user.setRole(currentEditingUser.getRole());
+            if (!currentEditingUser.getConfirmed()) {
+                UUID uid = UUID.randomUUID();
+                String stringUid = String.valueOf(uid).replace("-", "_");
+                user.setConfirmingURL(stringUid);
+                user.setConfirmed(false);
+
+                String confirmURL = "http://" +
+                        request.getServerName() +                   // "host"
+                        ":" +                                       // ":"
+                        request.getServerPort() +                   // "8080"
+                        "/registration/confirm/" +                  // "/registration/confirm/"
+                        stringUid;                                  // "uid"
+
+        /*MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);*/
+            }
+            Role userRole = roleDao.getRoleByName(roleName);
+            if (userRole != null) {
+                user.setRole(userRole);
+            }
             user.setConfirmed(currentEditingUser.getConfirmed());
+            user.setModifiedDate(new Date());
             userDao.saveOrUpdate(user);
         }
         model.addAttribute("user", user);
@@ -338,7 +370,7 @@ public class UserController {
 
         return "user-list";
     }
-    
+
     @RequestMapping(value = "/manage_users/create")
     public String createUser(ModelMap model, Principal principal) {
 
@@ -390,9 +422,9 @@ public class UserController {
         }
 
         mailSender.send(message);*/
-
-        user.setPassword("1234");
-        user.setConfirmPassword("1234");
+        Random random = new Random();
+        user.setPassword(Integer.toString(random.nextInt(1234567)));
+        user.setConfirmPassword(user.getPassword());
 
         userDao.saveOrUpdate(user);
 
@@ -405,13 +437,13 @@ public class UserController {
 
         User userForDelete = userDao.getUserById(userId);
 
-        if("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
+        if ("ADMIN".equalsIgnoreCase(userForDelete.getRole().getName()))
             return "error";
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        if(!company.getUsers().contains(userForDelete))
+        if (!company.getUsers().contains(userForDelete))
             return "error";
 
         List<User> users = company.getUsers();
@@ -423,18 +455,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}")
-    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal){
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal) {
         Assert.notNull(userId);
 
         User deletingUser = userDao.getUserById(userId);
 
-        if("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
+        if ("ADMIN".equalsIgnoreCase(deletingUser.getRole().getName()))
             return "error";
 
         User authenticatedUser = userDao.getUserByEmail(principal.getName());
         Company company = authenticatedUser.getCompany();
 
-        if(!company.getUsers().contains(deletingUser))
+        if (!company.getUsers().contains(deletingUser))
             return "error";
 
         userDao.delete(deletingUser);
