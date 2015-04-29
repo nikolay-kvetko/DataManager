@@ -100,7 +100,7 @@ public class UserController {
         String stringUid = String.valueOf(uid).replace("-", "_");
 
         String confirmURL = "http://" +
-                request.getServerName() +                   // "host"
+                "study.atwss.com" +                         // "host"
                 ":" +                                       // ":"
                 request.getServerPort() +                   // "8080"
                 "/registration/confirm/" +                  // "/registration/confirm/"
@@ -338,7 +338,7 @@ public class UserController {
                 user.setConfirmed(false);
 
                 String confirmURL = "http://" +
-                        request.getServerName() +                   // "host"
+                        "study.atwss.com" +                         // "host"
                         ":" +                                       // ":"
                         request.getServerPort() +                   // "8080"
                         "/registration/confirm/" +                  // "/registration/confirm/"
@@ -416,7 +416,7 @@ public class UserController {
         user.setConfirmed(false);
 
         String confirmURL = "http://" +
-                request.getServerName() +                   // "host"
+                "study.atwss.com" +                         // "host"
                 ":" +                                       // ":"
                 request.getServerPort() +                   // "8080"
                 "/registration/confirm/" +                  // "/registration/confirm/"
