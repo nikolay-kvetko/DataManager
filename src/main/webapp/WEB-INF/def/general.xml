@@ -81,7 +81,8 @@
     </definition>
 
     <definition name="user-edit" extends="pageSkeleton">
-        <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/user/user-modal.jsp"/>
     </definition>
 
     <definition name="login" template="/WEB-INF/jsp/user/user-authorization.jsp">

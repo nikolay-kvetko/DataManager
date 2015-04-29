@@ -53,13 +53,32 @@
                                 </div>
                             </div>
                         </spring:bind>
+
+                        <label class="col-sm-4 control-label">
+                            <spring:message code="label.modal.user.role"/>*
+                        </label>
+
+                        <div class="col-sm-8">
+                            <select class="form-control" name="userRole" required="required">
+                                <c:forEach var="currentRole" items="${rolesList}">
+                                    <option
+                                            <c:if test="${user.role.name eq currentRole.name}">selected</c:if>
+                                            value="${currentRole.name}"> ${currentRole.name} </option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 </form:form>
             </div>
             <div class="modal-footer">
-                <input type="submit" value="Cancel" class="btn btn-default">
-                <input type="submit" form="userEdit" value="Edit" class="btn btn-primary">
+                <form id="Cancel" action="/manage_users/list"></form>
+                <button form="Cancel" type="submit" class="btn btn-default">
+                    <spring:message code="button.cancel"/>
+                </button>
+                <button form="userEdit" type="submit" class="btn btn-primary">
+                    <spring:message code="button.edit"/>
+                </button>
             </div>
         </div>
     </div>

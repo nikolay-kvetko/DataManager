@@ -7,6 +7,7 @@ import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import com.intetics.validation.UserExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -21,23 +22,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.validation.Valid;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Controller responsible for processing requests to User-related operations
@@ -64,6 +60,9 @@ public class UserController {
     @Autowired
     @Qualifier("authenticationManager")
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserExistValidator userExistValidator;
 
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
@@ -110,8 +109,8 @@ public class UserController {
         user.setConfirmed(false);
         user.setRole(role);
 
+        userExistValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            bindingResult.resolveMessageCodes("errors.user.firstName");
             return "admin-registration";
         }
 
@@ -143,11 +142,10 @@ public class UserController {
 
         User user = userDao.getUserByConfirmingURL(uid);
 
-        if(user != null) {
+        if (user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
-            //user.setConfirmPassword(user.getPassword());
-
+            user.setConfirmPassword(user.getPassword());
             Date date = new Date();
             user.setModifiedDate(date);
 
@@ -157,9 +155,9 @@ public class UserController {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
             authenticationManager.authenticate(authenticationToken);
 
-            if(authenticationToken.isAuthenticated()) {
+            if (authenticationToken.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                if(!"ADMIN".equalsIgnoreCase(user.getRole().getName())){
+                if (!"ADMIN".equalsIgnoreCase(user.getRole().getName())) {
                     return "redirect:/registration/password/create";
                 }
                 return "after-confirm-page";
@@ -201,6 +199,7 @@ public class UserController {
                              HttpServletRequest request) {
 
         User user = userDao.getUserByEmail(principal.getName());
+        user.setConfirmPassword(user.getPassword());
         List<User> users = new ArrayList<User>();
         users.add(user);
 
@@ -268,9 +267,7 @@ public class UserController {
 
         User user = userDao.getUserByEmail(principal.getName());
         user.setPassword(password);
-        //edit validation
-        user.setConfirmPassword(password);
-
+        user.setConfirmPassword(user.getPassword());
         Date date = new Date();
         user.setModifiedDate(date);
 
@@ -305,6 +302,11 @@ public class UserController {
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
 
+        List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+        model.addAttribute("usersList", users);
+        List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+        model.addAttribute("rolesList", roles);
+
         HttpSession session = request.getSession();
         session.setAttribute("userId", userId);
 
@@ -312,15 +314,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/save")
-    public String saveUser(User user, Model model, HttpServletRequest request) {
+    public String saveUser(User user, Model model, HttpServletRequest request, @RequestParam("userRole") String roleName) {
         if (user != null) {
             HttpSession session = request.getSession();
             long userId = (Long) session.getAttribute("userId");
             User currentEditingUser = userDao.getUserById(userId);
             user.setUserId(currentEditingUser.getUserId());
             user.setPassword(currentEditingUser.getPassword());
+            user.setConfirmPassword(currentEditingUser.getPassword());
             user.setCompany(currentEditingUser.getCompany());
-            user.setRole(currentEditingUser.getRole());
+            Role userRole = roleDao.getRoleByName(roleName);
+            if (userRole != null) {
+                user.setRole(userRole);
+            }
             user.setConfirmed(currentEditingUser.getConfirmed());
             userDao.saveOrUpdate(user);
         }
@@ -390,9 +396,9 @@ public class UserController {
         }
 
         mailSender.send(message);*/
-
-        user.setPassword("1234");
-        user.setConfirmPassword("1234");
+        Random random = new Random();
+        user.setPassword(Integer.toString(random.nextInt(1234567)));
+        user.setConfirmPassword(user.getPassword());
 
         userDao.saveOrUpdate(user);
 
