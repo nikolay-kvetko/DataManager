@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @FieldMatch(first = "password", second = "confirmPassword")
@@ -32,11 +33,12 @@ public class User {
     private String email;
 
     @NotEmpty
+    @Size(min = 4, max = 20)
     @Column(name = "password")
     private String password;
 
     @NotEmpty
-    //@Transient
+    @Transient
     private String confirmPassword;
 
     @Column(name = "confirmed")

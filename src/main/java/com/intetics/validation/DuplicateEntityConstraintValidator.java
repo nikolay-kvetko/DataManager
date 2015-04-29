@@ -8,13 +8,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * Date: 13.04.2015
- * Time: 14:28
- *
- * @author n.kvetko
- */
 public class DuplicateEntityConstraintValidator implements ConstraintValidator<DuplicateEntity, String> {
 
     @Autowired
@@ -35,7 +28,7 @@ public class DuplicateEntityConstraintValidator implements ConstraintValidator<D
             return false;
         }
         for (EntitySchema schema : schemas) {
-            if (schema.getName().equals(entityName)) {
+            if (schema.getName().equalsIgnoreCase(entityName)) {
                 return false;
             }
         }

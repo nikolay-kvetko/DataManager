@@ -70,7 +70,9 @@ public enum ValueType {
     DATE {
         public FieldValue newValue(List<String> values, Field field) {
             DateValue value = new DateValue();
-            DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
+            DateField dateField = (DateField)field;
+            String dateFormat = dateField.getFullDate() ? "MM/dd/yyyy hh:mm aaa" : "MM/dd/yyyy";
+            DateFormat format = new SimpleDateFormat(dateFormat);
 
             if(values != null) {
                 Date date;

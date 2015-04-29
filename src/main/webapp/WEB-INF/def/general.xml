@@ -74,14 +74,9 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
     </definition>
 
-    <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
-    </definition>
-
-    <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
-    </definition>
-
     <definition name="user-edit" extends="pageSkeleton">
-        <put-attribute name="content" value="/WEB-INF/jsp/user/user-modal.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
+        <put-attribute name="modal" value="/WEB-INF/jsp/user/user-modal.jsp"/>
     </definition>
 
     <definition name="login" extends="pageSkeleton">
@@ -124,5 +119,15 @@
     <definition name="field.lookup.image" template="/WEB-INF/jsp/lookup/image.jsp"/>
 
     <definition name="instance.lookup" template="/WEB-INF/jsp/instance/look-up.jsp"/>
+
+    <definition name="email-confirmed" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/email-confirmed.jsp"/>
+    </definition>
+
+    <definition name="email-confirmation-sent" extends="pageSkeleton">
+        <put-attribute name="header" value=""/>
+        <put-attribute name="content" value="/WEB-INF/jsp/user/email-confirmation-sent.jsp"/>
+    </definition>
 
 </tiles-definitions>

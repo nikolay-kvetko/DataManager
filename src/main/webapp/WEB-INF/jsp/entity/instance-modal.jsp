@@ -183,26 +183,26 @@
                                     </div>
                                 </div>
                                 <script type="text/javascript">
-                                    $(function(){
-                                        var textAreaId = "#textarea"+'${field.fieldId}';
+                                    $(function () {
+                                        var textAreaId = "#textarea" + '${field.fieldId}';
                                         var textArea = $(textAreaId);
                                         var maxRows = textArea.attr('rows');
                                         var maxChars = textArea.attr('cols');
-                                        textArea.keypress(function(e){
+                                        textArea.keypress(function (e) {
                                             var text = textArea.val();
                                             var lines = text.split('\n');
-                                            if (e.keyCode == 13){
+                                            if (e.keyCode == 13) {
                                                 return lines.length < maxRows;
                                             }
-                                            else{
+                                            else {
                                                 var caret = textArea.get(0).selectionStart;
                                                 console.log(caret);
 
                                                 var line = 0;
                                                 var charCount = 0;
-                                                $.each(lines, function(i,e){
+                                                $.each(lines, function (i, e) {
                                                     charCount += e.length;
-                                                    if (caret <= charCount){
+                                                    if (caret <= charCount) {
                                                         line = i;
                                                         return false;
                                                     }
@@ -240,19 +240,27 @@
                                 <script type="text/javascript">
                                     $(function () {
                                         var idDateField = "#date" + '${field.fieldId}';
-                                        <%--if (${field.fullDate}) {--%>
-                                        if (${coincidence eq true}) {
-                                            var dateValue = new Date();
-                                            var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
-                                            $(idDateField).datetimepicker({
-                                                defaultDate: newDate
-                                            });
+                                        if (${field.fullDate}) {
+                                            if (${coincidence eq true}) {
+                                                var dateValue = new Date();
+                                                var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
+                                                $(idDateField).datetimepicker({
+                                                    defaultDate: newDate
+                                                });
+                                            } else {
+                                                $(idDateField).datetimepicker();
+                                            }
                                         } else {
-                                            $(idDateField).datetimepicker();
+                                            if (${coincidence eq true}) {
+                                                var dateValue = new Date();
+                                                var newDate = dateValue.format("mm/dd/yyyy");
+                                                $(idDateField).datepicker({
+                                                    defaultDate: newDate
+                                                });
+                                            } else {
+                                                $(idDateField).datepicker({});
+                                            }
                                         }
-//                                        } else {
-//                                            $(idDateField).datetimepicker();
-//                                        }
                                     });
                                 </script>
                             </c:when>
@@ -397,12 +405,12 @@
                                     </div>
                                 </div>
                                 <script type="text/javascript">
-                                    $(function(){
+                                    $(function () {
                                         var lookUpId = "#lookUp" + '${field.fieldId}';
                                         $.ajax({
                                             type: 'GET',
                                             url: '/ajax/showLookUpField',
-                                            data: 'idLookUp='+${field.fieldId},
+                                            data: 'idLookUp=' +${field.fieldId},
                                             success: function (lookUpList) {
                                                 $(lookUpId).html(lookUpList);
                                             }

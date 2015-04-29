@@ -6,12 +6,12 @@ import java.lang.annotation.*;
 
 
 @Documented
-@Constraint(validatedBy = DuplicateEntityConstraintValidator.class)
+@Constraint(validatedBy = DuplicateUserConstraintValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DuplicateEntity {
+public @interface DuplicateUser {
 
-    String message() default "entity with this name already exist";
+    String message() default "user with this email already exist";
 
     Class<?>[] groups() default {};
 
