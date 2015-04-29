@@ -410,7 +410,7 @@
                                         $.ajax({
                                             type: 'GET',
                                             url: '/ajax/showLookUpField',
-                                            data: 'idLookUp=' +${field.fieldId},
+                                            data: 'idLookUp=${field.fieldId}&idLookUpValue=${coincidedValue.lookUpValue}',
                                             success: function (lookUpList) {
                                                 $(lookUpId).html(lookUpList);
                                             }

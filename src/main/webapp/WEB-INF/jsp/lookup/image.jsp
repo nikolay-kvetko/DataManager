@@ -2,7 +2,8 @@
 <c:forEach var="fieldValue" items="${fieldValues}">
     <div class="radio">
         <label>
-            <input type="radio" name="${fieldId}" value="${fieldValue.id}">
+            <input type="radio" <c:if test="${selectLookUp != null && selectLookUp==fieldValue.id}">checked=""</c:if>
+                   name="${fieldId}" value="${fieldValue.id}">
             <img src="data:image/png;base64,${fieldValue.image}"
                  style="max-height: 150px; max-width: 150px">
         </label>

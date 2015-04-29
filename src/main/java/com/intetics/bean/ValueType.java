@@ -128,7 +128,7 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             GPSValue gpsValue = new GPSValue();
 
-            if (values != null){
+            if (values != null && !values.get(0).equals("")){
                 String[] position = values.get(0).split(",");
                 gpsValue.setLatitudeValue(Double.valueOf(position[0]));
                 gpsValue.setLongitudeValue(Double.valueOf(position[1]));
