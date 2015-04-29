@@ -124,4 +124,12 @@
 
     <definition name="instance.lookup" template="/WEB-INF/jsp/instance/look-up.jsp"/>
 
+    <definition name="email-confirmed" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/email-confirmed.jsp"/>
+    </definition>
+
+    <definition name="email-confirmation-sent" extends="pageSkeleton">
+        <put-attribute name="content" value="/WEB-INF/jsp/user/email-confirmation-sent.jsp"/>
+    </definition>
+
 </tiles-definitions>
