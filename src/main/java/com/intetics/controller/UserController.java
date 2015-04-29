@@ -7,6 +7,7 @@ import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
 import com.intetics.validation.UserExistValidator;
+import com.intetics.validation.UserPasswordMatchingValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -31,10 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Controller responsible for processing requests to User-related operations
@@ -64,6 +62,9 @@ public class UserController {
 
     @Autowired
     private UserExistValidator userExistValidator;
+
+    @Autowired
+    private UserPasswordMatchingValidator userPasswordMatchingValidator;
 
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
@@ -95,8 +96,8 @@ public class UserController {
         user.setRole(role);
 
         userExistValidator.validate(user, bindingResult);
+        userPasswordMatchingValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-//            bindingResult.resolveMessageCodes("errors.user.firstName");
             return "admin-registration";
         }
         /*MimeMessage message = mailSender.createMimeMessage();
@@ -133,7 +134,7 @@ public class UserController {
         if (user != null) {
             user.setConfirmed(true);
             user.setConfirmingURL(null);
-
+            user.setConfirmPassword(user.getPassword());
             Date date = new Date();
             user.setModifiedDate(date);
 
@@ -171,6 +172,7 @@ public class UserController {
                              @RequestParam("image") MultipartFile image) {
 
         User user = userDao.getUserByEmail(principal.getName());
+        user.setConfirmPassword(user.getPassword());
         List<User> users = new ArrayList<User>();
         users.add(user);
 
@@ -208,7 +210,7 @@ public class UserController {
 
         User user = userDao.getUserByEmail(principal.getName());
         user.setPassword(password);
-
+        user.setConfirmPassword(user.getPassword());
         Date date = new Date();
         user.setModifiedDate(date);
 
@@ -243,6 +245,11 @@ public class UserController {
         User user = userDao.getUserById(userId);
         model.addAttribute("user", user);
 
+        List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+        model.addAttribute("usersList", users);
+        List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+        model.addAttribute("rolesList", roles);
+
         HttpSession session = request.getSession();
         session.setAttribute("userId", userId);
 
@@ -250,15 +257,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/save")
-    public String saveUser(User user, Model model, HttpServletRequest request) {
+    public String saveUser(User user, Model model, HttpServletRequest request, @RequestParam("userRole") String roleName) {
         if (user != null) {
             HttpSession session = request.getSession();
             long userId = (Long) session.getAttribute("userId");
             User currentEditingUser = userDao.getUserById(userId);
             user.setUserId(currentEditingUser.getUserId());
             user.setPassword(currentEditingUser.getPassword());
+            user.setConfirmPassword(currentEditingUser.getPassword());
             user.setCompany(currentEditingUser.getCompany());
-            user.setRole(currentEditingUser.getRole());
+            Role userRole = roleDao.getRoleByName(roleName);
+            if (userRole != null) {
+                user.setRole(userRole);
+            }
             user.setConfirmed(currentEditingUser.getConfirmed());
             userDao.saveOrUpdate(user);
         }
@@ -329,9 +340,9 @@ public class UserController {
         }
 
         mailSender.send(message);*/
-
-        user.setPassword("123");
-        user.setConfirmPassword("123");
+        Random random = new Random();
+        user.setPassword(Integer.toString(random.nextInt(1234567)));
+        user.setConfirmPassword(user.getPassword());
 
         userDao.saveOrUpdate(user);
 

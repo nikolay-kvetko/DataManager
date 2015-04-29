@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DuplicateEntity {
 
-    String message() default "Entity with this name already exist!";
+    String message() default "Entity with this name already exist";
 
     Class<?>[] groups() default {};
 
