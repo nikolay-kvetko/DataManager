@@ -47,4 +47,11 @@ public class RoleDaoImpl implements RoleDao {
 
         return roles;
     }
+
+    @Override
+    public void saveOrUpdate(Role role) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.saveOrUpdate(role);
+    }
 }

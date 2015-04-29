@@ -63,13 +63,29 @@ public class UserController {
 
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
+        if(roleDao.getRoleByName("Admin") == null) {
+            Role role = new Role();
+            role.setName("Admin");
+            roleDao.saveOrUpdate(role);
+        }
+
+        if(roleDao.getRoleByName("ReadOnly") == null) {
+            Role role = new Role();
+            role.setName("ReadOnly");
+            roleDao.saveOrUpdate(role);
+        }
+
+        if(roleDao.getRoleByName("ReadWrite") == null) {
+            Role role = new Role();
+            role.setName("ReadWrite");
+            roleDao.saveOrUpdate(role);
+        }
         model.addAttribute("user", new User());
         return "admin-registration";
     }
 
     @RequestMapping(value = "/create_admin", method = RequestMethod.POST)
-    public String createUserWithRoleAdmin(@RequestParam MultiValueMap<String, String> params,
-                                          @ModelAttribute("user") @Valid User user,
+    public String createUserWithRoleAdmin(@ModelAttribute("user") @Valid User user,
                                           BindingResult bindingResult,
                                           HttpServletRequest request,
                                           Model model) {
@@ -94,6 +110,7 @@ public class UserController {
             bindingResult.resolveMessageCodes("errors.user.firstName");
             return "admin-registration";
         }
+
         /*MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper;
@@ -402,7 +419,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/delete/{userId}")
-    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal, Model model){
+    public String deleteUser(@Nonnull @PathVariable Long userId, Principal principal){
         Assert.notNull(userId);
 
         User deletingUser = userDao.getUserById(userId);

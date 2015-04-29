@@ -12,4 +12,6 @@ public interface RoleDao {
     Role getRoleByName(String roleName);
 
     List<Role> getRoleNamesExcludingAdmin();
+
+    void saveOrUpdate(Role role);
 }

@@ -74,6 +74,18 @@ public class UserDaoImplIntegrationTest extends AbstractDaoImplIntegrationTest {
     }
 
     @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testSaveOrUpdateRole.setup.xml")
+    @ExpectedDatabase(value = "/UserDaoImplIntegrationTest.testSaveOrUpdateRole.expected.xml",
+            assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testSaveOrUpdateRole() throws Exception {
+
+        Role role = new Role();
+        role.setName("Admin");
+
+        roleDao.saveOrUpdate(role);
+    }
+
+    @Test
     @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/UserDaoImplIntegrationTest.testGetRoleByName.setup.xml")
     public void testGetRoleByName() throws Exception {
 
