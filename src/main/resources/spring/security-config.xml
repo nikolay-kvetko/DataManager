@@ -47,6 +47,7 @@
         <intercept-url pattern="/entity/**" access="isAuthenticated()" />
         <intercept-url pattern="/home/**" access="isAuthenticated()" />
         <intercept-url pattern="/manage_users/**" access="isAuthenticated()" />
+        <intercept-url pattern="/ajax/**" access="isAuthenticated()" />
         <intercept-url pattern="/registration/company/**" access="hasRole('Admin')" />
         <intercept-url pattern="/registration/password/**" access="hasAnyRole('ReadOnly','ReadWrite')" />
 

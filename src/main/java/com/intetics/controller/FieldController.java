@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Nonnull;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +54,7 @@ public class FieldController {
 
     @RequestMapping(value = "/{entitySchemaId}/field/create/{fieldType}", method = RequestMethod.GET)
     public String createFieldForEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
-                                             @PathVariable String fieldType) {
+                                             @PathVariable String fieldType, Principal principal) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
@@ -86,7 +87,8 @@ public class FieldController {
         } else if (fieldType.equalsIgnoreCase("LOOK_UP")){
             model.addAttribute("modalTitle", "Create Look Up Field");
 
-            List<EntitySchema> entitySchemaList = entitySchemaDao.getEntitySchemaList();
+            User user = userDao.getUserByEmail(principal.getName());
+            List<EntitySchema> entitySchemaList = user.getCompany().getEntitySchemas();
             model.addAttribute("listEntity", entitySchemaList);
             model.addAttribute("listField", entitySchemaDao.getEntityFieldList(entitySchemaList.get(0).getId()));
         }
@@ -253,7 +255,7 @@ public class FieldController {
 
     @RequestMapping(value = "{entitySchemaId}/field/edit/{fieldId}", method = RequestMethod.GET)
     public String editFieldInEntitySchema(@Nonnull @PathVariable Long entitySchemaId, Model model,
-                                          @Nonnull @PathVariable Long fieldId) {
+                                          @Nonnull @PathVariable Long fieldId, Principal principal) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(fieldId);
 
@@ -292,7 +294,8 @@ public class FieldController {
         } else if (field.getValueType() == ValueType.LOOK_UP) {
             model.addAttribute("modalTitle", "Edit Look Up Field");
 
-            List<EntitySchema> entitySchemaList = entitySchemaDao.getEntitySchemaList();
+            User user = userDao.getUserByEmail(principal.getName());
+            List<EntitySchema> entitySchemaList = user.getCompany().getEntitySchemas();
             model.addAttribute("listEntity", entitySchemaList);
 
             LookUpField lookUpField = (LookUpField)field;

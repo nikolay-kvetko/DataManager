@@ -7,10 +7,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3><spring:message code="header.admin.panel"/></h3>
-                    <h4 class="text-center"><spring:message code="label.registration"/></h4>
+                    <h4 class="text-center"><spring:message code="header.registration"/></h4>
                 </div>
                 <div class="panel-body">
-                    <form:form role="form" modelAttribute="user" action="/create_admin"
+                    <form:form id="registrationForm" role="form" modelAttribute="user" action="/create_admin"
                                method="post">
                         <div class="row">
                             <label class="col-xs-3 col-sm-4 col-md-4 control-label"><spring:message
@@ -82,12 +82,16 @@
                                 </div>
                             </spring:bind>
                         </div>
-                        <input type="submit" value="<spring:message code="label.registration"/>"
-                               class="btn btn-primary">
-
                     </form:form>
+                </div>
+                <div class="panel-footer">
+                    <input form="registrationForm" type="submit" value="<spring:message code="label.registration"/>"
+                           class="btn btn-primary">
+                    <input form="backToLogin" type="submit" value="<spring:message code="button.back.login"/>"
+                           class="btn btn-info">
                 </div>
             </div>
         </div>
     </div>
 </div>
+<form id="backToLogin" action="/"></form>
