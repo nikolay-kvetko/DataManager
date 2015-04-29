@@ -7,7 +7,6 @@ import com.intetics.dao.CompanyDao;
 import com.intetics.dao.RoleDao;
 import com.intetics.dao.UserDao;
 import com.intetics.validation.UserExistValidator;
-import com.intetics.validation.UserPasswordMatchingValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -26,10 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
-import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -63,9 +62,6 @@ public class UserController {
     @Autowired
     private UserExistValidator userExistValidator;
 
-    @Autowired
-    private UserPasswordMatchingValidator userPasswordMatchingValidator;
-
     @RequestMapping(value = "/registration")
     public String getRegistration(Model model) {
         model.addAttribute("user", new User());
@@ -96,7 +92,6 @@ public class UserController {
         user.setRole(role);
 
         userExistValidator.validate(user, bindingResult);
-        userPasswordMatchingValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "admin-registration";
         }
