@@ -8,7 +8,7 @@
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap.min.css">
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap-theme.min.css">
     <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap-datetimepicker.css">
-    <link REL="StyleSheet" TYPE="text/css" HREF="/css/datepicker.css">
+    <link REL="StyleSheet" TYPE="text/css" HREF="/css/bootstrap-datepicker.min.css">
     <script type="text/javascript" src="/js/moment.js"></script>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
