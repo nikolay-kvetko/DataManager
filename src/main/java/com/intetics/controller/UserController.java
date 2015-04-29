@@ -21,7 +21,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
@@ -396,7 +400,7 @@ public class UserController {
         List<User> users = company.getUsers();
 
         model.addAttribute("usersList", users);
-        model.addAttribute("user", userForDelete);
+        model.addAttribute("userForDelete", userForDelete);
 
         return "delete-user";
     }

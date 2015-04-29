@@ -11,8 +11,8 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="navbar-header pull-left" id="logo">
-                <c:if test="${not empty user.company.logo}">
-                    <img src="data:image/png;base64,${user.company.logo}" style="max-height: 50px; max-width: 200px">
+                <c:if test="${not empty currentUser.company.logo}">
+                    <img src="data:image/png;base64,${currentUser.company.logo}" style="max-height: 50px; max-width: 200px">
                 </c:if>
             </div>
         </div>
@@ -25,10 +25,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                       aria-expanded="false" id="userInfo"><c:out value="${user.firstName}"/> <c:out
-                            value="${user.lastName}"/> <span class="caret"></span></a>
+                       aria-expanded="false" id="userInfo"><c:out value="${currentUser.firstName}"/> <c:out
+                            value="${currentUser.lastName}"/> <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><spring:message code="label.edituser"/></a></li>
                         <li><a href="/registration/company/edit"><spring:message code="label.editcompany"/></a></li>
                         <li class="divider"></li>
                         <li><a href="/j_spring_security_logout"><spring:message code="label.logout"/></a></li>

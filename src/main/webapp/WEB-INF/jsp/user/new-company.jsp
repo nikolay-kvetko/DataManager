@@ -54,7 +54,7 @@
                                 <div class="col-sm-4" id="boxLogo">
                                     <c:if test="${type eq 'edit'}">
                                         <jsp:include page="/WEB-INF/jsp/user/logo.jsp">
-                                            <jsp:param name="logoValue" value="${user.company.logo}"/>
+                                            <jsp:param name="logoValue" value="${currentUser.company.logo}"/>
                                         </jsp:include>
                                     </c:if>
                                 </div>

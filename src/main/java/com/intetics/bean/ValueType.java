@@ -60,7 +60,7 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             NumberValue value = new NumberValue();
 
-            if(values != null) {
+            if(values != null && !values.get(0).equals("")) {
                 value.setNumberValue(Double.parseDouble(values.get(0)));
             }
 

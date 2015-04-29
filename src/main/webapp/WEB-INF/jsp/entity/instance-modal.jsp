@@ -174,12 +174,48 @@
                                                   rows="<c:out value="${field.countLine}" />"
                                                   name="<c:out value="${field.fieldId}"/>"
                                                   style="resize:none;"
+                                                  cols="40"
+                                                  id="textarea${field.fieldId}"
                                                 <c:if test="${field.require}">
                                                     required="<c:out value="${field.require}"/>"
                                                 </c:if>><c:if test="${coincidence eq true}"><c:out
                                                 value="${coincidedValue.textAreaValue}"/></c:if></textarea>
                                     </div>
                                 </div>
+                                <script type="text/javascript">
+                                    $(function(){
+                                        var textAreaId = "#textarea"+'${field.fieldId}';
+                                        var textArea = $(textAreaId);
+                                        var maxRows = textArea.attr('rows');
+                                        var maxChars = textArea.attr('cols');
+                                        textArea.keypress(function(e){
+                                            var text = textArea.val();
+                                            var lines = text.split('\n');
+                                            if (e.keyCode == 13){
+                                                return lines.length < maxRows;
+                                            }
+                                            else{
+                                                var caret = textArea.get(0).selectionStart;
+                                                console.log(caret);
+
+                                                var line = 0;
+                                                var charCount = 0;
+                                                $.each(lines, function(i,e){
+                                                    charCount += e.length;
+                                                    if (caret <= charCount){
+                                                        line = i;
+                                                        return false;
+                                                    }
+                                                    charCount += 1;
+                                                });
+
+                                                var theLine = lines[line];
+                                                return theLine.length < maxChars;
+                                            }
+                                        });
+
+                                    });
+                                </script>
                             </c:when>
                             <c:when test="${field.valueType eq 'DATE'}">
                                 <div class="form-group">
@@ -206,7 +242,7 @@
                                         var idDateField = "#date" + '${field.fieldId}';
                                         <%--if (${field.fullDate}) {--%>
                                         if (${coincidence eq true}) {
-                                            var dateValue = new Date('${coincidedValue.dateValue}');
+                                            var dateValue = new Date();
                                             var newDate = dateValue.format("mm/dd/yyyy hh:mm TT");
                                             $(idDateField).datetimepicker({
                                                 defaultDate: newDate

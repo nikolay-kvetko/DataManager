@@ -6,7 +6,7 @@
         <div class="modal-content alert-danger">
             <div class="modal-body">
                 <c:choose>
-                    <c:when test="${EntitySchema != null && field eq null && entityInstance eq null && user eq null}">
+                    <c:when test="${EntitySchema != null && field eq null && entityInstance eq null && userForDelete eq null}">
                         <h4><spring:message code="label.modal.deleteentity"/> "<c:out value="${EntitySchema.name}"/>"</h4>
                     </c:when>
 
@@ -14,10 +14,10 @@
                         <h4><spring:message code="label.modal.deleteinstance"/> "<c:out value="${EntitySchema.name}"/>"</h4>
                     </c:when>
 
-                    <c:when test="${user != null}">
+                    <c:when test="${userForDelete != null}">
                         <h4><spring:message code="label.modal.delete.user"/>
-                            "<c:out value="${user.firstName}"/>
-                            <c:out value="${user.lastName}"/>"
+                            "<c:out value="${userForDelete.firstName}"/>
+                            <c:out value="${userForDelete.lastName}"/>"
                         </h4>
                     </c:when>
 
@@ -28,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <c:choose>
-                    <c:when test="${EntitySchema != null && field eq null && entityInstance eq null && user eq null}">
+                    <c:when test="${EntitySchema != null && field eq null && entityInstance eq null && userForDelete eq null}">
                         <form id="Cancel" action="/entity/list" method="get"></form>
                         <form id="Delete" action="/entity/delete/<c:out value="${EntitySchema.id}"/>" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default"><spring:message code="button.cancel"/></button>
@@ -42,9 +42,9 @@
                         <button form="Delete" type="submit" class="btn btn-danger"><spring:message code="button.delete"/></button>
                     </c:when>
 
-                    <c:when test="${user != null}">
+                    <c:when test="${userForDelete != null}">
                         <form id="Cancel" action="/manage_users/list" method="get"></form>
-                        <form id="Delete" action="/manage_users/delete/<c:out value="${user.userId}"/>" method="get"></form>
+                        <form id="Delete" action="/manage_users/delete/<c:out value="${userForDelete.userId}"/>" method="get"></form>
                         <button form="Cancel" type="submit" class="btn btn-default"><spring:message code="button.cancel"/></button>
                         <button form="Delete" type="submit" class="btn btn-danger"><spring:message code="button.delete"/></button>
                     </c:when>

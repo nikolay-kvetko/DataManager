@@ -42,7 +42,7 @@ public class UserCompanyOrPasswordExistFilter implements Filter {
 
             HttpServletRequest request = (HttpServletRequest)req;
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("currentUser", user);
 
             if("ADMIN".equalsIgnoreCase(user.getRole().getName())){
                 if(user.getCompany() == null){
