@@ -74,12 +74,6 @@
         <put-attribute name="content" value="/WEB-INF/jsp/user/new-company.jsp"/>
     </definition>
 
-    <definition name="after-registration-page" template="/WEB-INF/jsp/user/after-registration-page.jsp">
-    </definition>
-
-    <definition name="after-confirm-page" template="/WEB-INF/jsp/user/after-confirm-page.jsp">
-    </definition>
-
     <definition name="user-edit" extends="pageSkeleton">
         <put-attribute name="content" value="/WEB-INF/jsp/user/user-list.jsp"/>
         <put-attribute name="modal" value="/WEB-INF/jsp/user/user-modal.jsp"/>

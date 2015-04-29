@@ -158,7 +158,7 @@ public class UserController {
                 if (!"ADMIN".equalsIgnoreCase(user.getRole().getName())) {
                     return "redirect:/registration/password/create";
                 }
-                return "after-confirm-page";
+                return "email-confirmed";
             }
 
             return "error";     //user is not authenticated

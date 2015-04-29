@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface FieldMatch
 {
-    String message() default "Password does not match";
+    String message() default "password do not match";
 
     Class<?>[] groups() default {};
 

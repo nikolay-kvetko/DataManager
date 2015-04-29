@@ -24,7 +24,7 @@ public class UserExistValidator implements Validator {
         User existUser = userDao.getUserByEmail(currentUser.getEmail());
         if (existUser != null) {
             errors.rejectValue("email", "validation.user.email.exist",
-                    "User with this email already exist");
+                    "user with this email already exist");
         }
     }
 }

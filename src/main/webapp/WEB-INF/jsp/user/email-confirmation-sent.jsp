@@ -10,7 +10,7 @@
                 value="${email}"/><spring:message
                 code="email.confirmation.sent.message.second"/></p>
 
-        <p><a class="btn btn-primary btn-lg" href="#" role="button"><spring:message
+        <p><a class="btn btn-primary btn-lg" href="/" role="button"><spring:message
                 code="button.tologin"/></a></p>
     </div>
 </div>

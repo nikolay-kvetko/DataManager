@@ -28,7 +28,7 @@ public class DuplicateEntityConstraintValidator implements ConstraintValidator<D
             return false;
         }
         for (EntitySchema schema : schemas) {
-            if (schema.getName().equals(entityName)) {
+            if (schema.getName().equalsIgnoreCase(entityName)) {
                 return false;
             }
         }

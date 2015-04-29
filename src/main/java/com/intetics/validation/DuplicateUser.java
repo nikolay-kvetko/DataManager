@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DuplicateUser {
 
-    String message() default "User with this email already exist";
+    String message() default "user with this email already exist";
 
     Class<?>[] groups() default {};
 
