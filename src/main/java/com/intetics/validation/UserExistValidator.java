@@ -13,12 +13,11 @@ public class UserExistValidator implements Validator {
     @Autowired
     private UserDao userDao;
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return User.class.equals(clazz);
+
+    public boolean supports(Class<?> aClass) {
+        return User.class.equals(aClass);
     }
 
-    @Override
     public void validate(Object target, Errors errors) {
         User currentUser = (User) target;
         User existUser = userDao.getUserByEmail(currentUser.getEmail());

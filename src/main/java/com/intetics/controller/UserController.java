@@ -303,6 +303,7 @@ public class UserController {
             return "error";
 
         User user = userDao.getUserById(userId);
+        user.setConfirmPassword(user.getPassword());
         model.addAttribute("user", user);
 
         List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
@@ -318,7 +319,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/save")
-    public String saveUser(User user, Model model, HttpServletRequest request, @RequestParam("userRole") String roleName) {
+    public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+                           Model model, HttpServletRequest request,
+                           @RequestParam("userRole") String roleName, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+            model.addAttribute("usersList", users);
+
+            List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+            model.addAttribute("rolesList", roles);
+            return "user-edit";
+        }
         if (user != null) {
             HttpSession session = request.getSession();
             long userId = (Long) session.getAttribute("userId");
@@ -400,7 +411,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage_users/add")
-    public String addUser(User user, Principal principal, HttpServletRequest request, @RequestParam("userRole") String role) {
+    public String addUser(@ModelAttribute("newUser") @Valid User user, BindingResult bindingResult, Model model,
+                          Principal principal, HttpServletRequest request, @RequestParam("userRole") String role) {
+
+        userExistValidator.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+
+            List<User> users = userDao.getUserByEmail(principal.getName()).getCompany().getUsers();
+            model.addAttribute("usersList", users);
+
+            List<Role> roles = roleDao.getRoleNamesExcludingAdmin();
+            model.addAttribute("rolesList", roles);
+            return "create-user";
+        }
 
         user.setRole(roleDao.getRoleByName(role));
 
