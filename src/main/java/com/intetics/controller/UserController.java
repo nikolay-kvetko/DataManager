@@ -11,6 +11,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nonnull;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -111,20 +114,20 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "admin-registration";
         }
-//
-//        MimeMessage message = mailSender.createMimeMessage();
-//
-//        MimeMessageHelper helper;
-//
-//        try {
-//            helper = new MimeMessageHelper(message, true);
-//            helper.setTo(user.getEmail());
-//            helper.setText(confirmURL, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mailSender.send(message);
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);
 
         Date date = new Date();
         user.setModifiedDate(date);
@@ -344,27 +347,27 @@ public class UserController {
                 String stringUid = String.valueOf(uid).replace("-", "_");
                 user.setConfirmingURL(stringUid);
                 user.setConfirmed(false);
-//
-//                String confirmURL = "http://" +
-//                        "study.atwss.com" +                         // "host"
-//                        ":" +                                       // ":"
-//                        request.getServerPort() +                   // "8080"
-//                        "/registration/confirm/" +                  // "/registration/confirm/"
-//                        stringUid;                                  // "uid"
-//
-//                MimeMessage message = mailSender.createMimeMessage();
-//
-//                MimeMessageHelper helper;
-//
-//                try {
-//                    helper = new MimeMessageHelper(message, true);
-//                    helper.setTo(user.getEmail());
-//                    helper.setText(confirmURL, true);
-//                } catch (MessagingException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                mailSender.send(message);
+
+                String confirmURL = "http://" +
+                        "study.atwss.com" +                         // "host"
+                        ":" +                                       // ":"
+                        request.getServerPort() +                   // "8080"
+                        "/registration/confirm/" +                  // "/registration/confirm/"
+                        stringUid;                                  // "uid"
+
+                MimeMessage message = mailSender.createMimeMessage();
+
+                MimeMessageHelper helper;
+
+                try {
+                    helper = new MimeMessageHelper(message, true);
+                    helper.setTo(user.getEmail());
+                    helper.setText(confirmURL, true);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
+                mailSender.send(message);
             }
 
             Role userRole = roleDao.getRoleByName(roleName);
@@ -435,26 +438,26 @@ public class UserController {
         user.setConfirmingURL(stringUid);
         user.setConfirmed(false);
 
-//        String confirmURL = "http://" +
-//                "study.atwss.com" +                         // "host"
-//                ":" +                                       // ":"
-//                request.getServerPort() +                   // "8080"
-//                "/registration/confirm/" +                  // "/registration/confirm/"
-//                stringUid;                                  // "uid"
-//
-//        MimeMessage message = mailSender.createMimeMessage();
-//
-//        MimeMessageHelper helper;
-//
-//        try {
-//            helper = new MimeMessageHelper(message, true);
-//            helper.setTo(user.getEmail());
-//            helper.setText(confirmURL, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mailSender.send(message);
+        String confirmURL = "http://" +
+                "study.atwss.com" +                         // "host"
+                ":" +                                       // ":"
+                request.getServerPort() +                   // "8080"
+                "/registration/confirm/" +                  // "/registration/confirm/"
+                stringUid;                                  // "uid"
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);
 
         Random random = new Random();
         user.setPassword(Integer.toString(random.nextInt(1234567)));
