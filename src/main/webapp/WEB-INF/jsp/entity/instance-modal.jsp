@@ -332,7 +332,8 @@
                                         <c:if test="${field.require}">
                                                required="<c:out
                                                         value="${field.require}"/>"
-                                        </c:if>>
+                                        </c:if>
+                                               pattern="^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -410,7 +411,7 @@
                                         $.ajax({
                                             type: 'GET',
                                             url: '/ajax/showLookUpField',
-                                            data: 'idLookUp=' +${field.fieldId},
+                                            data: 'idLookUp=${field.fieldId}&idLookUpValue=${coincidedValue.lookUpValue}',
                                             success: function (lookUpList) {
                                                 $(lookUpId).html(lookUpList);
                                             }

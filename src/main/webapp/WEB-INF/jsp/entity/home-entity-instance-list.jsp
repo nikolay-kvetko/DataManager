@@ -55,10 +55,10 @@
                     </c:forEach>
                     <c:if test="${coincidence}">
                         <td>
-                        <sec:authorize access="hasAnyRole('Admin','ReadWrite')">
+                            <sec:authorize access="hasAnyRole('Admin','ReadWrite')">
                             <a href="/home/entity/${EntitySchema.id}/instance/edit/${instance.id}"
                                style="display: block; text-decoration: none">
-                        </sec:authorize>
+                                </sec:authorize>
                                 <c:choose>
                                     <c:when test="${coincidedValue.field.valueType eq 'STRING'}">
                                         <c:out value="${coincidedValue.value}"/>
@@ -81,25 +81,27 @@
                                         <c:out value="${coincidedValue.dateValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'IMAGE'}">
-                                        <jsp:include page="/WEB-INF/jsp/instance/image.jsp">
-                                            <jsp:param name="fieldValue" value="${coincidedValue.image}"/>
-                                        </jsp:include>
+                                        <c:if test="${not empty coincidedValue.image}">
+                                            <jsp:include page="/WEB-INF/jsp/instance/image.jsp">
+                                                <jsp:param name="fieldValue" value="${coincidedValue.image}"/>
+                                            </jsp:include>
+                                        </c:if>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'GPS'}">
                                         <c:out value="${coincidedValue.latitudeValue}"/><br><c:out
                                             value="${coincidedValue.longitudeValue}"/>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'LOOK_UP'}">
-                                        <div id="div${coincidedValue.field.fieldId}">
+                                        <div id="lookup${coincidedValue.field.fieldId}_${coincidedValue.id}">
                                         </div>
                                         <script type="">
-                                            $(function(){
-                                                var lookUpId = "#div" + ${coincidedValue.field.fieldId};
+                                            $(function () {
+                                                var lookUpId = "#lookup" + ${coincidedValue.field.fieldId} +"_" + ${coincidedValue.id};
                                                 $.ajax({
                                                     type: 'GET',
                                                     url: '/ajax/showLookUpInstance',
                                                     data: 'lookUpFieldId=${coincidedValue.field.fieldId}&lookUpInstanceId=${coincidedValue.lookUpValue}',
-                                                    success: function(lookUpInstance){
+                                                    success: function (lookUpInstance) {
                                                         $(lookUpId).html(lookUpInstance);
                                                     }
                                                 })

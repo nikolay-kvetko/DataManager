@@ -65,12 +65,19 @@ public class AjaxController {
     }
 
     @RequestMapping(value = "/showLookUpField", method = RequestMethod.GET)
-    public String showLookUpField(@RequestParam Long idLookUp, Model model) {
+    public String showLookUpField(@RequestParam Long idLookUp,
+                                  @RequestParam Long idLookUpValue, Model model) {
 
         String result = "";
 
         LookUpField lookUpField = (LookUpField) entitySchemaDao.getField(idLookUp);
         Field field = entitySchemaDao.getField(lookUpField.getLookUpFieldId());
+
+        if (idLookUpValue != null){
+            model.addAttribute("selectLookUp", idLookUpValue);
+        } else if (lookUpField.getRequire()){
+            model.addAttribute("selectLookUp", field.getFieldValues().get(0).getId());
+        }
 
         model.addAttribute("fieldId", lookUpField.getFieldId());
         model.addAttribute("fieldValues", field.getFieldValues());

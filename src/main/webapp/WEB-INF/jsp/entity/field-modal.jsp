@@ -176,7 +176,8 @@
                                             <c:if test="${field.minValue != null}">
                                                 value="<c:out value="${field.minValue}"/>"
                                             </c:if>
-                                            />
+                                            required
+                                            min="-999999999" max="999999999"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -188,7 +189,8 @@
                                             <c:if test="${field.maxValue != null}">
                                                 value="<c:out value="${field.maxValue}"/>"
                                             </c:if>
-                                            />
+                                           required
+                                           min="-999999999" max="999999999"/>
                                 </div>
                             </div>
                             <div class="form-group">
