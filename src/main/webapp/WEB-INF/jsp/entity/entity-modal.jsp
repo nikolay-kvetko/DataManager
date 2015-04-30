@@ -5,7 +5,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><spring:message code="header.createentity"/> <spring:message code="header.editentity"/></h4>
+                <c:choose>
+                    <c:when test="${modalSaveButton eq 'Create'}">
+                        <h4 class="modal-title"><spring:message code="header.createentity"/></h4>
+                    </c:when>
+                    <c:otherwise>
+                        <h4 class="modal-title"><spring:message code="header.editentity"/></h4>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="modal-body form-horizontal">
                 <spring:url var = "action" value='/entity/save'/>
