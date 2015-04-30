@@ -5,7 +5,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><spring:message code="header.createinstance"/></h4>
+                <c:choose>
+                    <c:when test="${modalSaveButton eq 'Create'}">
+                        <h4 class="modal-title"><spring:message code="header.createinstance"/></h4>
+                    </c:when>
+                    <c:otherwise>
+                        <h4 class="modal-title"><spring:message code="header.edit.instance"/></h4>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="modal-body form-horizontal">
                 <c:choose>
@@ -361,15 +368,6 @@
                                             google.maps.event.addListener(map, 'click', function (event) {
                                                 placeMarker(event.latLng);
                                             });
-
-                                            if (${coincidence}) {
-                                                var latlng = new google.maps.LatLng('${coincidedValue.latitudeValue}',
-                                                        '${coincidedValue.longitudeValue}');
-                                                marker = new google.maps.Marker({
-                                                    position: latlng,
-                                                    map: map
-                                                });
-                                            }
                                         }
 
                                         function placeMarker(location) {

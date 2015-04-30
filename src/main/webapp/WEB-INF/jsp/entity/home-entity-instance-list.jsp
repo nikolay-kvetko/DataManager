@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="container">
     <div class="page-header">
         <h3>
@@ -75,10 +76,22 @@
                                         </jsp:include>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'NUMBER'}">
-                                        <c:out value="${coincidedValue.numberValue}"/>
+                                        <c:if test="${coincidedValue.field.numberDecimal eq 0}">
+                                            <fmt:formatNumber value="${coincidedValue.numberValue}" minFractionDigits="0" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${coincidedValue.field.numberDecimal != 0}">
+                                            <c:out value="${coincidedValue.numberValue}"/>
+                                        </c:if>
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'DATE'}">
-                                        <c:out value="${coincidedValue.dateValue}"/>
+
+                                        <c:if test="${coincidedValue.field.fullDate eq false}">
+                                            <fmt:formatDate value="${coincidedValue.dateValue}" pattern="MM/dd/yyyy"/>
+                                        </c:if>
+                                        <c:if test="${coincidedValue.field.fullDate eq true}">
+                                            <c:out value="${coincidedValue.dateValue}"/>
+                                        </c:if>
+
                                     </c:when>
                                     <c:when test="${coincidedValue.field.valueType eq 'IMAGE'}">
                                         <c:if test="${not empty coincidedValue.image}">
