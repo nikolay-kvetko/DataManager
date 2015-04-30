@@ -14,7 +14,9 @@
     <c:out value="${lookUpValue}"/>
 </c:if>
 <c:if test="${lookUpType eq 'IMAGE'}">
-    <jsp:include page="image.jsp">
-        <jsp:param name="fieldValue" value="${lookUpValue}"/>
-    </jsp:include>
+    <c:if test="${not empty lookUpValue}">
+        <jsp:include page="image.jsp">
+            <jsp:param name="fieldValue" value="${lookUpValue}"/>
+        </jsp:include>
+    </c:if>
 </c:if>

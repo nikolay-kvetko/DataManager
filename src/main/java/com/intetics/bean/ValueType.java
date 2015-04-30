@@ -19,18 +19,18 @@ public enum ValueType {
         public FieldValue newValue(List<String> values, Field field) {
             StringValue value = new StringValue();
 
-            if(values != null) {
+            if (values != null) {
                 value.setValue(values.get(0));
             }
 
             return value;
         }
     },
-    TEXT_AREA{
-        public FieldValue newValue(List<String> values, Field field){
+    TEXT_AREA {
+        public FieldValue newValue(List<String> values, Field field) {
             TextAreaValue value = new TextAreaValue();
 
-            if(values != null) {
+            if (values != null) {
                 value.setTextAreaValue(values.get(0));
             }
 
@@ -56,11 +56,11 @@ public enum ValueType {
             return value;
         }
     },
-    NUMBER{
+    NUMBER {
         public FieldValue newValue(List<String> values, Field field) {
             NumberValue value = new NumberValue();
 
-            if(values != null && !values.get(0).equals("")) {
+            if (values != null && !values.get(0).equals("")) {
                 value.setNumberValue(Double.parseDouble(values.get(0)));
             }
 
@@ -70,11 +70,11 @@ public enum ValueType {
     DATE {
         public FieldValue newValue(List<String> values, Field field) {
             DateValue value = new DateValue();
-            DateField dateField = (DateField)field;
+            DateField dateField = (DateField) field;
             String dateFormat = dateField.getFullDate() ? "MM/dd/yyyy hh:mm aaa" : "MM/dd/yyyy";
             DateFormat format = new SimpleDateFormat(dateFormat);
 
-            if(values != null) {
+            if (values != null) {
                 Date date;
 
                 try {
@@ -88,22 +88,22 @@ public enum ValueType {
             return value;
         }
     },
-    LOOK_UP{
+    LOOK_UP {
         public FieldValue newValue(List<String> values, Field field) {
             LookUpValue lookUpValue = new LookUpValue();
 
-            if (values != null){
+            if (values != null) {
                 lookUpValue.setLookUpValue(Long.valueOf(values.get(0)));
             }
 
             return lookUpValue;
         }
     },
-    IMAGE{
+    IMAGE {
         public FieldValue newValue(List<String> values, Field field) {
             ImageValue value = new ImageValue();
 
-            if(values != null) {
+            if (values != null) {
                 try {
                     URL url = new URL(values.get(0));
                     InputStream inputStream = url.openStream();
@@ -118,17 +118,17 @@ public enum ValueType {
                     value.setImageUrl(values.get(0));
                 } catch (MalformedURLException e) {
                 } catch (IOException e) {
-                } catch (Exception e){
+                } catch (Exception e) {
                 }
             }
             return value;
         }
     },
-    GPS{
+    GPS {
         public FieldValue newValue(List<String> values, Field field) {
             GPSValue gpsValue = new GPSValue();
 
-            if (values != null && !values.get(0).equals("")){
+            if (values != null && !values.get(0).equals("")) {
                 String[] position = values.get(0).split(",");
                 gpsValue.setLatitudeValue(Double.valueOf(position[0]));
                 gpsValue.setLongitudeValue(Double.valueOf(position[1]));

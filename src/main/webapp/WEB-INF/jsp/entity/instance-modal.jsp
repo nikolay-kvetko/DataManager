@@ -332,7 +332,8 @@
                                         <c:if test="${field.require}">
                                                required="<c:out
                                                         value="${field.require}"/>"
-                                        </c:if>>
+                                        </c:if>
+                                               pattern="^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$">
                                     </div>
                                 </div>
                                 <div class="form-group">
