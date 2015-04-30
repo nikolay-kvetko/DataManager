@@ -21,7 +21,7 @@ public class EntitySchema {
 
     @GroupSequence({
             Size.class,
-            DuplicateEntity.class
+//            DuplicateEntity.class
     })
     public interface MvcValidationSequence {}
 
@@ -32,7 +32,7 @@ public class EntitySchema {
 
     @NotEmpty(groups = NotEmpty.class)
     @Size(min = 2, max = 30, groups = Size.class)
-    @DuplicateEntity(groups = DuplicateEntity.class)
+//    @DuplicateEntity(groups = DuplicateEntity.class)
     @Column(name = "name")
     private String name;
 

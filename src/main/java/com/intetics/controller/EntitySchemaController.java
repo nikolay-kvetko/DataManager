@@ -5,6 +5,7 @@ import com.intetics.bean.EntitySchema;
 import com.intetics.bean.User;
 import com.intetics.dao.EntitySchemaDao;
 import com.intetics.dao.UserDao;
+import com.intetics.validation.DuplicateEntityNameValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Nonnull;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,9 @@ public class EntitySchemaController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DuplicateEntityNameValidator entityNameValidator;
 
     @RequestMapping(value = "/list")
     public String getEntitySchemaList(ModelMap model, Principal principal) {
@@ -87,8 +91,7 @@ public class EntitySchemaController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveEntitySchema(@ModelAttribute("EntitySchema")
-                                       @Validated(value = EntitySchema.MvcValidationSequence.class)
-                                       EntitySchema entitySchema,
+                                       @Valid EntitySchema entitySchema,
                                    BindingResult bindingResult, ModelMap model, Principal principal) {
 
         Date currentDate = new Date();
@@ -97,7 +100,7 @@ public class EntitySchemaController {
 
         Company company = user.getCompany();
         entitySchema.setCompany(company);
-
+        entityNameValidator.validate(entitySchema, bindingResult);
         if (bindingResult.hasErrors()) {
             if (entitySchema.getId() == null) {
                 List<EntitySchema> entitySchemas = entitySchemaDao.getEntitySchemaList();
