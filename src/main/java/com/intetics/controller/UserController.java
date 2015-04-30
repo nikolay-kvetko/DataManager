@@ -115,19 +115,19 @@ public class UserController {
             return "admin-registration";
         }
 
-//        MimeMessage message = mailSender.createMimeMessage();
-//
-//        MimeMessageHelper helper;
-//
-//        try {
-//            helper = new MimeMessageHelper(message, true);
-//            helper.setTo(user.getEmail());
-//            helper.setText(confirmURL, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mailSender.send(message);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);
 
         Date date = new Date();
         user.setModifiedDate(date);
@@ -355,19 +355,19 @@ public class UserController {
                         "/registration/confirm/" +                  // "/registration/confirm/"
                         stringUid;                                  // "uid"
 
-//                MimeMessage message = mailSender.createMimeMessage();
-//
-//                MimeMessageHelper helper;
-//
-//                try {
-//                    helper = new MimeMessageHelper(message, true);
-//                    helper.setTo(user.getEmail());
-//                    helper.setText(confirmURL, true);
-//                } catch (MessagingException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                mailSender.send(message);
+                MimeMessage message = mailSender.createMimeMessage();
+
+                MimeMessageHelper helper;
+
+                try {
+                    helper = new MimeMessageHelper(message, true);
+                    helper.setTo(user.getEmail());
+                    helper.setText(confirmURL, true);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
+                mailSender.send(message);
             }
 
             Role userRole = roleDao.getRoleByName(roleName);
@@ -414,6 +414,7 @@ public class UserController {
     public String addUser(@ModelAttribute("newUser") @Valid User user, BindingResult bindingResult, Model model,
                           Principal principal, HttpServletRequest request, @RequestParam("userRole") String role) {
 
+        System.out.println();
         userExistValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
 
@@ -445,19 +446,19 @@ public class UserController {
                 "/registration/confirm/" +                  // "/registration/confirm/"
                 stringUid;                                  // "uid"
 
-//        MimeMessage message = mailSender.createMimeMessage();
-//
-//        MimeMessageHelper helper;
-//
-//        try {
-//            helper = new MimeMessageHelper(message, true);
-//            helper.setTo(user.getEmail());
-//            helper.setText(confirmURL, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mailSender.send(message);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper;
+
+        try {
+            helper = new MimeMessageHelper(message, true);
+            helper.setTo(user.getEmail());
+            helper.setText(confirmURL, true);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(message);
 
         Random random = new Random();
         user.setPassword(Integer.toString(random.nextInt(1234567)));
