@@ -9,6 +9,8 @@ import com.intetics.bean.User;
 import com.intetics.dao.EntityInstanceDao;
 import com.intetics.dao.EntitySchemaDao;
 import com.intetics.dao.UserDao;
+import com.intetics.validation.EntityInstanceValidator;
+import com.intetics.validation.field.FieldEmptyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -121,7 +125,7 @@ public class EntityInstanceController {
 
     @RequestMapping(value = "/{entitySchemaId}/instance/add", method = RequestMethod.POST)
     public String addEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
-                                    @RequestParam MultiValueMap<String, String> params) {
+                                    @RequestParam MultiValueMap<String, String> params, Model model) {
         Assert.notNull(entitySchemaId);
 
         EntitySchema entitySchema = verifyComplianceEntitySchemaAndCompany(entitySchemaId);
@@ -147,6 +151,21 @@ public class EntityInstanceController {
 
         entityInstance.setValues(fieldValues);
 
+        DataBinder dataBinder = new DataBinder(entityInstance);
+        dataBinder.setValidator(new EntityInstanceValidator());
+        dataBinder.validate();
+        BindingResult bindingResult = dataBinder.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("EntitySchema", entitySchema);
+
+            List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
+            model.addAttribute("entityInstances", entityInstances);
+
+            model.addAttribute("modalSaveButton", "Create");
+
+            return "create-instance";
+        }
+
         entityInstanceDao.saveOrUpdate(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";
@@ -155,7 +174,7 @@ public class EntityInstanceController {
     @RequestMapping(value = "/{entitySchemaId}/instance/update/{entityInstanceId}", method = RequestMethod.POST)
     public String updateEntityInstance(@Nonnull @PathVariable Long entitySchemaId,
                                      @Nonnull @PathVariable Long entityInstanceId,
-                                     @RequestParam MultiValueMap<String, String> params) {
+                                     @RequestParam MultiValueMap<String, String> params, Model model) {
         Assert.notNull(entitySchemaId);
         Assert.notNull(entityInstanceId);
 
@@ -191,6 +210,23 @@ public class EntityInstanceController {
         }
 
         entityInstance.setValues(fieldValues);
+
+        DataBinder dataBinder = new DataBinder(entityInstance);
+        dataBinder.setValidator(new EntityInstanceValidator());
+        dataBinder.validate();
+        BindingResult bindingResult = dataBinder.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("EntitySchema", entitySchema);
+            model.addAttribute("entityInstance", entityInstance);
+
+            List<EntityInstance> entityInstances = entitySchema.getEntityInstances();
+            model.addAttribute("entityInstances", entityInstances);
+
+            model.addAttribute("modalSaveButton", "Edit");
+
+            return "edit-instance";
+        }
+
         entityInstanceDao.saveOrUpdate(entityInstance);
 
         return "redirect:/home/entity/" + entitySchemaId + "/instance/list";

@@ -1,14 +1,12 @@
 package com.intetics.bean;
 
-import com.intetics.validation.DuplicateEntity;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import java.util.Date;
 import javax.validation.GroupSequence;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +19,6 @@ public class EntitySchema {
 
     @GroupSequence({
             Size.class,
-//            DuplicateEntity.class
     })
     public interface MvcValidationSequence {}
 
@@ -32,7 +29,6 @@ public class EntitySchema {
 
     @NotEmpty(groups = NotEmpty.class)
     @Size(min = 2, max = 30, groups = Size.class)
-//    @DuplicateEntity(groups = DuplicateEntity.class)
     @Column(name = "name")
     private String name;
 

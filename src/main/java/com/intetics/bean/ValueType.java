@@ -59,9 +59,11 @@ public enum ValueType {
     NUMBER {
         public FieldValue newValue(List<String> values, Field field) {
             NumberValue value = new NumberValue();
-
+            String digits = "-?\\d+";
             if (values != null && !values.get(0).equals("")) {
-                value.setNumberValue(Double.parseDouble(values.get(0)));
+                if (values.get(0).matches(digits)) {
+                    value.setNumberValue(Double.parseDouble(values.get(0)));
+                }
             }
 
             return value;
@@ -127,11 +129,15 @@ public enum ValueType {
     GPS {
         public FieldValue newValue(List<String> values, Field field) {
             GPSValue gpsValue = new GPSValue();
-
+            String pattern = "^(\\-?\\d+(\\.\\d+)?),\\s*(\\-?\\d+(\\.\\d+)?)$";
             if (values != null && !values.get(0).equals("")) {
                 String[] position = values.get(0).split(",");
-                gpsValue.setLatitudeValue(Double.valueOf(position[0]));
-                gpsValue.setLongitudeValue(Double.valueOf(position[1]));
+                if (position.length == 2) {
+                    if (values.get(0).matches(pattern)) {
+                        gpsValue.setLatitudeValue(Double.valueOf(position[0]));
+                        gpsValue.setLongitudeValue(Double.valueOf(position[1]));
+                    }
+                }
             }
 
             return gpsValue;
